@@ -1,3 +1,4 @@
+*~
 /config/initializers/site_keys.rb
 log/*.log
 db/*.sqlite3
