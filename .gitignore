@@ -1,0 +1,7 @@
+/config/initializers/site_keys.rb
+log/*.log
+db/*.sqlite3
+tmp/**/*
+doc/api
+doc/app
+doc/plugins
