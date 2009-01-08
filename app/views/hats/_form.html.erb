@@ -1,0 +1,21 @@
+<% form_for(@hat) do |form| %>
+  <p>
+    <%= form.label :color %><br />
+    <%= form.text_field :color %>
+  </p>
+  <p>
+    <%= form.label :summary %><br />
+    <%= form.text_field :summary %>
+  </p>
+  <p>
+    <%= form.label :description %><br />
+    <%= form.text_area :description %>
+  </p>
+  <p>
+    <%= form.label :more_info %><br />
+    <%= form.text_area :more_info %>
+  </p>
+  <p>
+    <%= form.submit @submit_button_label %>
+  </p>
+<% end %>

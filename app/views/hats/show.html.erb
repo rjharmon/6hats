@@ -1,0 +1,23 @@
+<p>
+  <b>Color:</b>
+  <%=h @hat.color %>
+</p>
+
+<p>
+  <b>Summary:</b>
+  <%=h @hat.summary %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%=h @hat.description %>
+</p>
+
+<p>
+  <b>More info:</b>
+  <%=h @hat.more_info %>
+</p>
+
+
+<%= link_to 'Edit', edit_hat_path(@hat) %> |
+<%= link_to 'Back', hats_path %>
