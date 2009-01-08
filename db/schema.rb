@@ -9,7 +9,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090106211017) do
+ActiveRecord::Schema.define(:version => 20090107235334) do
+
+  create_table "hats", :force => true do |t|
+    t.string   "color"
+    t.text     "description"
+    t.text     "more_info"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "summary"
+  end
 
   create_table "users", :force => true do |t|
     t.string   "login",                     :limit => 40
