@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  hat_id: 1
+  topic_id: 1
+  summary: MyString
+  description: MyText
+
+two:
+  hat_id: 1
+  topic_id: 1
+  summary: MyString
+  description: MyText

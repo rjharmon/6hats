@@ -1,0 +1,18 @@
+<p>
+  <b>Hat:</b>
+  <%=h @thought.hat_id %>
+</p>
+
+<p>
+  <b>Summary:</b>
+  <%=h @thought.summary %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%=h @thought.description %>
+</p>
+
+
+<%= link_to 'Edit', edit_thought_path(@thought) %> |
+<%= link_to 'Back', thoughts_path %>

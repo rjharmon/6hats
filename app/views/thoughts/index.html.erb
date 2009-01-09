@@ -1,0 +1,24 @@
+<h1>Listing thoughts</h1>
+
+<table>
+  <tr>
+    <th>Hat</th>
+    <th>Summary</th>
+    <th>Description</th>
+  </tr>
+
+<% for thought in @thoughts %>
+  <tr>
+    <td><%=h thought.hat_id %></td>
+    <td><%=h thought.summary %></td>
+    <td><%=h thought.description %></td>
+    <td><%= link_to 'Show', topic_thought_url(@topic, thought) %></td>
+    <td><%= link_to 'Edit', edit_topic_thought_path(@topic, thought) %></td>
+    <td><%= link_to 'Destroy', topic_thought_url(@topic,thought), :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New thought', new_topic_thought_path(@topic) %>

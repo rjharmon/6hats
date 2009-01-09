@@ -1,0 +1,24 @@
+<h1>Editing thought</h1>
+
+<% form_for(@thought, :url => edit_topic_thought_url(@topic, @thought) ) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :hat_id %><br />
+    <%= f.text_field :hat_id %>
+  </p>
+  <p>
+    <%= f.label :summary %><br />
+    <%= f.text_field :summary %>
+  </p>
+  <p>
+    <%= f.label :description %><br />
+    <%= f.text_area :description %>
+  </p>
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @thought %> |
+<%= link_to 'Back', thoughts_path %>

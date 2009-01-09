@@ -45,3 +45,38 @@ Spec::Runner.configure do |config|
   # 
   # For more information take a look at Spec::Example::Configuration and Spec::Runner
 end
+
+
+
+module Spec
+  module Rails
+    module Matchers
+      class MatchXpath  #:nodoc:
+        
+        def initialize(xpath)
+          @xpath = xpath
+        end
+
+        def matches?(response)
+          @response_text = response.body
+          doc = REXML::Document.new @response_text
+          match = REXML::XPath.match(doc, @xpath)
+          not match.empty?
+        end
+
+        def failure_message
+          "Did not find expected xpath #{@xpath}\n" + 
+          "Response text was #{@response_text}"
+        end
+
+        def description
+          "match the xpath expression #{@xpath}"
+        end
+      end
+
+      def match_xpath(xpath)
+        MatchXpath.new(xpath)
+      end
+    end
+  end
+end

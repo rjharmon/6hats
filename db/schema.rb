@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090107235334) do
+ActiveRecord::Schema.define(:version => 20090108212837) do
 
   create_table "hats", :force => true do |t|
     t.string   "color"
@@ -18,6 +18,21 @@ ActiveRecord::Schema.define(:version => 20090107235334) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "summary"
+  end
+
+  create_table "thoughts", :force => true do |t|
+    t.integer  "hat_id"
+    t.integer  "topic_id"
+    t.string   "summary"
+    t.text     "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "topics", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "users", :force => true do |t|
