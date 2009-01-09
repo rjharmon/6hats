@@ -1,6 +1,8 @@
 <h1>Editing thought</h1>
 
-<% form_for(@thought, :url => edit_topic_thought_url(@topic, @thought) ) do |f| %>
+<!--% form_for(@thought, :url => { :action => 'edit', :controller => 'thoughts', :topic_id => @topic, :thought_id => @thought }) do |f| %-->
+<% 
+form_for( [ @topic, @thought ] ) do |f| %>
   <%= f.error_messages %>
 
   <p>
@@ -20,5 +22,4 @@
   </p>
 <% end %>
 
-<%= link_to 'Show', @thought %> |
-<%= link_to 'Back', thoughts_path %>
+<%= link_to 'Back', [ @topic ] %>

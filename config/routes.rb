@@ -1,7 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :topics do |topics|
-	 topics.resources :thoughts
-  end
+  map.resources :topics, :has_many => [:thoughts] 
+#do |topics|
+#	 topics.resources :thoughts
+#  end
 
   map.resources :hats
 

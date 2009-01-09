@@ -6,7 +6,12 @@ describe "/thoughts/show.html.erb" do
   before(:each) do
     assigns[:thought] = @thought = stub_model(Thought,
       :summary => "value for summary",
-      :description => "value for description"
+      :description => "value for description",
+      :topic_id => 42
+    )
+    assigns[:topic] = @topic = stub_model(Topic,
+      :name => 'foobar',
+      :id => 42
     )
   end
 
