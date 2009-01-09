@@ -6,8 +6,8 @@ describe ThoughtsController do
   end
 
   describe "route generation" do
-    it "should map #index" do
-      route_for(:controller => "thoughts", :action => "index", :topic_id => "1").should == "/topics/1/thoughts"
+    it "should NOT map #index" do
+      lambda { puts route_for(:controller => "thoughts", :action => "index", :topic_id => "1" ) }.should raise_error(ActionController::RoutingError)
     end
   
     it "should map #new" do
@@ -32,8 +32,8 @@ describe ThoughtsController do
   end
 
   describe "route recognition" do
-    it "should generate params for #index" do
-      params_from(:get, "/topics/1/thoughts").should == {:controller => "thoughts", :action => "index", :topic_id => "1"}
+    it "should NOT be able to get /topics/1/thoughts" do
+      lambda { params_from(:get, "/topics/1/thoughts")}.should raise_error( ActionController::MethodNotAllowed )
     end
   
     it "should generate params for #new" do

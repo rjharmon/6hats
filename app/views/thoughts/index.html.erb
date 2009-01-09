@@ -12,9 +12,9 @@
     <td><%=h thought.hat_id %></td>
     <td><%=h thought.summary %></td>
     <td><%=h thought.description %></td>
-    <td><%= link_to 'Show', topic_thought_url(@topic, thought) %></td>
-    <td><%= link_to 'Edit', edit_topic_thought_path(@topic, thought) %></td>
-    <td><%= link_to 'Destroy', topic_thought_url(@topic,thought), :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'Show', topic_thought_path(@topic,@thought) %></td>
+    <td><%= link_to 'Edit', edit_thought_path(@topic,thought) %></td>
+    <td><%= link_to 'Destroy', thought, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>

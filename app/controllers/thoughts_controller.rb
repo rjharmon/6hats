@@ -1,18 +1,6 @@
 class ThoughtsController < ApplicationController
 
-before_filter(:get_topic)
- 
-  # GET /topics/:topic_id/thoughts
-  # GET /topics/:topic_id/thoughts.xml
-  def index
-
-    @thoughts = @topic.thoughts
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @thoughts }
-    end
-  end
+  before_filter(:get_topic, :except => 'index')
 
   # GET /topics/:topic_id/thoughts/1
   # GET /topics/:topic_id/thoughts/1.xml
@@ -61,6 +49,7 @@ before_filter(:get_topic)
   # PUT /topics/:topic_id/thoughts/1
   # PUT /topics/:topic_id/thoughts/1.xml
   def update
+# TODO: move this to get_topic
     @thought = Thought.find(params[:id])
 
     respond_to do |format|

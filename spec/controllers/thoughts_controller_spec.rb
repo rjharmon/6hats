@@ -12,23 +12,15 @@ describe ThoughtsController do
   
   describe "responding to GET index" do
 
-    it "should expose all thoughts as @thoughts" do
-      Topic.should_receive(:find).with("42").and_return(mock_topic)
-      mock_topic.should_receive(:thoughts).and_return([mock_thought])
-      get :index, :topic_id => 42
-      assigns[:thoughts].should == [mock_thought]
+    it "should not expose all thoughts" do
+      lambda { get :index, :topic_id => 42 }.should raise_error(ActionController::RoutingError)
     end
 
     describe "with mime type of xml" do
   
-      it "should render all thoughts as xml" do
+      it "should NOT respond all thoughts as xml" do
         request.env["HTTP_ACCEPT"] = "application/xml"
-        Topic.should_receive(:find).with("42").and_return(mock_topic)
-        mock_topic.should_receive(:thoughts).and_return(thoughts = [mock_thought])
-
-        thoughts.should_receive(:to_xml).and_return("generated XML")
-        get :index, :topic_id => 42
-        response.body.should == "generated XML"
+        lambda { get :index, :topic_id => 42 }.should raise_error(ActionController::RoutingError)
       end
     
     end
