@@ -31,7 +31,7 @@ describe ThoughtsController do
 
     it "should expose the requested thought as @thought" do
         Topic.should_receive(:find).with("42").and_return(mock_topic)
-      Thought.should_receive(:find).with("37").and_return(mock_thought)
+        Topic.thoughts.should_receive(:find).with("37").and_return(mock_thought)
       get :show, :topic_id => 42, :id => "37"
       assigns[:thought].should equal(mock_thought)
     end
@@ -170,8 +170,8 @@ describe ThoughtsController do
   describe "responding to DELETE destroy" do
 
     it "should destroy the requested thought" do
-      Topic.should_receive(:find).with("42").and_return(mock_topic)
-      Thought.should_receive(:find).with("37").and_return(mock_thought)
+      Topic.should_receive(:find).with("42").and_return(@mock_topic)
+      Thought.should_receive(:find).with("37").and_return(@mock_thought)
       mock_thought.should_receive(:destroy)
       delete :destroy, :id => "37", :topic_id => 42
     end
