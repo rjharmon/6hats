@@ -5,8 +5,6 @@ class ThoughtsController < ApplicationController
   # GET /topics/:topic_id/thoughts/1
   # GET /topics/:topic_id/thoughts/1.xml
   def show
-    @thought = Thought.find(params[:id])
-
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @thought }
@@ -26,7 +24,6 @@ class ThoughtsController < ApplicationController
 
   # GET /topics/:topic_id/thoughts/1/edit
   def edit
-    @thought = Thought.find(params[:id])
   end
 
   # POST /topics/:topic_id/thoughts
@@ -49,9 +46,6 @@ class ThoughtsController < ApplicationController
   # PUT /topics/:topic_id/thoughts/1
   # PUT /topics/:topic_id/thoughts/1.xml
   def update
-# TODO: move this to get_topic
-    @thought = Thought.find(params[:id])
-
     respond_to do |format|
       if @thought.update_attributes(params[:thought])
         flash[:notice] = 'Thought was successfully updated.'
@@ -67,7 +61,6 @@ class ThoughtsController < ApplicationController
   # DELETE /topics/:topic_id/thoughts/1
   # DELETE /topics/:topic_id/thoughts/1.xml
   def destroy
-    @thought = Thought.find(params[:id])
     @thought.destroy
 
     respond_to do |format|
@@ -79,6 +72,10 @@ class ThoughtsController < ApplicationController
 private
   def get_topic
 	@topic = Topic.find(params[:topic_id])
+	@thought = @topic.thoughts.find(params[:thought_id]) if params[:thought_id]
+  rescue ActiveRecord::RecordNotFound
+	flash[:notice] = "Invalid URL detected"
+	redirect_to @topic || topics_url
   end
 
 end
