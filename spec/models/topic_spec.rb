@@ -1,4 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require File.dirname(__FILE__) + '/../spec_shared_model'
 
 describe Topic do
   before(:each) do
@@ -20,6 +21,9 @@ describe Topic do
     Topic.create!(@valid_attributes)
   end
 
+  it_should_behave_like "Relationships"
+  # it_has_one Topic.new.thoughts, Thought.new();
+  
   it "should allow the adding of multiple thoughts" do
     topic  = Topic.new(@valid_attributes)
 
