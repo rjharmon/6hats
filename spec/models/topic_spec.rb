@@ -8,11 +8,11 @@ describe Topic do
     }
     @thoughts = [{
 	:summary     => "thought 1",
-	:description => "more about thought 1",
+	:detail => "more about thought 1",
         :hat_id      => 1,
     }, {
 	:summary     => "thought 2",
-	:description => "more about thought 2",
+	:detail => "more about thought 2",
         :hat_id      => 2,
     }]
   end
@@ -22,7 +22,7 @@ describe Topic do
   end
 
   it_should_behave_like "Relationships"
-  # it_has_one Topic.new.thoughts, Thought.new();
+  # TODO: it_has_one Topic.new.thoughts, Thought.new();
   
   it "should allow the adding of multiple thoughts" do
     topic  = Topic.new(@valid_attributes)

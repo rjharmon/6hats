@@ -42,9 +42,8 @@ describe TopicsController do
 
       it "should render the requested topic as xml" do
 	t = Topic.create(:id => 37, :name => "My Test" );
-        th1 = t.thoughts << Thought.create( :summary => "hi1", :description => 'there1' );
-        th2 = t.thoughts << Thought.create( :summary => "hi2", :description => 'there2' );
-
+        th1 = t.thoughts << Thought.create( :summary => "hi1", :detail => 'there1' );
+        th2 = t.thoughts << Thought.create( :summary => "hi2", :detail => 'there2' );
  
 	t.save
         Topic.should_receive(:find).with("37").and_return( t )
@@ -52,9 +51,9 @@ describe TopicsController do
         request.env["HTTP_ACCEPT"] = "application/xml"
         get :show, :id => "37"
         response.should match_xpath("/topic/thoughts/thought[1]/summary")
-        response.should match_xpath("/topic/thoughts/thought[1]/description")
+        response.should match_xpath("/topic/thoughts/thought[1]/detail")
         response.should match_xpath("/topic/thoughts/thought[2]/summary")
-        response.should match_xpath("/topic/thoughts/thought[2]/description")
+        response.should match_xpath("/topic/thoughts/thought[2]/detail")
       end
 
     end

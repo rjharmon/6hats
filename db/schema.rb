@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090110080312) do
+ActiveRecord::Schema.define(:version => 20090112225829) do
 
   create_table "hats", :force => true do |t|
     t.string   "color"
@@ -31,10 +31,10 @@ ActiveRecord::Schema.define(:version => 20090110080312) do
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
   create_table "thoughts", :force => true do |t|
-    t.integer  "hat_id"
     t.integer  "topic_id"
     t.string   "summary"
-    t.text     "description"
+    t.text     "detail"
+    t.integer  "hat_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

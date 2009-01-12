@@ -1,33 +1,29 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe ThoughtsController do
-  def mock_thought(stubs={})
-    @mock_thought ||= mock_model(Thought, stubs)
-  end
-
   describe "route generation" do
-    it "should NOT map #index" do
-      lambda { puts route_for(:controller => "thoughts", :action => "index", :topic_id => "1" ) }.should raise_error(ActionController::RoutingError)
+    it "should map #index" do
+      lambda { route_for(:controller => "thoughts", :action => "index", :topic_id => 1)}.should raise_error( ActionController::RoutingError )
     end
   
     it "should map #new" do
-      route_for(:controller => "thoughts", :action => "new", :topic_id => "1").should == "/topics/1/thoughts/new"
+      route_for(:controller => "thoughts", :action => "new", :topic_id => 1).should == "/topics/1/thoughts/new"
     end
   
     it "should map #show" do
-      route_for(:controller => "thoughts", :action => "show", :topic_id => "1", :id => 1).should == "/topics/1/thoughts/1"
+      route_for(:controller => "thoughts", :action => "show", :id => 1, :topic_id => 1).should == "/topics/1/thoughts/1"
     end
   
     it "should map #edit" do
-      route_for(:controller => "thoughts", :action => "edit", :id => 1, :topic_id => "1").should == "/topics/1/thoughts/1/edit"
+      route_for(:controller => "thoughts", :action => "edit", :id => 1, :topic_id => 1).should == "/topics/1/thoughts/1/edit"
     end
   
     it "should map #update" do
-      route_for(:controller => "thoughts", :action => "update", :id => 1, :topic_id => "1").should == "/topics/1/thoughts/1"
+      route_for(:controller => "thoughts", :action => "update", :id => 1, :topic_id => 1).should == "/topics/1/thoughts/1"
     end
   
     it "should map #destroy" do
-      route_for(:controller => "thoughts", :action => "destroy", :id => 1, :topic_id => "1").should == "/topics/1/thoughts/1"
+      route_for(:controller => "thoughts", :action => "destroy", :id => 1, :topic_id => 1).should == "/topics/1/thoughts/1"
     end
   end
 

@@ -1,13 +1,10 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
-require File.dirname(__FILE__) + '/../spec_shared_model'
 
 describe Thought do
   before(:each) do
     @valid_attributes = {
-      :hat_id => "1",
-      :topic_id => "1",
-      :summary => "value for summary",
-      :description => "value for description"
+      :summary => "MyString",
+      :detail => "MyText",
     }
   end
 

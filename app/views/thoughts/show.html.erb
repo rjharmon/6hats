@@ -1,18 +1,12 @@
 <p>
-  <b>Hat:</b>
-  <%=h @thought.hat_id %>
-</p>
-
-<p>
   <b>Summary:</b>
   <%=h @thought.summary %>
 </p>
 
 <p>
-  <b>Description:</b>
-  <%=h @thought.description %>
+  <b>Detail:</b>
+  <%=h @thought.detail %>
 </p>
 
-
 <%= link_to 'Edit', edit_topic_thought_path(@topic, @thought) %> |
-<%= link_to 'Back', @topic %>
+<%= link_to 'Back', topic_thoughts_path(@topic) %>
