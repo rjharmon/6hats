@@ -1,23 +1,10 @@
-<p>
-  <b>Color:</b>
-  <%=h @hat.color %>
-</p>
+<% @title = "About the "+ @hat.color + " Hat" %>
 
-<p>
-  <b>Summary:</b>
+<% content_for :instructions do %>
   <%=h @hat.summary %>
-</p>
+<% end %>
 
-<p>
-  <b>Description:</b>
-  <%=h @hat.description %>
-</p>
-
-<p>
-  <b>More info:</b>
-  <%=h @hat.more_info %>
-</p>
-
+<%= Markdown.new(@hat.description).to_html %>
 
 <%= link_to 'Edit', edit_hat_path(@hat) %> |
 <%= link_to 'Back', hats_path %>

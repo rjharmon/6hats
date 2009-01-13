@@ -42,10 +42,11 @@
 		</div>
 		
 		<div class="newsletter">
-			<p>Subscribe for Newsletter!</p>
+			<p>Donations are welcome.</p>
 		</div>
 		
 		<div class="subheader">
+			<h2><%=h @title %></h2>
 			<% if( flash[:notice] || flash[:warning] || flash[:error] ) then %>
 			<div class="flashes">
 				<% [ :notice, :warning, :error ].each do |level| %>

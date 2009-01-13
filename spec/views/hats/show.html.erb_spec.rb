@@ -5,20 +5,25 @@ describe "/hats/show.html.erb" do
   
   before(:each) do
     assigns[:hat] = @hat = stub_model(Hat,
-      :color => "value for color",
+      :color => "Foo",
       :summary => "value for summary",
-      :description => "value for description",
+      :description => "value for description\n\n* bullet",
       :more_info => "value for more_info"
     )
   end
 
   it "should render attributes in <p>" do
+    template.should_receive(:content_for).with(:instructions)
+
     render "/hats/show.html.erb"
-    response.should have_text(/value\ for\ color/)
-    response.should have_text(/value\ for\ summary/)
+    assigns[:title].should == "About the Foo Hat"
     response.should have_text(/value\ for\ description/)
-    response.should have_text(/value\ for\ more_info/)
+    response.should_not have_text(/value\ for\ more_info/)
+
   end
-  it "should render the description as Textile or Markdown or something"
+  it "should render the description as Markdown" do 
+    render "/hats/show.html.erb"
+    response.should have_tag( "ul>li", "bullet" )
+  end
 end
 
