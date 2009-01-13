@@ -6,6 +6,22 @@ describe TopicsController do
     @mock_topic ||= mock_model(Topic, stubs)
   end
   
+  describe "responding to GET /" do 
+# TODO: move this to an integration test (Cucumber)
+# TODO: move the functionality to the app controller, with redirect for logged-in case
+	describe "when user is logged out" do
+		it "should temporarily show all topics" 
+#			get "/"
+#			response.should render_template( "topics/index.rhtml.erb" )
+#		end
+	end
+# TODO: Implement logged-in/logged out detection
+#	describe "when user is logged in" do
+#		
+#		controller.should_render(:
+#	end
+  end
+
   describe "responding to GET index" do
 
     it "should expose all topics as @topics" do
