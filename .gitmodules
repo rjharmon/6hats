@@ -7,3 +7,6 @@
 [submodule "vendor/plugins/rspec_on_rails_nested_scaffold"]
 	path = vendor/plugins/rspec_on_rails_nested_scaffold
 	url = git://github.com/phorsfall/rspec_on_rails_nested_scaffold.git
+[submodule "vendor/plugins/rdiscount"]
+	path = vendor/plugins/rdiscount
+	url = git://github.com/rtomayko/rdiscount.git
