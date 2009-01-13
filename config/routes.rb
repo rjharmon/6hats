@@ -1,7 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
 
 #  map.home "/", :controller => "home", :action => 'index', :method => 'GET'
-  map.root :controller => 'home', :action => 'index', :method => 'GET'
+  map.root :controller => 'home'
 
   map.resources :topics do |topics|
 	topics.resources :thoughts, :except => [:index]

@@ -22,7 +22,7 @@ describe HomeController do
 		end
 		it "should temporarily show all topics" do
 			get "index"
-			response.should redirect_to( :controller => "topics", :action => "index" )
+			response.should redirect_to( hats_url )
 		end
 	end
 	#		response.should render_template( "topics/index.rhtml.erb" )
@@ -33,7 +33,7 @@ describe HomeController do
 		end
 		it "should introduce the concept of 6 hats" do
 			get "index"
-			response.should redirect_to( :controller => "hats", :action => "index" )
+			response.should redirect_to( hats_url )
 		end
 	end
   end
