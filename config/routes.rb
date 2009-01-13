@@ -7,6 +7,7 @@ ActionController::Routing::Routes.draw do |map|
 	topics.resources :thoughts, :except => [:index]
   end
 
+  map.rules '/hats/rules', :controller => 'hats', :action => 'rules'
   map.resources :hats
 
   map.logout '/logout', :controller => 'sessions', :action => 'destroy'

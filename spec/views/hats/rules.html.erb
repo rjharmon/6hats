@@ -1,0 +1,30 @@
+require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
+
+describe "/hats/rules.html.erb" do
+  include HatsHelper
+  
+  before(:each) do
+    assigns[:hats] = [
+      stub_model(Hat,
+        :color => "value for color",
+        :summary => "value for summary"
+      ),
+      stub_model(Hat,
+        :color => "value for color",
+        :summary => "value for summary"
+      )
+    ]
+  end
+
+  it "should have more details in the stub models :)"
+  it "should provide a general introduction, outside of the rules for each hat"
+  it "should display the rules from each hat, with Textile or Markdown formatting honored"
+
+  it "should render rules for each hat" do
+	pending("make this actually representative")
+    render "/hats/index.html.erb"
+    response.should have_tag("tr>td", "value for color", 2)
+    response.should have_tag("tr>td", "value for summary", 2)
+  end
+end
+

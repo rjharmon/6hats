@@ -5,6 +5,12 @@ describe HatsController do
   def mock_hat(stubs={})
     @mock_hat ||= mock_model(Hat, stubs)
   end
+
+  describe "telling about the rules" do
+  	it "should expose the rules to the user" do
+  		pending "document and develop /hats/rules a bit more"
+  	end
+  end
   
   describe "responding to GET index" do
 

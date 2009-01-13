@@ -19,5 +19,6 @@ describe "/hats/show.html.erb" do
     response.should have_text(/value\ for\ description/)
     response.should have_text(/value\ for\ more_info/)
   end
+  it "should render the description as Textile or Markdown or something"
 end
 

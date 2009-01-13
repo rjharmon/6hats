@@ -1,4 +1,10 @@
 class HatsController < ApplicationController
+  def rules
+  	respond_to do |format|
+		format.html
+	end
+  end
+
   # GET /hats
   # GET /hats.xml
   def index

@@ -2,6 +2,8 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe HatsController do
   describe "route generation" do
+    it "should route hats/rules properly"
+    
     it "should map #index" do
       route_for(:controller => "hats", :action => "index").should == "/hats"
     end
@@ -28,6 +30,7 @@ describe HatsController do
   end
 
   describe "route recognition" do
+    it "should recognize the path to the 'rules' action"
     it "should generate params for #index" do
       params_from(:get, "/hats").should == {:controller => "hats", :action => "index"}
     end
