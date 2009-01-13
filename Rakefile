@@ -8,3 +8,7 @@ require 'rake/testtask'
 require 'rake/rdoctask'
 
 require 'tasks/rails'
+
+require 'rake'
+require 'spec/rake/spectask'
+
