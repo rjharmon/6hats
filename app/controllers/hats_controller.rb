@@ -1,5 +1,6 @@
 class HatsController < ApplicationController
   def rules
+	@hats = Hat.find(:all)
   	respond_to do |format|
 		format.html
 	end
@@ -12,7 +13,7 @@ class HatsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @hats }
+#      format.xml  { render :xml => @hats }
     end
   end
 

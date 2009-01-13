@@ -6,10 +6,12 @@ describe HatsController do
     @mock_hat ||= mock_model(Hat, stubs)
   end
 
-  describe "telling about the rules" do
-  	it "should expose the rules to the user" do
-  		pending "document and develop /hats/rules a bit more"
-  	end
+  describe "telling users about the rules" do
+  	it "should expose the rules to the view" do
+		Hat.should_receive(:find).with(:all).and_return([mock_hat])
+		get :rules
+		assigns[:hats].should == [mock_hat]
+	end
   end
   
   describe "responding to GET index" do
@@ -22,16 +24,12 @@ describe HatsController do
 
     describe "with mime type of xml" do
   
-      it "should render all hats as xml" do
+      it "should NOT render all hats as xml" do
         request.env["HTTP_ACCEPT"] = "application/xml"
-        Hat.should_receive(:find).with(:all).and_return(hats = mock("Array of Hats"))
-        hats.should_receive(:to_xml).and_return("generated XML")
         get :index
-        response.body.should == "generated XML"
+	response.should_not be_success
       end
-    
     end
-
   end
 
   describe "responding to GET show" do

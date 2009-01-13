@@ -7,21 +7,30 @@ describe "/hats/rules.html.erb" do
     assigns[:hats] = [
       stub_model(Hat,
         :color => "value for color",
-        :summary => "value for summary"
+        :summary => "value for summary",
+	:more_info => "value for more info\n\nadditional info\n\n* bullet"
       ),
       stub_model(Hat,
         :color => "value for color",
-        :summary => "value for summary"
+        :summary => "value for summary",
+	:more_info => "* b1\n* b2\n* b3"
       )
     ]
   end
 
-  it "should have more details in the stub models :)"
   it "should provide a general introduction, outside of the rules for each hat"
-  it "should display the rules from each hat, with Textile or Markdown formatting honored"
+
+  it "should display the rules from each hat, with Markdown formatting honored" do
+    render "/hats/index.html.erb"
+
+    response.should have_tag("p", "additional info")
+    response.should have_tag("ul>li", "b1")
+    response.should have_tag("ul>li", "b2")
+    response.should have_tag("ul>li", "b3")
+  end
 
   it "should render rules for each hat" do
-	pending("make this actually representative")
+
     render "/hats/index.html.erb"
     response.should have_tag("tr>td", "value for color", 2)
     response.should have_tag("tr>td", "value for summary", 2)
