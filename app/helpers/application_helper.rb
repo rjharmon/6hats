@@ -21,8 +21,10 @@ module ApplicationHelper
 		if( current_page?(options) ) then
 			t.concat ' class="active"'
 		end
+		html_opts = more.extract_options!
+		html_opts[:accesskey] = shortcut
 		t.concat '>'
-		t.concat link_to( shortcut_key( shortcut, label ), options, *more )
+		t.concat link_to( shortcut_key( shortcut, label ), options, html_opts)
 		t.concat "</li>"
 		t
 	end

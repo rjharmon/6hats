@@ -45,15 +45,18 @@ describe ApplicationHelper do
 			should_receive(:current_page?).and_return( true )
 			@result = menu_item("a", "Apples", "/")
 		end
-		it "should highlight the shortcut key" do
-			puts @result
-			@result.should have_tag("span", "A")
-		end
 		it "should have a link in there" do
 			@result.should have_tag("li>a")
 		end
 		it "should be tagged as the current item" do
 			@result.should have_tag("li.active", "Apples")
+		end
+
+		it "should have an accesskey specified" do
+			@result.should have_tag("li>a[accesskey=a]")
+		end
+		it "should highlight the shortcut key" do
+			@result.should have_tag("span.shortcut", "A")
 		end
 	end
 	describe "for a non-current item" do
@@ -61,18 +64,21 @@ describe ApplicationHelper do
 			should_receive(:current_page?).and_return( false )
 			@result = menu_item("a", "Apples", "/")
 		end
-		it "should highlight the shortcut key" do
-			@result.should have_tag("span", "A")
-			puts @result
+		it "should include an li" do
+			@result.should have_tag("li")
 		end
 		it "should show a link tag" do
 			@result.should have_tag("a", "Apples")
 		end
-		it "should include an li" do
-			@result.should have_tag("li")
-		end
 		it "should not be tagged as the current item" do
 			@result.should_not have_tag("li.active")
+		end
+		it "should have an accesskey specified" do
+			@result.should have_tag("li>a[accesskey=a]")
+		end
+		it "should highlight the shortcut key" do
+			@result.should have_tag("span.shortcut", "A")
+			puts @result
 		end
 	end
   end  
