@@ -31,11 +31,6 @@ describe ApplicationHelper do
 		end
 	end
 	
-	describe "Move to view tests" do
-	  	it "should return good HTML for a box"
-  		it "should support the use of an :image option"
-  		it "should allow the content to be placed in arbitrary section names"
-	end
   end
   
   describe "menu_item" do

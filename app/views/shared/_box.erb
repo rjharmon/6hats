@@ -1,3 +1,7 @@
+<% unless @box_options[:location]
+	raise SiteDevError.new("@box_options[:location] is required!");
+   end
+%>
 <% content_for( @box_options[:location] ) do %>
 <div class="box-top"></div><div class="box-body">
 
@@ -9,10 +13,16 @@
 	<% end %>
 </div>
 <% end -%> 
-
-<%= yield %>
-<!-- # !!! if image provided
-     <img src="/images/image.gif" alt="Image" title="Image" class="image" />
--->
+<% if i = @box_options[:image] 
+	unless i.kind_of?(Hash) 
+		raise SiteDevError.new(":image should be a hash of options including :src" )
+	end
+	i[:border] ||= 0
+	i[:float] ||= "left"
+	i[:class] ||= "image"
+%>
+	<%= image_tag( i.delete(:src), i ) %>
+<% end %>
+	<%= yield %>
 </div>
 <% end %>
