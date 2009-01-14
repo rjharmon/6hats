@@ -18,22 +18,30 @@ describe "/hats/rules.html.erb" do
     ]
   end
 
-  it "should provide a general introduction, outside of the rules for each hat"
+  it "should provide a general introduction to the rules, outside of the rules for each hat" do 
+    template.should_receive(:content_for).once.with(:instructions)
+    template.should_receive(:content_for).with(anything()).any_number_of_times
+    render "/hats/rules.html.erb"
+    assigns[:title].should have_text(/Rules/)
+    response.should have_text(/play by these rules/m)
+    response.should have_text(/general guidelines/m)
+  end
+
+  it "should link the user to an Amazon affiliate link for the book" do
+    render "/hats/rules.html.erb"
+    response.should have_tag("a.book", "Six Thinking Hats" ) do |a|
+       a.to_s.should have_text(/&tag=steamodesorr-20&/)
+    end
+  end
 
   it "should display the rules from each hat, with Markdown formatting honored" do
-    render "/hats/index.html.erb"
-
-    response.should have_tag("p", "additional info")
-    response.should have_tag("ul>li", "b1")
-    response.should have_tag("ul>li", "b2")
-    response.should have_tag("ul>li", "b3")
+    render "/hats/rules.html.erb"
+    
+    content_for(:left).should have_text(/additional info/)
+    content_for(:left).should have_tag("ul>li", "b1")
+    content_for(:left).should have_tag("ul>li", "b2")
+    content_for(:left).should have_tag("ul>li", "b3")
   end
 
-  it "should render rules for each hat" do
-
-    render "/hats/index.html.erb"
-    response.should have_tag("tr>td", "value for color", 2)
-    response.should have_tag("tr>td", "value for summary", 2)
-  end
 end
 

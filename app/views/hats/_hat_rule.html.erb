@@ -1,3 +1,3 @@
-<h3><%=h hat_rule.color %></h3>
-
+<% box :location => :left, :title_class => hat_rule.color, :title => hat_rule.color + " Hat", :subtitle => hat_rule.summary do %>
 <%= Markdown.new(hat_rule.more_info).to_html %>
+<% end %>

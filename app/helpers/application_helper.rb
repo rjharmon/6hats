@@ -5,19 +5,10 @@ module ApplicationHelper
 	def box( *args, &block )
 		options = args.extract_options!
 
-		if @location then
-			 raise SiteDevError("@location is currently reserved for box() helper")
-		end
-		if @image then
-			raise SiteDevError("@image is currently reserved for box() helper")
-		end
-		@location = options[:location] || :right
-		@image = options[:image]
-		render :layout => "shared/box" do
-			yield
-		end
-		@location = nil
-		@image = nil
+		options[:location] ||= :right
+
+		@box_options = options
+		render( :layout => "shared/box", &block )
 	end
 
 	def shortcut_key( key, label )

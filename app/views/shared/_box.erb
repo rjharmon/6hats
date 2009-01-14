@@ -1,6 +1,15 @@
-<% content_for @location do %>
-<div class="box-top"></div>
-<div class="box-body">
+<% content_for( @box_options[:location] ) do %>
+<div class="box-top"></div><div class="box-body">
+
+<% if @box_options[:title] -%>
+<div class="h2">
+	<h2 class="<%= @box_options[:title_class] %>" style="display:inline"><%= h @box_options[:title] %></h2>
+	<% if @box_options[:subtitle] -%>
+		 - <h3 style="display:inline"><%= h @box_options[:subtitle] %></h3>
+	<% end %>
+</div>
+<% end -%> 
+
 <%= yield %>
 <!-- # !!! if image provided
      <img src="/images/image.gif" alt="Image" title="Image" class="image" />

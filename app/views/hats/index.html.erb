@@ -1,4 +1,54 @@
-<h1>Listing hats</h1>
+<% @title = "Introduction to 6 Hats" %>
+<% content_for :instructions do %>
+"I came here looking for an argument!" - "No, you didn't!"
+<% end %>
+
+<p>In <a class="book"
+href="http://www.amazon.com/gp/product/0316178314?ie=UTF8&tag=steamodesorr-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0316178314">Six
+Thinking Hats</a><img
+src="http://www.assoc-amazon.com/e/ir?t=steamodesorr-20&l=as2&o=1&a=0316178314"
+width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />, 
+
+Edward de Bono puts forth the notion that typical business meetings emphasize 
+opinions of individuals instead of focusing first on information.  While this 
+"argumentative" style can certainly be lively, it can also offer some disadvantages, 
+shown at the right.
+</p>
+
+<% box :title => "Problems of the Argumentative Meeting Style" do %>
+	<ul>
+		<li>Only the outspoken members of the team are able to be heard</li>
+		<li>Good ideas are missed</li>
+		<li>"Might makes Right"</li>
+	</ul>
+<% end %>
+
+<p>The proposed alternative is for a group to think together, planning what kind of outcomes 
+they're seeking, recognizing the potential contribution of every individual.  Some recognized 
+benefits and outcomes are shown to the right.</p>
+
+<% box :title => "More Objectivity" do %>
+By focusing on specific aspects of the problem, we free each participant from their natural 
+single-minded perspective.
+<% end %>
+
+<% box :title => "More Innovative Ideas" do %>
+The process provides an explicit time when innovation is the subject of conversation, in 
+response to both positive and negative possibilities.  This produces more and often better ideas
+than a typical argumentative meeting style.
+<% end %>
+
+<% box :title => "More People Get Heard" do %>
+Since every person finds that one or two of the hats are easier than the others for them, more 
+people in any group will be able to contribute their thoughts - even if only under the red hat.  
+Aside from the other benefits, this increases employee engagement, which is proven to drive 
+higher individual and company performance
+<% end %>
+
+<% box :title => "Shorter Meetings" do %>
+Surprise!  Meetings really are shorter when everybody works together.
+<% end %>
+
 
 <table>
   <tr>
@@ -20,10 +70,6 @@
 
 <%= link_to 'New hat', new_hat_path %>
 
-
-<% box :location => :right do %>
-  <b>Some stuff</b>.  this stuff goes in a box
-<% end %>
 
 <% box :location => :left do %>
 <b>Some stuff</b>.  this stuff goes in another box on the left

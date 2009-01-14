@@ -4,6 +4,8 @@
    
 /* default styles
    -------------- */
+
+
   
 body { 
 	padding: 0; 
@@ -54,15 +56,22 @@ h1 .red{
 	background: inherit;
 }
 
-
-h2 { 
+h2 {
 	margin: 0 0 5px 0; 
 	padding: 0; 
 	font: bold 1.5em Arial, Helvetica, sans-serif;
 	letter-spacing: -1px;
+}
+
+.subheader h2 { 
 	color: #000; 
 	background: inherit;
 }
+
+h3, h4, .h3, .h4 {
+	margin: 0 0 5px 0;
+}
+
 
 h2 .yellow{
 	color: #FFFCD1;
@@ -251,6 +260,13 @@ input.login {
 
 }
 
+ul li { 
+	margin-bottom:0.5em
+}
+
+
+
+
 /* left side
    --------- */
 
@@ -264,28 +280,24 @@ input.login {
 		padding: 0 0 0 10px;
 	}
 
-	.lt, .left .box-top {
+	.left .box-top {
 		height: 10px;
 		background: #6E6E6E url(/images/lt.gif) no-repeat;
 		color: #FFF;
 	}
 	
-	.lbox, .left .box-body {
+	.left .box-body {
 		color: #eee;
 		padding: 0 18px 9px 16px;
 		margin: 0 0 15px 0;
 		background: #6E6E6E url(/images/lb.gif) no-repeat bottom left;
 	}
 	
-	.lbox a, .left .box-body a {
+	.left .box-body a {
 		color: #FFFCD1;
 		background: inherit;
 	}
 	
-	.lbox h2, .left .box-body h2 {
-		color: #FFF;
-		background: #6E6E6E;
-	}
 	
 	
 .thumb {
@@ -350,4 +362,27 @@ input.login {
 .footer a {
 	color: #C3593C;
 	background: inherit;
+}
+
+
+.White {
+	color:#fff;
+	text-shadow: white 1px -1px 0px;
+	text-shadow: black 0px 0px 1px;
+}
+.Red {
+	color:#a00
+}
+.Yellow {
+	color:#fc0
+}
+.Green {
+	color:#0a0
+}
+.Blue {
+	color:#33c
+}
+.Black {
+	color:#000;
+	text-shadow:white 1px 1px 1px, black 0 0 2px;
 }

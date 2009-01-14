@@ -8,6 +8,10 @@ require 'spec/rails'
 # TODO: verify that this works
 include AuthenticatedSystem
 
+def content_for(name)
+	t = response.template.instance_variable_get("@content_for_#{name}")
+end
+
 Spec::Runner.configure do |config|
   # If you're not using ActiveRecord you should remove these
   # lines, delete config/database.yml and disable :active_record
