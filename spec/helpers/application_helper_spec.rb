@@ -3,21 +3,51 @@ include ApplicationHelper
 
 describe ApplicationHelper do
   
-  describe "box-creation helper" do
-  	it "should return good HTML for a box"
-  	it "should support the use of an :image option"
-  	it "should place the content in :location => :right by default"
-  	it "should allow the content to be placed in arbitrary section names"
+  describe "box" do
+	before :each do 
+		@result = false
+		@fake_block = lambda { @result = true }
+	end
+	
+	it "should render the box layout, on the right by default" do
+		should_receive( :render ).with( { :layout => "shared/box" } ).and_return( @fake_block.call )
+		box do 
+			# nothing particular - 
+		end
+		@result.should be_true
+		@box_options[:location].should == :right
+	end
+	it "should pass options through to the partial" do
+		should_receive( :render ).with( { :layout => "shared/box" } ).and_return( @fake_block.call )
+		box :title => "hi", :location => :left do
+			# not much
+		end
+		@box_options.should == { :title => 'hi', :location => :left }
+	end
+	it "should have a default location of :right" do
+		should_receive( :render ).with( { :layout => "shared/box" } ).and_return( @fake_block.call )
+		box do
+			# not much
+		end
+	end
+	
+	describe "Move to view tests" do
+	  	it "should return good HTML for a box"
+  		it "should support the use of an :image option"
+  		it "should allow the content to be placed in arbitrary section names"
+	end
   end
   
   describe "menu_item" do
 
-	it "should return a menu item with a link"
-	it "should highlight the shortcut key so the user knows to use it"
 	describe "for the current item" do
 		before :each do
 			should_receive(:current_page?).and_return( true )
 			@result = menu_item("a", "Apples", "/")
+		end
+		it "should highlight the shortcut key" do
+			puts @result
+			@result.should have_tag("span", "A")
 		end
 		it "should have a link in there" do
 			@result.should have_tag("li>a")
@@ -30,6 +60,10 @@ describe ApplicationHelper do
 		before :each do
 			should_receive(:current_page?).and_return( false )
 			@result = menu_item("a", "Apples", "/")
+		end
+		it "should highlight the shortcut key" do
+			@result.should have_tag("span", "A")
+			puts @result
 		end
 		it "should show a link tag" do
 			@result.should have_tag("a", "Apples")

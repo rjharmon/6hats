@@ -12,7 +12,7 @@ module ApplicationHelper
 	end
 
 	def shortcut_key( key, label )
-		label.sub!( /#{key}/, "<span class=\"shortcut\">#{h key}</span>" );
+		label.sub!( /#{key}/i ) { |k| "<span class=\"shortcut\">#{k}</span>" };
 		label
 	end
 
