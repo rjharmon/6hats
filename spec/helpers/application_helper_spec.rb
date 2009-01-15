@@ -73,7 +73,6 @@ describe ApplicationHelper do
 		end
 		it "should highlight the shortcut key" do
 			@result.should have_tag("span.shortcut", "A")
-			puts @result
 		end
 	end
   end  
