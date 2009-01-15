@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe "/hats/index.html.erb" do
   include HatsHelper
-  
+  include UsersHelper  
   before(:each) do
     assigns[:hats] = [
       stub_model(Hat,
@@ -14,6 +14,36 @@ describe "/hats/index.html.erb" do
         :summary => "value for summary"
       )
     ]
+    @user = stub_model( User );
+  end
+
+  describe "layout" do
+
+	it "should do better than this :("	
+	[true, false]
+	[].each do |state|
+		in_or_not = state ? "logged in" : "not logged in"
+
+		describe "when user is #{in_or_not}" do
+			before :each do
+				debugger
+				render '/hats/index.html.erb', :layout => 'application.html.erb'
+				assigns[:current_user] = state ? @user : nil
+			# this breaks things :(
+			#	stub!( :logged_in? ).any_number_of_times.and_return( state );
+			end
+			it "should #{state ? 'not' : ''} link to the login and register page" do
+				debugger
+				if( state ) then
+					response.should_not have_tag( "a[href=#{login_path}]" )
+					response.should_not have_tag( "a[href=#{register_path}]" )
+				else
+					response.should     have_tag( "a[href=#{login_path}]" )
+					response.should     have_tag( "a[href=#{register_path}]" )
+				end
+			end
+		end
+	end
   end
 
   it "should render list of hats" do
