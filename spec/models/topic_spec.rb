@@ -22,8 +22,9 @@ describe Topic do
   end
 
   it_should_behave_like "Relationships"
+  it "should have multiple thoughts"
   # TODO: it_has_one Topic.new.thoughts, Thought.new();
-  
+
   it "should allow the adding of multiple thoughts" do
     topic  = Topic.new(@valid_attributes)
 

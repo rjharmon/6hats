@@ -17,6 +17,11 @@ describe "/topics/new.html.erb" do
       with_tag("input#topic_name[name=?]", "topic[name]")
     end
   end
+  it "should have a nice title and intro text"
+  it "should have a nice Save button"
+  it "should have a nice cancel button"
+  
+  
 end
 
 

@@ -8,11 +8,11 @@ describe TopicsController do
   
 
   describe "responding to GET index" do
-
+  
     it "should expose all topics as @topics" do
-      Topic.should_receive(:find).with(:all).and_return([mock_topic])
-      get :index
-      assigns[:topics].should == [mock_topic]
+	Topic.should_receive(:find).with(:all).and_return([mock_topic])
+	get :index
+      	assigns[:topics].should == [mock_topic]
     end
 
     describe "with mime type of xml" do
@@ -26,13 +26,21 @@ describe TopicsController do
       end
     
     end
+    
+    describe "when there are no topics" do
+    	it "should render the topic creation page instead" do
+		Topic.should_receive(:find).with(:all).and_return([mock_topic])
+		get :index
+		should_render(new_topic_url)    	
+    	end
+    end
 
   end
 
   describe "responding to GET show" do
 
     it "should expose the requested topic as @topic" do
-      Topic.should_receive(:find).with("37").and_return(mock_topic)
+     Topic.should_receive(:find).with("37").and_return(mock_topic)
       mock_topic.should_receive(:thoughts).and_return(mock_thoughts=['dummy'])
       get :show, :id => "37"
       assigns[:topic].should equal(mock_topic)
@@ -137,6 +145,9 @@ describe TopicsController do
         Topic.stub!(:find).and_return(mock_topic(:update_attributes => true))
         put :update, :id => "1"
         response.should redirect_to(topic_url(mock_topic))
+      end
+      describe "(in-place editing)" do
+      	it "should respond to an xhr request with the new field value"
       end
 
     end

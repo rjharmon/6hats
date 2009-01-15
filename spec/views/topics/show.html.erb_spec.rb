@@ -19,5 +19,8 @@ describe "/topics/show.html.erb" do
     render "/topics/show.html.erb"
     response.should have_text(/value\ for\ name/)
   end
+  
+  it "should show the thoughts for this topic"
+  
 end
 

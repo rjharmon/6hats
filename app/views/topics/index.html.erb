@@ -1,4 +1,7 @@
-<h1>Listing topics</h1>
+<% @title = "Topics" %>
+<% content_for :instructions do %>
+Topical areas of thought.  
+<% end %>
 
 <table>
   <tr>
@@ -7,10 +10,9 @@
 
 <% for topic in @topics %>
   <tr>
-    <td><%=h topic.name %></td>
-    <td><%= link_to 'Show', topic %></td>
+    <td><%= link_to topic.name, topic %></td>
     <td><%= link_to 'Edit', edit_topic_path(topic) %></td>
-    <td><%= link_to 'Destroy', topic, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'X', topic, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
