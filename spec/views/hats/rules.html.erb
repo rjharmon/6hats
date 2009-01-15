@@ -6,11 +6,13 @@ describe "/hats/rules.html.erb" do
   before(:each) do
     assigns[:hats] = [
       stub_model(Hat,
+	:id => '42',
         :color => "value for color",
         :summary => "value for summary",
 	:more_info => "value for more info\n\nadditional info\n\n* bullet"
       ),
       stub_model(Hat,
+	:id => '43',
         :color => "value for color",
         :summary => "value for summary",
 	:more_info => "* b1\n* b2\n* b3"
@@ -41,6 +43,8 @@ describe "/hats/rules.html.erb" do
     content_for(:left).should have_tag("ul>li", "b1")
     content_for(:left).should have_tag("ul>li", "b2")
     content_for(:left).should have_tag("ul>li", "b3")
+    content_for(:left).should have_tag("a[href=#{edit_hat_url( 42 )}]" )
+    content_for(:left).should have_tag("a[href=#{edit_hat_url( 43 )}]" )
   end
 
 end
