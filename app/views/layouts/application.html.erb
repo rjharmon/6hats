@@ -10,10 +10,10 @@
 		<div class="header_right">
 			<div class="top_info">
 				<div class="top_info_right">
-					<% if @current_user %>
-						<p><%= link_to_current_user %></p>
+					<% if logged_in? %>
+						<p><%= link_to_unless_current( "Topics", topics_url ) %> &nbsp;&nbsp&nbsp;My Profile&nbsp;&nbsp;&nbsp; <%= link_to_current_user %> - <%= link_to "Log Out", logout_path %></p>
 					<% else %>
-						<p><b>You are not Logged in!</b> <a href="#">Log in</a>  or <a href="#">register</a> to start thinking together!</p>
+						<p><b>You are not logged in!</b> <%= link_to "Log in", login_path %> or <%= link_to "register", register_path %> to start thinking together!</p>
 					<% end %>
 				</div>		
 			</div>
