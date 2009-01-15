@@ -1,5 +1,6 @@
 *~
 /config/initializers/site_keys.rb
+coverage/*
 log/*.log
 db/*.sqlite3
 tmp/**/*
