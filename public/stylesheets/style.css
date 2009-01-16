@@ -5,11 +5,7 @@
 /* default styles
    -------------- */
 
-
-  
 body { 
-	padding: 0; 
-	margin: 0; 
 	font: 0.74em Arial, Helvetica, sans-serif; 
 	line-height: 1.5em;
 	background: #fff; 
@@ -60,12 +56,16 @@ h2 {
 	margin: 0 0 5px 0; 
 	padding: 0; 
 	font: bold 1.5em Arial, Helvetica, sans-serif;
-	letter-spacing: -1px;
+	letter-spacing: -0.03em;
 }
 
 .subheader h2 { 
 	color: #000; 
 	background: inherit;
+	font-size:20px
+}
+.right h2 {
+	font-size:15px
 }
 
 h3, h4, .h3, .h4 {
@@ -122,9 +122,17 @@ input.login {
 /* layout
    ------ */
 
-.content { 
+body { 
+	padding: 0; 
+	margin: 0; 
+	width:100%;
+	text-align:center;
+}
+
+.page { 
 	margin: 10px auto;
-	width: 760px; 
+	width: 98%; 
+	text-align:left; 
 }
 
 .logo {
@@ -133,7 +141,7 @@ input.login {
 	padding: 10px 0 11px 10px;
 }
 
-.header_right {
+.mast_right {
 	float: right;
 	width: 550px;
 	height: 72px;
@@ -192,16 +200,6 @@ input.login {
 		color: #C3593C;
 	}
 
-.search_field { 
-	text-align: right;
-	float: right;
-	width: 540px;
-	height: 38px;
-	background: #464548 url(/images/searchbg.gif) no-repeat top right; 
-	color: #000;
-	clear: both;
-	padding: 10px 10px 0 0;
-}
 
 .grey {
 	font-size: 1.2em;
@@ -211,21 +209,43 @@ input.login {
 	
 }
 
-.search {
+.search_field {
 	font-size: 1.2em;
 	font-weight: bold;
 	color: #FFF;
-	background: inherit;	
+	background: inherit;
 }
 
-.newsletter {
+.header_left {
 	float: left;
 	height: 33px;
-	padding: 15px 0 0 15px;
-	width: 192px;
+	padding: 15px 0 0 1%;
 	background: #6E6E6E url(/images/newsletterbg.gif) no-repeat;
 	color: #FFF;
 	margin: 0 0 3px 0;
+	width: 35%;  /* ie5win fudge begins */
+	voice-family: "\"}\"";
+	voice-family:inherit;
+	width: 34%;
+}
+html>body .header_left {
+	width:34%; /* ie5win fudge end */
+}
+.header_right { 
+	text-align: right;
+	float: right;
+	height: 38px;
+	background: #464548 url(/images/searchbg.gif) no-repeat top right; 
+	color: #000;
+	clear: both;
+	padding: 10px 1% 0 0;
+	width: 65%; /* ie5win fudge begins */
+	voice-family: "\"}\"";
+	voice-family:inherit;
+	width: 64%;
+}
+html>body .header_right {
+	width:64%;
 }
 
 .subheader {
@@ -271,33 +291,34 @@ ul li {
 
 
 
-/* left side
+/* main document body
    --------- */
 
-.left {
+.content {
 	float: left;
+	width: 78%; // TODO: use a different round-corners implementation
 	width: 490px;
 	margin: 0 0 10px 0;
+	padding: 0 0 0 1%
 }
 	.left_articles {
 		margin: 0 0 15px 0;
-		padding: 0 0 0 10px;
 	}
 
-	.left .box-top {
+	.content .box-top {
 		height: 10px;
 		background: #6E6E6E url(/images/lt.gif) no-repeat;
 		color: #FFF;
 	}
 	
-	.left .box-body {
+	.content .box-body {
 		color: #eee;
 		padding: 0 18px 9px 16px;
 		margin: 0 0 15px 0;
 		background: #6E6E6E url(/images/lb.gif) no-repeat bottom left;
 	}
 	
-	.left .box-body a {
+	.content .box-body a {
 		color: #FFFCD1;
 		background: inherit;
 	}
