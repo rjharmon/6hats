@@ -31,7 +31,7 @@ describe TopicsController do
     	it "should render the topic creation page instead" do
 		Topic.should_receive(:find).with(:all).and_return([mock_topic])
 		get :index
-		should_render(new_topic_url)    	
+		response.should render_template('topics/new')    	
     	end
     end
 

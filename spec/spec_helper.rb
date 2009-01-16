@@ -105,11 +105,36 @@ module Spec::Mocks::Methods
 end
 
 module FormExamples
- module ExampleGroupMethods
-	describe "a form", :shared => true do
-		it "should test for nice submit & cancel buttons"
+	module ExampleMethods
 	end
- end
+	module ExampleGroupMethods
+		describe "a form", :shared => true do
+			it "should have a title" do
+				do_action
+				assigns[:title].should_not be_blank
+			end
+			it "should have a nice submit button" do
+				( action, object ) = do_action
+				label = action == 'new' ? "Create" : "Save"
+				response.should have_tag("form[method=post][class='#{action}_#{object}']" ) do |thing|
+					puts(thing.to_s)
+					thing.should have_tag("input[type='submit'][class='button'][value='#{label}']" )
+				end
+			end
+
+			it "should have a nice cancel button" do
+				( action, object ) = do_action
+				label = action == 'new' ? "Create" : "Save"
+				response.should have_tag("form[method=post][class=#{action}_#{object}]" ) do
+					with_tag("a[class=cancel-button]", "Cancel" )
+				end
+			end
+		end
+	end
+	def self.included(receiver)
+	    	receiver.extend         ExampleGroupMethods
+		receiver.send :include, ExampleMethods
+	end
 end
 Spec::Runner.configure do |config|
   config.include(FormExamples, :type => :form)

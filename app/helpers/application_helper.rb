@@ -28,6 +28,12 @@ module ApplicationHelper
 		t.concat "</li>"
 		t
 	end
+
+   def form_buttons( form, label, default_back ) 
+	form.submit( label, :class => 'button') + " " + 
+	   link_to( "Cancel", (params[:back] || request.referer || default_back  ), :class => "cancel-button" )
+   end
+
 end
 
 class SiteDevError < Exception

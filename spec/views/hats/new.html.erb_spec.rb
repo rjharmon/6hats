@@ -13,17 +13,23 @@ describe "/hats/new.html.erb" do
     )
   end
 
+  def do_action 
+     render "/hats/new.html.erb"
+     return [ "new", "hat" ]
+  end
   it_should_behave_like( "a form" )
+
+  it "should try defining a callback usable by the following form-test"
+  
   it "should render new form" do
     render "/hats/new.html.erb"
-    
+  
     response.should have_tag("form[action=?][method=post]", hats_path) do
       with_tag("input#hat_color[name=?]", "hat[color]")
       with_tag('input#hat_summary[name=?]', "hat[summary]")
       with_tag("textarea#hat_description[name=?]", "hat[description]")
       with_tag("textarea#hat_more_info[name=?]", "hat[more_info]")
     end
-    response.should have_tag("input#hat_submit[type='submit']")
   end
 end
 
