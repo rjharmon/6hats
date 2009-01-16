@@ -98,18 +98,20 @@ input.search {
 	width: 145px; 
 	height: 22px;
 	border: none;
-	background: #fff url(/images/input.gif) no-repeat; 
-	padding: 5px 10px 0 25px;
+	background: transparent url(/images/input.gif) no-repeat; 
+	padding: 7px 10px 0 25px;
 	color: #808080;
 }
 
 input.button {
 	border: 0;
-	height: 27px;
+	height: 28px;
+	padding-bottom:1px;
 	width: 76px;
-	background: url(/images/button.gif) no-repeat;
+	background: url(/images/button.gif) no-repeat 0 1px;
 	color: #FFF;
 	font: bold 1.1em Arial, Helvetica, Sans-Serif;
+	cursor:pointer;
 }
 
 .cancel-button {
