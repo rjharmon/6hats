@@ -13,6 +13,7 @@ describe "/hats/new.html.erb" do
     )
   end
 
+  it_should_behave_like( "a form" )
   it "should render new form" do
     render "/hats/new.html.erb"
     

@@ -10,6 +10,7 @@ describe "/topics/new.html.erb" do
     )
   end
 
+  it_should_behave_like( "a form" )
   it "should render new form" do
     render "/topics/new.html.erb"
     

@@ -103,3 +103,16 @@ module Spec::Mocks::Methods
     self.stub!(association_name).and_return(values)
   end
 end
+
+module FormExamples
+ module ExampleGroupMethods
+	describe "a form", :shared => true do
+		it "should test for nice submit & cancel buttons"
+	end
+ end
+end
+Spec::Runner.configure do |config|
+  config.include(FormExamples, :type => :form)
+end
+  
+
