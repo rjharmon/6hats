@@ -32,6 +32,7 @@ describe TopicsController do
 		Topic.should_receive(:find).with(:all).and_return([])
 		get :index
 		response.should redirect_to(new_topic_url)
+		flash[:notice].should_not be_blank
     	end
     end
 
