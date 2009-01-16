@@ -29,9 +29,9 @@ describe TopicsController do
     
     describe "when there are no topics" do
     	it "should render the topic creation page instead" do
-		Topic.should_receive(:find).with(:all).and_return([mock_topic])
+		Topic.should_receive(:find).with(:all).and_return([])
 		get :index
-		response.should render_template('topics/new')    	
+		response.should redirect_to(new_topic_url)
     	end
     end
 
