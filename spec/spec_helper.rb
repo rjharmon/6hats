@@ -117,7 +117,6 @@ module FormExamples
 				( action, object ) = do_action
 				label = action == 'new' ? "Create" : "Save"
 				response.should have_tag("form[method=post][class='#{action}_#{object}']" ) do |thing|
-					puts(thing.to_s)
 					thing.should have_tag("input[type='submit'][class='button'][value='#{label}']" )
 				end
 			end
