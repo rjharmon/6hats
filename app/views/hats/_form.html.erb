@@ -15,7 +15,7 @@
     <%= form.label :more_info %><br />
     <%= form.text_area :more_info %>
   </p>
-  <p>
-    <%= form.submit @submit_button_label %>
-  </p>
+    <%= form.submit @submit_button_label, :class => 'button'  %>
+<%= link_to "Cancel", (params[:back] || request.referer), :class => "cancel-button" %>
+  <%= hidden_field_tag( "back", params[:back] || request.referer ) %>
 <% end %>
