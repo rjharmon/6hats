@@ -116,8 +116,8 @@ module FormExamples
 			it "should have a nice submit button" do
 				( action, object ) = do_action
 				label = action == 'new' ? "Create" : "Save"
-				response.should have_tag("form[method=post][class='#{action}_#{object}']" ) do |thing|
-					thing.should have_tag("input[type='submit'][class='button'][value='#{label}']" )
+				response.should have_tag("form[method=post][class='#{action}_#{object}']" ) do 
+					with_tag("input[type='submit'][class='button'][value='#{label}']" )
 				end
 			end
 
@@ -136,7 +136,7 @@ module FormExamples
 	end
 end
 Spec::Runner.configure do |config|
-  config.include(FormExamples, :type => :form)
+  config.include(FormExamples, :type => :view)
 end
   
 
