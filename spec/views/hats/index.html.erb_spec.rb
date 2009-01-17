@@ -17,6 +17,11 @@ describe "/hats/index.html.erb" do
     @user = stub_model( User );
   end
 
+  it_should_behave_like "a view"
+  def do_action
+    render "/hats/index.html.erb"
+  end
+
   describe "layout" do
 
 	it "should do better than this :("	

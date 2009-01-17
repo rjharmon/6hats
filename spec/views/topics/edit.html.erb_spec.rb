@@ -10,6 +10,10 @@ describe "/topics/edit.html.erb" do
     )
   end
 
+  it_should_behave_like "a view"
+  def do_action
+    render "/topics/edit.html.erb"
+  end
   it "should render edit form" do
     render "/topics/edit.html.erb"
     

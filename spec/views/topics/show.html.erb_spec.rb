@@ -14,6 +14,10 @@ describe "/topics/show.html.erb" do
     )
   end
 
+  it_should_behave_like "a view"
+  def do_action
+    render "/topics/show.html.erb"
+  end
   it "should render attributes in <p>" do
     template.should_receive(:render).with(:file => 'thoughts/index')
     render "/topics/show.html.erb"

@@ -12,6 +12,11 @@ describe "/thoughts/new.html.erb" do
     )
   end
 
+  it_should_behave_like "a view"
+  def do_action
+    render "/thoughts/new.html.erb"
+  end
+
   it "should render new form" do
     render "/thoughts/new.html.erb"
     

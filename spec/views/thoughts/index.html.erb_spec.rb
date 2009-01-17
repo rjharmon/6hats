@@ -17,6 +17,10 @@ describe "/thoughts/index.html.erb" do
     ]
   end
 
+  it_should_behave_like "a view"
+  def do_action
+    render "/thoughts/index.html.erb"
+  end
   it "should render list of thoughts" do
     render "/thoughts/index.html.erb"
     response.should have_tag("tr>td", "MyString", 2)

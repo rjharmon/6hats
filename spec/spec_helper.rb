@@ -109,6 +109,12 @@ module FormExamples
 	module ExampleMethods
 	end
 	module ExampleGroupMethods
+		describe "a view", :shared => true do
+			it "should have a title" do
+				do_action
+				assigns[:title].should_not be_blank
+			end
+		end
 		describe "a form", :shared => true do
 			it "should have a nice submit button" do
 				( action, object ) = do_action
@@ -132,22 +138,12 @@ module FormExamples
 		receiver.send :include, ExampleMethods
 	end
 end
-module ViewExamples
-	module ExampleMethods
-	end
-#	module ViewExampleGroupMethods
-#		describe "all views" do
-#			it "should have a title" do
-#				do_action
-##B				assigns[:title].should_not be_blank
-#			end
-#		end
-#	end
-end
-		
+
+
 Spec::Runner.configure do |config|
   config.include(FormExamples, :type => :view)
-#  config.include(ViewExamples, :type => :view)
 end
+
+	
   
 
