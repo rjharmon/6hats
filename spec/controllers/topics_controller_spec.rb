@@ -40,6 +40,8 @@ describe TopicsController do
 
   describe "responding to GET show" do
 
+    it "should deny access to a topic that doesn't belong to me"
+
     it "should expose the requested topic as @topic" do
      Topic.should_receive(:find).with("37").and_return(mock_topic)
       mock_topic.should_receive(:thoughts).and_return(mock_thoughts=['dummy'])
