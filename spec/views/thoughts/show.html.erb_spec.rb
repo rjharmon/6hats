@@ -11,7 +11,6 @@ describe "/thoughts/show.html.erb" do
     )
   end
 
-  it_should_behave_like "a view"
   def do_action
     render "/thoughts/show.html.erb"
   end

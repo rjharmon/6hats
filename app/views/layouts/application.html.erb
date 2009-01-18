@@ -46,7 +46,7 @@
 		</div>
 		
 		<div class="subheader">
-			<h2><%=h @title %></h2>
+			<h2><%= @title %></h2>
 			<% if( flash[:notice] || flash[:warning] || flash[:error] ) then %>
 			<div class="flashes">
 				<% [ :notice, :warning, :error ].each do |level| %>
