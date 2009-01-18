@@ -17,13 +17,16 @@ describe "/thoughts/index.html.erb" do
     ]
   end
 
-  it_should_behave_like "a view"
   def do_action
     render "/thoughts/index.html.erb"
   end
   it "should render list of thoughts" do
-    render "/thoughts/index.html.erb"
+	do_action
     response.should have_tag("tr>td", "MyString", 2)
     response.should have_tag("tr>td", "MyText", 2)
+  end
+  it "should not try to replace the page title, as the view is used only as a subsidiary view" do
+  	do_action
+  	assigns[:title].should be_nil
   end
 end
