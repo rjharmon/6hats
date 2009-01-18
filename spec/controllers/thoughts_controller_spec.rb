@@ -93,7 +93,7 @@ describe ThoughtsController do
     
   end
 
-  describe "responding to PUT udpate" do
+  describe "responding to PUT update" do
 
     describe "with valid params" do
 
@@ -112,7 +112,7 @@ describe ThoughtsController do
       it "should redirect to the thought" do
         mock_topic.thoughts.stub!(:find).and_return(mock_thought(:update_attributes => true))
         put :update, :id => "1", :topic_id => "1"
-        response.should redirect_to(topic_thought_url(mock_topic, mock_thought))
+        response.should redirect_to(topic_url(mock_topic))
       end
 
     end
@@ -152,7 +152,7 @@ describe ThoughtsController do
     it "should redirect to the thoughts list" do
       mock_topic.thoughts.stub!(:find).and_return(mock_thought(:destroy => true))
       delete :destroy, :id => "1", :topic_id => "1"
-      response.should redirect_to(topic_thoughts_url(mock_topic))
+      response.should redirect_to(topic_url(mock_topic))
     end
 
   end
