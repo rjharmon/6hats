@@ -12,12 +12,13 @@ describe "/topics/edit.html.erb" do
   end
 
   it_should_behave_like "a view"
+  it_should_behave_like( "a form" )
   def do_action
     render "/topics/edit.html.erb"
+    return [ "edit", "topic" ]
   end
   it "should render edit form" do
-    render "/topics/edit.html.erb"
-    
+    do_action    
     response.should have_tag("form[action=#{topic_path(@topic)}][method=post]") do
       with_tag('input#topic_name[name=?]', "topic[name]")
       with_tag('textarea#topic_summary[name=?]', "topic[summary]")

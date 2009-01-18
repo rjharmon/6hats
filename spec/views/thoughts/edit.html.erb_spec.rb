@@ -13,8 +13,10 @@ describe "/thoughts/edit.html.erb" do
   end
 
   it_should_behave_like "a view"
+  it_should_behave_like( "a form" )
   def do_action
     render "/thoughts/edit.html.erb"
+    return [ "edit", "thought" ]
   end
 
   it "should render edit form" do
