@@ -105,7 +105,7 @@ module Spec::Mocks::Methods
   end
 end
 
-module FormExamples
+module ViewExamples
 	module ExampleMethods
 	end
 	module ExampleGroupMethods
@@ -141,9 +141,7 @@ end
 
 
 Spec::Runner.configure do |config|
-  config.include(FormExamples, :type => :view)
+  config.include(ViewExamples, :type => :view)
 end
 
 	
-  
-
