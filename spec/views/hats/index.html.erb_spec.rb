@@ -4,7 +4,7 @@ describe "/hats/index.html.erb" do
   include HatsHelper
   include UsersHelper  
   before(:each) do
-    assigns[:hats] = [
+    assigns[:hats] = @hats = [
       stub_model(Hat,
         :color => "value for color",
         :summary => "value for summary"
@@ -22,32 +22,30 @@ describe "/hats/index.html.erb" do
     render "/hats/index.html.erb"
   end
 
-  describe "layout" do
-
-	it "should do better than this :("	
-	[true, false]
-	[].each do |state|
-		in_or_not = state ? "logged in" : "not logged in"
-
-		describe "when user is #{in_or_not}" do
-			before :each do
-				debugger
-				render '/hats/index.html.erb', :layout => 'application.html.erb'
-				assigns[:current_user] = state ? @user : nil
-			# this breaks things :(
-			#	stub!( :logged_in? ).any_number_of_times.and_return( state );
-			end
-			it "should #{state ? 'not' : ''} link to the login and register page" do
-				debugger
-				if( state ) then
-					response.should_not have_tag( "a[href=#{login_path}]" )
-					response.should_not have_tag( "a[href=#{register_path}]" )
-				else
-					response.should     have_tag( "a[href=#{login_path}]" )
-					response.should     have_tag( "a[href=#{register_path}]" )
-				end
-			end
-		end
+  describe "when user is not logged in" do
+	before :each do
+			assigns[:current_user] = nil
+			assigns[:hats] = @hats = [ stub_model(Hat, :color => "grey", :summary => "im a grey hat" ) ]
+			template.should_receive( :logged_in? ).and_return( false );
+	end
+	it "should link to the login and register page" do
+			render '/hats/index.html.erb', :layout => 'application.html.erb'
+			response.should     have_tag( "a[href=#{login_path}]" )
+			response.should     have_tag( "a[href=#{register_path}]" )
+	end
+  end
+  describe "when user is logged in" do
+	before :each do
+		@user = stub_model( User );
+		assigns[:current_user] = @user
+		assigns[:hats] = @hats = [ stub_model(Hat, :color => "grey", :summary => "im a grey hat" ) ]
+		template.should_receive( :logged_in? ).and_return( true );
+		template.should_receive( :current_user ).at_least(:once).and_return( @user )
+	end
+	it "should not link to login/register" do
+		render '/hats/index.html.erb', :layout => 'application.html.erb'
+		response.should_not have_tag( "a[href=#{login_path}]" )
+		response.should_not have_tag( "a[href=#{register_path}]" )
 	end
   end
 
