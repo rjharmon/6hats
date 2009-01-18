@@ -135,6 +135,24 @@ a.cancel-button:hover {
 	text-decoration:none;
 }
 
+a.button {
+	display:inline-block;
+	border: 0;
+	height: 27px;
+	width: 76px;
+	background: url(/images/button.gif) no-repeat;
+	text-align:center;
+	padding-top:5px;
+
+	color: #fff;
+	font: bold 1.1em Arial, Helvetica, Sans-Serif;
+	text-decoration:none;
+}
+a.button:hover {
+	color:#ccc;
+	text-decoration:none;
+}
+
 input.login { 
 	width: 150px;
 	border: none; 
