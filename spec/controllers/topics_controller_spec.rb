@@ -149,9 +149,9 @@ describe TopicsController do
         put :update, :id => "1"
         response.should redirect_to(topic_url(mock_topic))
       end
-      describe "(in-place editing)" do
-      	it "should respond to an xhr request with the new field value"
-      end
+#      describe "(in-place editing)" do
+#      	it "should respond to an xhr request with the new field value"
+#      end
 
     end
     
