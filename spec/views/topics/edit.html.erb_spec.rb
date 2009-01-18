@@ -6,7 +6,8 @@ describe "/topics/edit.html.erb" do
   before(:each) do
     assigns[:topic] = @topic = stub_model(Topic,
       :new_record? => false,
-      :name => "value for name"
+      :name => "value for name",
+      :summary => "value for summary"
     )
   end
 
@@ -19,6 +20,7 @@ describe "/topics/edit.html.erb" do
     
     response.should have_tag("form[action=#{topic_path(@topic)}][method=post]") do
       with_tag('input#topic_name[name=?]', "topic[name]")
+      with_tag('textarea#topic_summary[name=?]', "topic[summary]")
     end
   end
 end

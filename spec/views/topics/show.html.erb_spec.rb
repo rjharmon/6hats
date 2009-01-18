@@ -10,7 +10,8 @@ describe "/topics/show.html.erb" do
 	stub_model(Thought, :hat_id => 3, :summary => "sum3", :description => "desc3" )
     ]
     assigns[:topic] = @topic = stub_model(Topic,
-      :name => "value for name"
+      :name => "value for name",
+      :summary => "value for summary"
     )
   end
 
@@ -21,10 +22,16 @@ describe "/topics/show.html.erb" do
   it "should render attributes in <p>" do
     template.should_receive(:render).with(:file => 'thoughts/index')
     render "/topics/show.html.erb"
-    response.should have_text(/value\ for\ name/)
+    assigns[:title].should == "value for name"
+    response.should have_text(/value\ for\ summary/)
   end
   
-  it "should show the thoughts for this topic"
+  it "should show the thoughts for this topic" do
+    render "/topics/show.html.erb"
+  	response.should have_text( /sum1/ )
+  	response.should have_text( /sum2/ )
+  	response.should have_text( /sum3/ )
+  end
   
 end
 
