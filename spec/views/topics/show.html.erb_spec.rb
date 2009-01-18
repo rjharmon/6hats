@@ -27,11 +27,17 @@ describe "/topics/show.html.erb" do
   end
   
   it "should show the thoughts for this topic" do
-    render "/topics/show.html.erb"
+	do_action
   	response.should have_text( /sum1/ )
   	response.should have_text( /sum2/ )
   	response.should have_text( /sum3/ )
   	response.should have_tag( "li", "a" )
+  end
+
+  it "should have pretty buttons" do
+  	do_action
+  	response.should have_tag( "a.button#edit_topic" )
+  	response.should have_tag( "a.button#new_thought" )
   end
   
 end

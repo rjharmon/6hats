@@ -1,5 +1,5 @@
 <% @title = h @topic.name %>
 <p><%= markdown @topic.summary %></p>
-<%= link_to 'Edit', edit_topic_path(@topic), :class => 'button' %>
+<%= link_to 'Edit', edit_topic_path(@topic), :class => 'button', :id => 'edit_topic' %>
 
 <%= render :file => "thoughts/index" %>
