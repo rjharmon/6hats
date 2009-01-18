@@ -7,7 +7,7 @@ describe "/topics/show.html.erb" do
     assigns[:thoughts] = [
 	stub_model(Thought, :hat_id => 1, :summary => "sum1", :detail => "desc1" ),
 	stub_model(Thought, :hat_id => 2, :summary => "sum2", :detail => "desc2" ),
-	stub_model(Thought, :hat_id => 3, :summary => "sum3", :detail => "desc3" )
+	stub_model(Thought, :hat_id => 3, :summary => "sum3", :detail => "desc3\n\n* a\n* b" )
     ]
     assigns[:topic] = @topic = stub_model(Topic,
       :name => "value for name",
@@ -31,6 +31,7 @@ describe "/topics/show.html.erb" do
   	response.should have_text( /sum1/ )
   	response.should have_text( /sum2/ )
   	response.should have_text( /sum3/ )
+  	response.should have_tag( "li", "a" )
   end
   
 end
