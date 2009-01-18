@@ -10,8 +10,8 @@ describe ThoughtsController do
       route_for(:controller => "thoughts", :action => "new", :topic_id => 1).should == "/topics/1/thoughts/new"
     end
   
-    it "should map #show" do
-      route_for(:controller => "thoughts", :action => "show", :id => 1, :topic_id => 1).should == "/topics/1/thoughts/1"
+    it "should not map #show" do
+      lambda { route_for(:controller => "thoughts", :action => "show", :id => 1, :topic_id => 1) }. should raise_error( ActionController::RoutingError )
     end
   
     it "should map #edit" do
@@ -41,7 +41,7 @@ describe ThoughtsController do
     end
   
     it "should generate params for #show" do
-      params_from(:get, "/topics/1/thoughts/1").should == {:controller => "thoughts", :action => "show", :id => "1", :topic_id => "1"}
+      lambda { params_from(:get, "/topics/1/thoughts/1") }.should raise_error( ActionController::MethodNotAllowed )
     end
   
     it "should generate params for #edit" do

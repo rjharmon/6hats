@@ -21,17 +21,6 @@ class ThoughtsController < ApplicationController
     end
   end
 
-  # GET /topics/:topic_id/thoughts/1
-  # GET /topics/:topic_id/thoughts/1.xml
-  def show
-    @thought = @topic.thoughts.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @thought }
-    end
-  end
-
   # GET /topics/:topic_id/thoughts/new
   # GET /topics/:topic_id/thoughts/new.xml
   def new
@@ -56,7 +45,7 @@ class ThoughtsController < ApplicationController
     respond_to do |format|
       if @thought.save
         flash[:notice] = 'Thought was successfully created.'
-        format.html { redirect_to([@topic, @thought]) }
+        format.html { redirect_to(@topic) }
         format.xml  { render :xml => @thought, :status => :created, :location => topic_thought_path(topic, @thought) }
       else
         format.html { render :action => "new" }

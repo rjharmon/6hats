@@ -33,23 +33,8 @@ describe ThoughtsController do
   describe "responding to GET show" do
 
     it "should expose the requested thought as @thought" do
-      mock_topic.thoughts.should_receive(:find).with("37").and_return(mock_thought)
-      get :show, :id => "37", :topic_id => "1"
-      assigns[:thought].should equal(mock_thought)
+      lambda { get :show, :id => "37", :topic_id => "1" }.should raise_error(ActionController::RoutingError)
     end
-    
-    describe "with mime type of xml" do
-
-      it "should render the requested thought as xml" do
-        request.env["HTTP_ACCEPT"] = "application/xml"
-        mock_topic.thoughts.should_receive(:find).with("37").and_return(mock_thought)
-        mock_thought.should_receive(:to_xml).and_return("generated XML")
-        get :show, :id => "37", :topic_id => "1"
-        response.body.should == "generated XML"
-      end
-
-    end
-    
   end
 
   describe "responding to GET new" do
@@ -82,10 +67,10 @@ describe ThoughtsController do
         assigns(:thought).should equal(mock_thought)
       end
 
-      it "should redirect to the created thought" do
+      it "should redirect to the topic" do
         mock_topic.thoughts.stub!(:build).and_return(mock_thought(:save => true))
         post :create, :thought => {}, :topic_id => "1"
-        response.should redirect_to(topic_thought_url(mock_topic, mock_thought))
+        response.should redirect_to(topic_url(mock_topic))
       end
       
     end

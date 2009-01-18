@@ -4,7 +4,7 @@ ActionController::Routing::Routes.draw do |map|
   map.root :controller => 'home'
 
   map.resources :topics do |topics|
-	topics.resources :thoughts, :except => [:index]
+	topics.resources :thoughts, :except => [:index,:show]
   end
 
   map.rules '/hats/rules', :controller => 'hats', :action => 'rules'
