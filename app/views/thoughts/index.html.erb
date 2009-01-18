@@ -1,12 +1,10 @@
 <table>
 
 <% for thought in @thoughts %>
-  <tr>
-    <td><%=h thought.summary %></td>
-    <td><%=h thought.detail %></td>
-    <td><%= link_to 'Show', [@topic, thought] %></td>
-    <td><%= link_to 'Edit', edit_topic_thought_path(@topic, thought) %></td>
-    <td><%= link_to 'Destroy', [@topic, thought], :confirm => 'Are you sure?', :method => :delete %></td>
+  <tr valign="baseline">
+    <td><%= link_to h( thought.summary ), edit_topic_thought_path(@topic, thought) %></td>
+    <td><%= markdown thought.detail %></td>
+    <td><%= link_to 'x', [@topic, thought], :confirm => 'Are you sure?', :method => :delete, :class => 'delete' %></td>
   </tr>
 <% end %>
 </table>

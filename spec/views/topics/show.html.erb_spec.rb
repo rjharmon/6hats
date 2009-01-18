@@ -5,9 +5,9 @@ describe "/topics/show.html.erb" do
   
   before(:each) do
     assigns[:thoughts] = [
-	stub_model(Thought, :hat_id => 1, :summary => "sum1", :description => "desc1" ),
-	stub_model(Thought, :hat_id => 2, :summary => "sum2", :description => "desc2" ),
-	stub_model(Thought, :hat_id => 3, :summary => "sum3", :description => "desc3" )
+	stub_model(Thought, :hat_id => 1, :summary => "sum1", :detail => "desc1" ),
+	stub_model(Thought, :hat_id => 2, :summary => "sum2", :detail => "desc2" ),
+	stub_model(Thought, :hat_id => 3, :summary => "sum3", :detail => "desc3" )
     ]
     assigns[:topic] = @topic = stub_model(Topic,
       :name => "value for name",
