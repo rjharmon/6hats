@@ -8,6 +8,13 @@ describe Thought do
     }
   end
 
+  it "should have one topic" do
+  	t = Thought.new
+  	topic = Topic.new
+  	t.topic = topic
+  	t.topic.should == topic
+  end
+
   it "should create a new instance given valid attributes" do
     Thought.create!(@valid_attributes)
   end

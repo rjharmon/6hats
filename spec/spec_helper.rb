@@ -7,6 +7,7 @@ require 'spec/rails'
 
 # TODO: verify that this works
 include AuthenticatedSystem
+include AuthenticatedTestHelper
 
 def content_for(name)
 	t = response.template.instance_variable_get("@content_for_#{name}")
@@ -103,3 +104,44 @@ module Spec::Mocks::Methods
     self.stub!(association_name).and_return(values)
   end
 end
+
+module ViewExamples
+	module ExampleMethods
+	end
+	module ExampleGroupMethods
+		describe "a view", :shared => true do
+			it "should have a title" do
+				do_action
+				assigns[:title].should_not be_blank
+			end
+		end
+		describe "a form", :shared => true do
+			it "should have a nice submit button" do
+				( action, object ) = do_action
+				label = action == 'new' ? "Create" : "Save"
+				response.should have_tag("form[method=post][class='#{action}_#{object}']" ) do 
+					with_tag("input[type='submit'][class='button'][value='#{label}']" )
+				end
+			end
+
+			it "should have a nice cancel button" do
+				( action, object ) = do_action
+				label = action == 'new' ? "Create" : "Save"
+				response.should have_tag("form[method=post][class=#{action}_#{object}]" ) do
+					with_tag("a[class=cancel-button]", "Cancel" )
+				end
+			end
+		end
+	end
+	def self.included(receiver)
+	    	receiver.extend         ExampleGroupMethods
+		receiver.send :include, ExampleMethods
+	end
+end
+
+
+Spec::Runner.configure do |config|
+  config.include(ViewExamples, :type => :view)
+end
+
+	

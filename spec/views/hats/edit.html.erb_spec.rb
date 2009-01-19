@@ -13,6 +13,15 @@ describe "/hats/edit.html.erb" do
     )
   end
 
+  it_should_behave_like( "a form" )
+  it_should_behave_like( "a view" )
+  def do_action
+    render "/hats/edit.html.erb"
+    return [ "edit", "hat" ]
+  end
+
+
+  
   it "should render edit form" do
     render "/hats/edit.html.erb"
     

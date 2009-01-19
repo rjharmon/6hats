@@ -11,6 +11,9 @@ describe "/thoughts/show.html.erb" do
     )
   end
 
+  def do_action
+    render "/thoughts/show.html.erb"
+  end
   it "should render attributes in <p>" do
     render "/thoughts/show.html.erb"
     response.should have_text(/MyString/)

@@ -1,4 +1,4 @@
-<h1>Editing topic</h1>
+<% @title = 'Editing topic' %>
 
 <% form_for(@topic) do |f| %>
   <%= f.error_messages %>
@@ -7,10 +7,11 @@
     <%= f.label :name %><br />
     <%= f.text_field :name %>
   </p>
+	
   <p>
-    <%= f.submit "Update" %>
+    <%= f.label :summary %><br />
+    <%= f.text_area :summary, :rows => 5 %>
   </p>
+  <%= form_buttons( f, "Save", topics_url ) %>
 <% end %>
 
-<%= link_to 'Show', @topic %> |
-<%= link_to 'Back', topics_path %>

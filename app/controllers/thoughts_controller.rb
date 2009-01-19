@@ -21,17 +21,6 @@ class ThoughtsController < ApplicationController
     end
   end
 
-  # GET /topics/:topic_id/thoughts/1
-  # GET /topics/:topic_id/thoughts/1.xml
-  def show
-    @thought = @topic.thoughts.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @thought }
-    end
-  end
-
   # GET /topics/:topic_id/thoughts/new
   # GET /topics/:topic_id/thoughts/new.xml
   def new
@@ -56,8 +45,8 @@ class ThoughtsController < ApplicationController
     respond_to do |format|
       if @thought.save
         flash[:notice] = 'Thought was successfully created.'
-        format.html { redirect_to([@topic, @thought]) }
-        format.xml  { render :xml => @thought, :status => :created, :location => topic_thought_path(topic, @thought) }
+        format.html { redirect_to(@topic) }
+        format.xml  { render :xml => @thought, :status => :created, :location => topic_path(topic, @thought) }
       else
         format.html { render :action => "new" }
         format.xml  { render :xml => @thought.errors, :status => :unprocessable_entity }
@@ -73,7 +62,7 @@ class ThoughtsController < ApplicationController
     respond_to do |format|
       if @thought.update_attributes(params[:thought])
         flash[:notice] = 'Thought was successfully updated.'
-        format.html { redirect_to([@topic, @thought]) }
+        format.html { redirect_to(@topic) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -89,7 +78,7 @@ class ThoughtsController < ApplicationController
     @thought.destroy
 
     respond_to do |format|
-      format.html { redirect_to(topic_thoughts_path(@topic)) }
+      format.html { redirect_to(topic_path(@topic)) }
       format.xml  { head :ok }
     end
   end

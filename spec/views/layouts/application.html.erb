@@ -1,0 +1,30 @@
+require File.dirname(__FILE__) + '/../../spec_helper'
+
+describe "/layouts/application" do
+	def do_action
+		render "/../../spec/resources/views/layout_example.html.erb", :layout => "application"
+	end
+	it "should yield" do
+		do_action
+		response.should have_tag('div.yield','test')
+	end
+	it "should render the title" do
+		assigns[:title] = "my test title"
+		do_action
+		response.should have_tag("div.subheader h2","my test title")
+	end
+
+  	describe "rendering flash messages" do
+  		[ :notice, :warning, :error ].each do  |which|
+			it " - :#{which.to_s} should work" do
+				t = "testing #{which}"
+				flash[which] = t
+				do_action
+				response.should have_tag( "div.flashes" ) do |f|
+					f.should have_tag( "div.#{which}", t )
+				end
+			end
+		end
+	end
+
+end

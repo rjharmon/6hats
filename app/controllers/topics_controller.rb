@@ -5,7 +5,12 @@ class TopicsController < ApplicationController
     @topics = Topic.find(:all)
 
     respond_to do |format|
-      format.html # index.html.erb
+      format.html do
+      	 if @topics.size == 0
+      	 	flash[:notice] = "You don't have any topics yet.  Create a new one here."
+      	 	redirect_to new_topic_url
+      	 end
+      end
       format.xml  { render :xml => @topics }
     end
   end

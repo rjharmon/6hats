@@ -11,7 +11,12 @@
 			<div class="top_info">
 				<div class="top_info_right">
 					<% if logged_in? %>
-						<p><%= link_to_unless_current( "Topics", topics_url ) %> &nbsp;&nbsp&nbsp;My Profile&nbsp;&nbsp;&nbsp; <%= link_to_current_user %> - <%= link_to "Log Out", logout_path %></p>
+						<p>
+							<%= link_to_unless_current( "Topics", topics_url ) %> &nbsp;&nbsp&nbsp;
+							My Profile&nbsp;&nbsp;&nbsp; 
+							<%= link_to_current_user %> - 
+							<%= link_to "Log Out", logout_path %>
+						</p>
 					<% else %>
 						<p><b>You are not logged in!</b> <%= link_to "Log in", login_path %> or <%= link_to "register", register_path %> to start thinking together!</p>
 					<% end %>
@@ -46,11 +51,11 @@
 		</div>
 		
 		<div class="subheader">
-			<h2><%=h @title %></h2>
+			<h2><%= @title %></h2>
 			<% if( flash[:notice] || flash[:warning] || flash[:error] ) then %>
 			<div class="flashes">
 				<% [ :notice, :warning, :error ].each do |level| %>
-					<% if flash[:level] then %>
+					<% if flash[level] then %>
 					<div class="flash <%= level.to_s %>"><%= flash[level] %></div>
 					<% end %>
 				<% end %>

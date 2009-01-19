@@ -21,9 +21,21 @@ describe Topic do
     Topic.create!(@valid_attributes)
   end
 
-  it_should_behave_like "Relationships"
-  it "should have multiple thoughts"
-  # TODO: it_has_one Topic.new.thoughts, Thought.new();
+  it "should have many thoughts" do
+  	t = Topic.new
+  	t.thoughts << Thought.new()
+  	t.thoughts << Thought.new()
+	t.thoughts.size.should == 2
+  end
+
+  it "should belong to a user" do
+  	pending( "create the nested model" ) do
+	  	t = Topic.new
+  		u = User.new
+  		t.user = u
+  		t.user.should == u
+  	end
+  end
 
   it "should allow the adding of multiple thoughts" do
     topic  = Topic.new(@valid_attributes)

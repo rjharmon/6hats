@@ -28,6 +28,19 @@ module ApplicationHelper
 		t.concat "</li>"
 		t
 	end
+
+   def form_buttons( form, label, default_back ) 
+	form.submit( label, :class => 'button') + " " + 
+	   link_to( "Cancel", (params[:back] || request.referer || default_back  ), :class => "cancel-button" )
+   end
+
+   def markdown( input )
+	if nil === input then
+		raise SiteDevError.new("input string required")
+	end
+	   Markdown.new(input).to_html
+   end
+
 end
 
 class SiteDevError < Exception
