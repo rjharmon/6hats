@@ -10,3 +10,6 @@
 [submodule "vendor/plugins/rdiscount"]
 	path = vendor/plugins/rdiscount
 	url = git://github.com/rtomayko/rdiscount.git
+[submodule "vendor/plugins/aasm"]
+	path = vendor/plugins/aasm
+	url = git://github.com/rubyist/aasm.git
