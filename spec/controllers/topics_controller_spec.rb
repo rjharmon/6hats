@@ -6,8 +6,10 @@ describe TopicsController do
     @mock_topic ||= mock_model(Topic, stubs)
   end
   
-  def mock_user(stubs={})
-    @mock_user ||= mock_model(User, stubs.reverse_merge(:topics => mock('Array of Topics')))
+  def mock_user(stubs={}, userid = 1)
+    @mock_user = userid ? mock_model(User, stubs.reverse_merge(:topics => mock('Array of Topics'), :id => userid)) : nil
+    @request.session[:userid] = userid
+    return @mock_user
   end
   
   before(:each) do
@@ -20,10 +22,11 @@ describe TopicsController do
   end
   describe "login required", :shared => true do
   	it "should not be actionable if I'm not logged in" do
-		assigns[:current_user] = nil
+#		assigns[:current_user] = nil
+		mock_user()
 		# !!! stub!() ??
-		should_receive( :logged_in? ).any_number_of_times.and_return( false );
-		should_receive( :current_user ).any_number_of_times.and_return( nil )
+		# should_receive( :logged_in? ).any_number_of_times.and_return( false );
+		# should_receive( :current_user ).any_number_of_times.and_return( nil )
   		do_action
   	end
   	

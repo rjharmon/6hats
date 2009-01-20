@@ -1,4 +1,9 @@
 class TopicsController < ApplicationController
+  before_filter :fetch_user
+protected:
+	def fetch_user
+	end
+public:
   # GET /topics
   # GET /topics.xml
   def index
