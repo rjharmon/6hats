@@ -1,13 +1,21 @@
 class TopicsController < ApplicationController
   before_filter :fetch_user
-protected:
+
+protected
 	def fetch_user
+		session[:userid] && @user = User.find( session[:userid] )
+		if ! @user 
+			flash[:notice] = "Please log in to continue"
+			redirect_to login_url
+		end
 	end
-public:
+public
   # GET /topics
   # GET /topics.xml
   def index
-    @topics = Topic.find(:all)
+
+    debugger;
+    @topics = @user.topics.find(:all)
 
     respond_to do |format|
       format.html do
@@ -23,7 +31,7 @@ public:
   # GET /topics/1
   # GET /topics/1.xml
   def show
-    @topic = Topic.find(params[:id])
+    @topic = @user.topics.find(params[:id])
     @thoughts = @topic.thoughts
 
     respond_to do |format|
@@ -35,7 +43,7 @@ public:
   # GET /topics/new
   # GET /topics/new.xml
   def new
-    @topic = Topic.new
+    @topic = @user.topics.build()
 
     respond_to do |format|
       format.html # new.html.erb
@@ -45,13 +53,13 @@ public:
 
   # GET /topics/1/edit
   def edit
-    @topic = Topic.find(params[:id])
+    @topic = @user.topics.find(params[:id])
   end
 
   # POST /topics
   # POST /topics.xml
   def create
-    @topic = Topic.new(params[:topic])
+    @topic = @user.topics.build(params[:topic])
 
     respond_to do |format|
       if @topic.save
@@ -68,9 +76,10 @@ public:
   # PUT /topics/1
   # PUT /topics/1.xml
   def update
-    @topic = Topic.find(params[:id])
+    @topic = @user.topics.find(params[:id])
 
     respond_to do |format|
+      debugger
       if @topic.update_attributes(params[:topic])
         flash[:notice] = 'Topic was successfully updated.'
         format.html { redirect_to(@topic) }
@@ -85,7 +94,7 @@ public:
   # DELETE /topics/1
   # DELETE /topics/1.xml
   def destroy
-    @topic = Topic.find(params[:id])
+    @topic = @user.topics.find(params[:id])
     @topic.destroy
 
     respond_to do |format|

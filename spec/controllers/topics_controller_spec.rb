@@ -6,15 +6,14 @@ describe TopicsController do
     @mock_topic ||= mock_model(Topic, stubs)
   end
   
-  def mock_user(stubs={}, userid = 1)
+  def mock_user(userid=1, stubs={})
     @mock_user = userid ? mock_model(User, stubs.reverse_merge(:topics => mock('Array of Topics'), :id => userid)) : nil
     @request.session[:userid] = userid
+    User.should_receive(:find).with(userid).and_return(@mock_user) if userid
     return @mock_user
   end
   
   before(:each) do
-    User.stub!(:find).with("1").and_return(mock_user)
-    
   end
 
   describe "belongs to me", :shared => true do
@@ -22,12 +21,11 @@ describe TopicsController do
   end
   describe "login required", :shared => true do
   	it "should not be actionable if I'm not logged in" do
-#		assigns[:current_user] = nil
-		mock_user()
-		# !!! stub!() ??
-		# should_receive( :logged_in? ).any_number_of_times.and_return( false );
-		# should_receive( :current_user ).any_number_of_times.and_return( nil )
+		mock_user(nil)
   		do_action
+		response.should redirect_to( login_url )
+		flash[:notice].should_not be_blank
+  		
   	end
   	
   end
@@ -39,7 +37,8 @@ describe TopicsController do
 	it_should_behave_like "login required"
 
     it "should expose all topics as @topics" do
-      mock_user.should_receive(:topics).with(no_args).and_return([mock_topic])
+	mock_list = [mock_topic]
+      mock_user.topics.should_receive(:find).with(:all).and_return(mock_list)
 	do_action
       assigns[:topics].should == [mock_topic]
     end
@@ -48,8 +47,11 @@ describe TopicsController do
   
       it "should render all topics as xml" do
         request.env["HTTP_ACCEPT"] = "application/xml"
-        mock_user.should_receive(:topics).with(no_args).and_return(topics = mock("Array of Topics"))
-        topics.should_receive(:to_xml).and_return("generated XML")
+
+	mock_list = [mock_topic]
+	mock_user.topics.should_receive(:find).with(:all).and_return(mock_list)
+        
+        mock_list.should_receive(:to_xml).and_return("generated XML")
 	do_action
         response.body.should == "generated XML"
       end
@@ -58,7 +60,8 @@ describe TopicsController do
     
     describe "when there are no topics" do
     	it "should render the topic creation page instead" do
-		Topic.should_receive(:find).with(:all).and_return([])
+		mock_list = []
+		mock_user.topics.should_receive(:find).with(:all).and_return(mock_list)
 		do_action
 		response.should redirect_to(new_topic_url)
 		flash[:notice].should_not be_blank
@@ -79,6 +82,8 @@ describe TopicsController do
 
     it "should expose the requested topic as @topic" do
       mock_user.topics.should_receive(:find).with("37").and_return(mock_topic)
+      mock_thoughts = ['mock thoughts']
+      mock_topic.should_receive(:thoughts).and_return(mock_thoughts)
 	do_action
       assigns[:topic].should equal(mock_topic)
       assigns[:thoughts].should equal(mock_thoughts);
@@ -88,13 +93,15 @@ describe TopicsController do
 
       it "should render the requested topic as xml" do
         request.env["HTTP_ACCEPT"] = "application/xml"
-        # TODO: log in this user
         mock_user.topics.should_receive(:find).with("37").and_return(mock_topic)
+        mock_thoughts = [
+        	mock_model(Thought, { :to_xml => 'xml1' } ),
+        	mock_model(Thought, { :to_xml => 'xml2' } )
+	]
+        mock_topic.should_receive(:thoughts).and_return(mock_thoughts)
+        mock_topic.should_receive(:to_xml).with( :include => :thoughts ).and_return( "hiya" )
 	do_action
-        response.should match_xpath("/topic/thoughts/thought[1]/summary")
-        response.should match_xpath("/topic/thoughts/thought[1]/detail")
-        response.should match_xpath("/topic/thoughts/thought[2]/summary")
-        response.should match_xpath("/topic/thoughts/thought[2]/detail")
+        response.should have_text("hiya")
       end
 
     end
@@ -195,9 +202,11 @@ describe TopicsController do
       end
 
       it "should redirect to the topic" do
-        response.should redirect_to(topic_url(mock_topic))
+	@u = mock_user(1)
+	topic = mock_topic({ :update_attributes => true })
+        @u.topics.should_receive(:find).with("37").and_return(topic)
 	do_action
-        mock_user.topics.stub!(:find).and_return(mock_topic(:update_attributes => true))
+        response.should redirect_to( topic_url( topic ) )
       end
 #      describe "(in-place editing)" do
 #      	it "should respond to an xhr request with the new field value"
@@ -238,7 +247,7 @@ describe TopicsController do
     it_should_behave_like "belongs to me"
 
     it "should destroy the requested topic" do
-      mock_user.topics.should_receive(:find).with("37").and_return(mock_topic)
+      mock_user.topics.should_receive(:find).with("1").and_return(mock_topic)
       mock_topic.should_receive(:destroy)
 	do_action
     end
