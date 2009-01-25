@@ -29,12 +29,10 @@ describe Topic do
   end
 
   it "should belong to a user" do
-  	pending( "create the nested model" ) do
-	  	t = Topic.new
-  		u = User.new
-  		t.user = u
-  		t.user.should == u
-  	end
+  	t = Topic.new
+	u = User.new
+	t.user = u
+	t.user.should == u
   end
 
   it "should allow the adding of multiple thoughts" do

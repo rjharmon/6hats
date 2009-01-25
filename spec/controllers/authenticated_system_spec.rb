@@ -37,6 +37,7 @@ describe SessionsController do
 
   describe "logout_keeping_session!" do
     before do
+      debugger
       login_as :quentin
       stub!(:reset_session)
     end
@@ -49,6 +50,7 @@ describe SessionsController do
       logout_keeping_session!
     end
     it 'forgets me' do    
+      debugger
       current_user.remember_me
       current_user.remember_token.should_not be_nil; current_user.remember_token_expires_at.should_not be_nil
       User.find(1).remember_token.should_not be_nil; User.find(1).remember_token_expires_at.should_not be_nil

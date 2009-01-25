@@ -1,21 +1,48 @@
 class TopicsController < ApplicationController
   before_filter :fetch_user
-
+  before_filter :fetch_topic, :except => [ :new, :create ]
+  before_filter :check_userid,  :only => [ :create, :update ]
+  
 protected
 	def fetch_user
-		session[:userid] && @user = User.find( session[:userid] )
-		if ! @user 
+		if ! @user = current_user
 			flash[:notice] = "Please log in to continue"
-			redirect_to login_url
+			redirect_to login_url 
+		end
+	end
+	def denied(msg = "permission denied")
+		respond_to do |format|
+			format.html do
+				flash[:warning] = msg; 
+				redirect_to topics_url 
+			end
+			format.xml { render :xml => msg, :status => :unprocessable_entity }
+		end
+		return false
+	end
+	def fetch_topic
+		if params[:id]
+			@topic = @user.topics.find(params[:id]) 
+			if ! @topic 
+				denied()
+			end
+			return false;
+		else
+			@topics = @user.topics.find(:all)
+		end
+	end
+	def check_userid
+		if params[:topic] && u = params[:topic][:user_id]
+			unless u == current_user
+				denied()
+				return false
+			end
 		end
 	end
 public
   # GET /topics
   # GET /topics.xml
   def index
-
-    debugger;
-    @topics = @user.topics.find(:all)
 
     respond_to do |format|
       format.html do
@@ -31,8 +58,7 @@ public
   # GET /topics/1
   # GET /topics/1.xml
   def show
-    @topic = @user.topics.find(params[:id])
-    @thoughts = @topic.thoughts
+    @thoughts = @topic.thoughts if @topic
 
     respond_to do |format|
       format.html # show.html.erb
@@ -53,7 +79,6 @@ public
 
   # GET /topics/1/edit
   def edit
-    @topic = @user.topics.find(params[:id])
   end
 
   # POST /topics
@@ -76,10 +101,8 @@ public
   # PUT /topics/1
   # PUT /topics/1.xml
   def update
-    @topic = @user.topics.find(params[:id])
 
     respond_to do |format|
-      debugger
       if @topic.update_attributes(params[:topic])
         flash[:notice] = 'Topic was successfully updated.'
         format.html { redirect_to(@topic) }
@@ -94,7 +117,6 @@ public
   # DELETE /topics/1
   # DELETE /topics/1.xml
   def destroy
-    @topic = @user.topics.find(params[:id])
     @topic.destroy
 
     respond_to do |format|

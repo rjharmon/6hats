@@ -8,16 +8,44 @@ describe TopicsController do
   
   def mock_user(userid=1, stubs={})
     @mock_user = userid ? mock_model(User, stubs.reverse_merge(:topics => mock('Array of Topics'), :id => userid)) : nil
-    @request.session[:userid] = userid
-    User.should_receive(:find).with(userid).and_return(@mock_user) if userid
+    @request.session[:user_id] = userid
+    User.should_receive(:find).with(:first, {:conditions=>{:id=>userid}}).and_return(@mock_user) if userid
     return @mock_user
   end
   
   before(:each) do
   end
 
+  def is_a_post ; false ; end
+  def is_new ; false ; end
+  def shared_setup ; end
   describe "belongs to me", :shared => true do
-  	it "should not be actionable if it doesn't belong to me"
+  	it "should belong to me - else, should not be actionable" do
+		unless is_new  	
+	  		mock_user(192).topics.should_receive(:find).and_return(nil)
+	  	end
+  		do_action(192)
+		assigns[:topic].should be_nil
+	end
+	describe " - posting to a different userid" do
+		it "should not be allowed" do
+			if( is_a_post )
+				session[:user_id] = 1
+				shared_setup()
+				do_action(129)
+				response.should_not be_success
+				response.should redirect_to(topics_url)
+			end
+		end
+		it "should not be allowed for XML" do
+			if( is_a_post )
+				session[:user_id] = 1
+				shared_setup()
+				do_action(129)
+				response.should_not be_success
+			end
+		end
+	end
   end
   describe "login required", :shared => true do
   	it "should not be actionable if I'm not logged in" do
@@ -25,14 +53,12 @@ describe TopicsController do
   		do_action
 		response.should redirect_to( login_url )
 		flash[:notice].should_not be_blank
-  		
   	end
-  	
   end
-    
+
   describe "responding to GET index" do
-	def do_action
-	      get :index
+	def do_action(userid=1)
+		get :index
 	end
 	it_should_behave_like "login required"
 
@@ -72,13 +98,11 @@ describe TopicsController do
 
   describe "responding to GET show" do
 
-	def do_action
+	def do_action(userid=37)
 		get :show, :id => "37"
 	end
 	it_should_behave_like "login required"
 	it_should_behave_like "belongs to me"
-
-    it "should deny access to a topic that doesn't belong to me"
 
     it "should expose the requested topic as @topic" do
       mock_user.topics.should_receive(:find).with("37").and_return(mock_topic)
@@ -109,7 +133,7 @@ describe TopicsController do
   end
 
   describe "responding to GET new" do
-	def do_action
+	def do_action(userid=1)
 		get :new
 	end
 	it_should_behave_like( "login required" )
@@ -124,7 +148,7 @@ describe TopicsController do
 
   describe "responding to GET edit" do
 
-    def do_action
+    def do_action(userid=1)
       get :edit, :id => "37"
     end
         it_should_behave_like "login required"
@@ -139,16 +163,23 @@ describe TopicsController do
   end
 
   describe "responding to POST create" do
+	def is_a_post ;  true ; end
+	def is_new ; true ; end
 
     describe "with valid params" do
-	def do_action
-	        post :create, :topic => {:these => 'params'}
+	def do_action(userid=nil)
+		topic = {:these => 'params'}
+		topic[:user_id] = userid if userid
+	        post :create, :topic => topic
 	end
 	it_should_behave_like "login required"
-	it "should not allow the user to post a userid that's different than theirs"
+	describe "--" do 
+		it_should_behave_like "belongs to me"
+	end
+
     
       it "should expose a newly created topic as @topic" do
-        mock_user.topics.should_receive(:build).with({'these' => 'params'}).and_return(mock_topic(:save => true))
+        mock_user.topics.should_receive(:build).with({ 'these' => 'params'}).and_return(mock_topic(:save => true))
 	do_action
         assigns(:topic).should equal(mock_topic)
       end
@@ -180,31 +211,33 @@ describe TopicsController do
   end
 
   describe "responding to PUT update" do
+	def is_a_post ; true ; end
     describe "with valid params" do
 
-	def do_action
-	        put :update, :id => "37", :topic => {:these => 'params'}
+	def do_action(userid=nil)
+		topic = {:these => 'params'}
+		topic[:user_id] = userid if userid
+	        put :update, :id => "37", :topic => topic
 	end
 	it_should_behave_like "login required"
-	it_should_behave_like "belongs to me"
-	it "should not allow the user to post a userid that's different than theirs"
 
+	describe "--" do
+		def shared_setup
+		        mock_user.topics.should_receive(:find).with("37").and_return(mock_topic)
+		end
+		it_should_behave_like "belongs to me"
+	end
+
+		
       it "should update the requested topic" do
         mock_user.topics.should_receive(:find).with("37").and_return(mock_topic)
         mock_topic.should_receive(:update_attributes).with({'these' => 'params'})
 	do_action
       end
 
-      it "should expose the requested topic as @topic" do
-        mock_user.topics.stub!(:find).and_return(mock_topic(:update_attributes => true))
-	do_action
-        assigns(:topic).should equal(mock_topic)
-      end
-
       it "should redirect to the topic" do
-	@u = mock_user(1)
-	topic = mock_topic({ :update_attributes => true })
-        @u.topics.should_receive(:find).with("37").and_return(topic)
+ 	topic = mock_topic({ :update_attributes => true })
+        mock_user.topics.stub!(:find).and_return(topic)
 	do_action
         response.should redirect_to( topic_url( topic ) )
       end
@@ -240,7 +273,7 @@ describe TopicsController do
   end
 
   describe "responding to DELETE destroy" do
-    def do_action
+    def do_action(userid=1)
       delete :destroy, :id => "1"
     end
     it_should_behave_like "login required"
