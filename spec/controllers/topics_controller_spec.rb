@@ -295,13 +295,9 @@ describe TopicsController do
 
 		it "should destroy the requested topic" do
 			t = Factory(:topic)
-			t_id = t.id
 			login( t.user )
-			# t.should_receive(:destroy)
-			puts "finding topic #{t_id}"
-			puts Topic.find(t_id).to_yaml
-			delete :destroy, :id => t_id
-			Topic.find_by_id( t_id ).should be_nil
+			delete :destroy, :id => t.id
+			Topic.find_by_id( t.id ).should be_nil
 		end
   
 		it "should redirect to the topics list" do
