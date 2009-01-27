@@ -13,7 +13,41 @@ describe TopicsController do
 		User.should_receive(:find).with(:first, {:conditions=>{:id=>userid}}).and_return(@mock_user) if userid
 		return @mock_user
 	end
-  
+
+	def login( user ) 
+		@request.session[:user_id] = user.id
+	end
+
+	before do
+		Factory.sequence :name do |n|
+			"Joe Gunchi #{n}"
+		end
+		Factory.sequence :login do |n|
+			"login#{n}"
+		end
+		Factory.sequence :email do |n|
+			"person#{n}@example.com" 
+		end
+		Factory.sequence :random_string do |n|
+			require 'digest/sha1'
+			sha1 = Digest::SHA1.hexdigest("#{n}")
+		end
+		  
+		Factory.define :user do |u|
+			u.login { |l| Factory.next :login }
+			u.name { |n| Factory.next :name }
+			u.email { |e| Factory.next :email }
+			u.password { |e| "password" }
+			u.password_confirmation { |e| "password" }
+			
+			u.state 'active'
+		end
+		Factory.define :topic do |t|
+			t.name { |n| Factory.next :random_string }
+			t.summary { |s| Factory.next :random_string }
+			t.user { |u| u.association( :user ) }
+		end
+	end  
 
 	def is_a_post ; false ; end
 	def is_new ; false ; end
@@ -260,9 +294,14 @@ describe TopicsController do
 		it_should_behave_like "belongs to me"
 
 		it "should destroy the requested topic" do
-			mock_user.topics.should_receive(:find).with("1").and_return(mock_topic)
-			mock_topic.should_receive(:destroy)
-			do_action
+			t = Factory(:topic)
+			t_id = t.id
+			login( t.user )
+			# t.should_receive(:destroy)
+			puts "finding topic #{t_id}"
+			puts Topic.find(t_id).to_yaml
+			delete :destroy, :id => t_id
+			Topic.find_by_id( t_id ).should be_nil
 		end
   
 		it "should redirect to the topics list" do
