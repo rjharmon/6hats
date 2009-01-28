@@ -10,7 +10,8 @@ protected
 			redirect_to login_url 
 		end
 	end
-	def denied(msg = "permission denied")
+	def denied(detail, msg = "permission denied")
+		logger.info( "Permission denied for user '#{@user.login}': #{detail}" )
 		respond_to do |format|
 			format.html do
 				flash[:warning] = msg; 
@@ -22,19 +23,19 @@ protected
 	end
 	def fetch_topic
 		if params[:id]
-			@topic = @user.topics.find(params[:id]) 
+			@topic = @user.topics.find_by_id(params[:id])
 			if ! @topic 
-				denied()
+				denied( "user doesn't have that topic id" )
+				return false;
 			end
-			return false;
 		else
 			@topics = @user.topics.find(:all)
 		end
 	end
 	def check_userid
 		if params[:topic] && u = params[:topic][:user_id]
-			unless u == current_user
-				denied()
+			unless u == current_user.id
+				denied( "User can't post to that topic ID" )
 				return false
 			end
 		end

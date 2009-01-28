@@ -1,88 +1,36 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
-
 describe TopicsController do
-
-	def mock_topic(stubs={})
-		@mock_topic ||= mock_model(Topic, stubs)
-	end
-  
-	def mock_user(userid=1, stubs={})
-  
-		@mock_user = userid ? mock_model(User, stubs.reverse_merge(:topics => mock('Array of Topics'), :id => userid)) : nil
-		@request.session[:user_id] = userid
-		User.should_receive(:find).with(:first, {:conditions=>{:id=>userid}}).and_return(@mock_user) if userid
-		return @mock_user
+	def mock_association( obj, assoc, stubs )
+		mock_ass = mock( [ "fake association for #{assoc.to_s}" ], stubs )
+		obj.stub!(assoc).and_return( mock_ass )
 	end
 
 	def login( user ) 
-		@request.session[:user_id] = user.id
+		@request.session[:user_id] = user ? user.id : nil
+		if user
+			User.stub!(:find_by_id).with(user.id).and_return user
+		end
+
 	end
 
-	before do
-		Factory.sequence :name do |n|
-			"Joe Gunchi #{n}"
-		end
-		Factory.sequence :login do |n|
-			"login#{n}"
-		end
-		Factory.sequence :email do |n|
-			"person#{n}@example.com" 
-		end
-		Factory.sequence :random_string do |n|
-			require 'digest/sha1'
-			sha1 = Digest::SHA1.hexdigest("#{n}")
-		end
-		  
-		Factory.define :user do |u|
-			u.login { |l| Factory.next :login }
-			u.name { |n| Factory.next :name }
-			u.email { |e| Factory.next :email }
-			u.password { |e| "password" }
-			u.password_confirmation { |e| "password" }
-			
-			u.state 'active'
-		end
-		Factory.define :topic do |t|
-			t.name { |n| Factory.next :random_string }
-			t.summary { |s| Factory.next :random_string }
-			t.user { |u| u.association( :user ) }
-		end
+	before :all do
 	end  
 
-	def is_a_post ; false ; end
-	def is_new ; false ; end
-	def shared_setup ; end
 	describe "belongs to me", :shared => true do
 		it "should belong to me - else, should not be actionable" do
-			unless is_new  	
-				mock_user(192).topics.should_receive(:find).and_return(nil)
-			end
-			do_action(192)
+			@user = Factory(:user)
+			login( @user )
+			@topic = Factory(:topic)
+			do_action(@topic)
 			assigns[:topic].should be_nil
-		end
-		describe " - posting to a different userid" do
-			it "should not be allowed" do
-				if( is_a_post )
-					session[:user_id] = 1
-					shared_setup()
-					do_action(129)
-					response.should_not be_success
-					response.should redirect_to(topics_url)
-				end
-			end
-			it "should not be allowed for XML" do
-				if( is_a_post )
-					session[:user_id] = 1
-					shared_setup()
-					do_action(129)
-					response.should_not be_success
-				end
-			end
+			response.should be_redirect
+			response.should redirect_to( topics_url )
+			flash[:warning].should == "permission denied"
 		end
 	end
 	describe "login required", :shared => true do
 		it "should not be actionable if I'm not logged in" do
-			mock_user(nil)
+			login(nil)
 			do_action
 			response.should redirect_to( login_url )
 			flash[:notice].should_not be_blank
@@ -90,35 +38,34 @@ describe TopicsController do
 	end
 
 	describe "responding to GET index" do
-		def do_action(userid=1)
+		it_should_behave_like "login required"
+		def do_action(user=nil)
 			get :index
 		end
-		it_should_behave_like "login required"
 
-		it "should expose all topics as @topics" do
-			mock_list = [mock_topic]
-			mock_user.topics.should_receive(:find).with(:all).and_return(mock_list)
-			do_action
-			assigns[:topics].should == [mock_topic]
-		end
+		describe "when there are topics" do
+			before do
+				login( @user = Factory( :user ))
+				@tlist = [1..5].map { |n| Factory( :topic, :user => @user ) }
+			end
 
-		describe "with mime type of xml" do
-			it "should render all topics as xml" do
-				request.env["HTTP_ACCEPT"] = "application/xml"
-
-				mock_list = [mock_topic]
-				mock_user.topics.should_receive(:find).with(:all).and_return(mock_list)
-			
-				mock_list.should_receive(:to_xml).and_return("generated XML")
+			it "should expose all topics as @topics" do
 				do_action
-				response.body.should == "generated XML"
+				assigns[:topics].should == @tlist
+			end
+		
+			describe "with mime type of xml" do
+				it "should render all topics as xml" do
+					request.env["HTTP_ACCEPT"] = "application/xml"
+					do_action
+					response.body.should == @tlist.to_xml
+				end
 			end
 		end
 		
 		describe "when there are no topics" do
 			it "should render the topic creation page instead" do
-				mock_list = []
-				mock_user.topics.should_receive(:find).with(:all).and_return(mock_list)
+				login( @user = Factory(:user) )
 				do_action
 				response.should redirect_to(new_topic_url)
 				flash[:notice].should_not be_blank
@@ -128,135 +75,174 @@ describe TopicsController do
 
 	describe "responding to GET show" do
 
-		def do_action(userid=37)
-			get :show, :id => "37"
+		def do_action(topic=nil)
+			get :show, :id => topic ? topic.id : 2987234
 		end
 		it_should_behave_like "login required"
 		it_should_behave_like "belongs to me"
 
 		it "should expose the requested topic as @topic" do
-			mock_user.topics.should_receive(:find).with("37").and_return(mock_topic)
-			mock_thoughts = ['mock thoughts']
-			mock_topic.should_receive(:thoughts).and_return(mock_thoughts)
-			do_action
-			assigns[:topic].should equal(mock_topic)
-			assigns[:thoughts].should equal(mock_thoughts);
+			@topic = Factory(:topic)
+			login( @topic.user )
+			do_action(@topic)
+			assigns[:topic].should == @topic
+			assigns[:thoughts].should == []
 		end
 		
 		describe "with mime type of xml" do
 			it "should render the requested topic as xml" do
 				request.env["HTTP_ACCEPT"] = "application/xml"
-				mock_user.topics.should_receive(:find).with("37").and_return(mock_topic)
-				mock_thoughts = [
-					mock_model(Thought, { :to_xml => 'xml1' } ),
-					mock_model(Thought, { :to_xml => 'xml2' } )
-				]
-				mock_topic.should_receive(:thoughts).and_return(mock_thoughts)
-				mock_topic.should_receive(:to_xml).with( :include => :thoughts ).and_return( "hiya" )
-				do_action
-				response.should have_text("hiya")
+				@topic = Factory(:topic)
+				login( @topic.user )
+				do_action( @topic )
+				response.should have_tag( "topic" ) do 
+					with_tag("thoughts")
+				end
 			end
 		end
 	end
 
 	describe "responding to GET new" do
-		def do_action(userid=1)
+		def do_action(topic=nil)
 			get :new
 		end
 		it_should_behave_like( "login required" )
 		
 		it "should expose a new topic as @topic" do
-			mock_user.topics.should_receive(:build).and_return(mock_topic)
+			login( @u = Factory(:user) )
 			do_action
-			assigns[:topic].should equal(mock_topic)
+			assigns[:topic].should_not be_nil
+			assigns[:topic].user_id.should == @u.id
+			assigns[:topic].should be_new_record
 		end
 	end
 
 	describe "responding to GET edit" do
-		def do_action(userid=1)
-			get :edit, :id => "37"
+		def do_action(topic=nil)
+			get :edit, :id => topic ? topic.id : 239879238742
 		end
 		it_should_behave_like "login required"
 		it_should_behave_like "belongs to me"
 
 		it "should expose the requested topic as @topic" do
-			mock_user.topics.should_receive(:find).with("37").and_return(mock_topic)
-			do_action
-			assigns[:topic].should equal(mock_topic)
+			@t = Factory(:topic)
+			login( @t.user )
+			do_action( @t )
+			assigns[:topic].should == @t
 		end
-
 	end
 
 	describe "responding to POST create" do
-		def is_a_post ;  true ; end
-		def is_new ; true ; end
-
 		describe "with valid params" do
-			def do_action(userid=nil)
-				topic = {:these => 'params'}
-				topic[:user_id] = userid if userid
+			def do_action(user=nil)
+				topic = {:name => 'name', :summary => 'summary'}
+				topic[:user_id] = user.id if user
 				post :create, :topic => topic
 			end
 			it_should_behave_like "login required"
-			describe "--" do 
-				it_should_behave_like "belongs to me"
+			describe " - posting to a different userid" do
+				before do
+					login( Factory(:user) )
+					@other = Factory(:user)
+				end
+				it "should not be allowed" do
+					do_action(@other)
+					response.should_not be_success
+					response.should redirect_to(topics_url)
+					flash[:warning].should == "permission denied"
+				end
+				it "should not be allowed for XML" do
+					request.env["HTTP_ACCEPT"] = "application/xml"
+					do_action(@other)
+					response.should_not be_success
+				end
 			end
-	
-			it "should expose a newly created topic as @topic" do
-				mock_user.topics.should_receive(:build).with({ 'these' => 'params'}).and_return(mock_topic(:save => true))
-				do_action
-				assigns(:topic).should equal(mock_topic)
-			end
-			it "should redirect to the created topic" do
-				mock_user.topics.stub!(:build).and_return(mock_topic(:save => true))
-				post :create, :topic => {}
-				response.should redirect_to(topic_url(mock_topic))
+			describe "on success" do
+				before do
+					# mock_user.topics.should_receive(:build).with({ 'these' => 'params'}).and_return(mock_topic(:save => true))
+					@user = Factory(:user)
+					@user.state = 'active'; @user.save
+					login(@user)
+					debugger
+					do_action(@user)
+					response.should_not redirect_to(topics_url)
+
+					@user = User.find_by_id( @user.id )
+					@topic = @user.topics.first
+				end
+				it "should expose a newly created topic as @topic" do
+					@user.topics.length.should == 1
+					assigns(:topic).should == @topic
+
+				end
+				it "should redirect to the created topic" do
+					response.should redirect_to(topic_url(@topic))
+				end
 			end
 		end
 
 		describe "with invalid params" do
+			before do
+				@user = Factory(:user)
+				login(@user)
+				@topic = Factory.build(:topic, :user => @user)
+	
+				mock_association( @user, :topics, { :build => @topic } )
+				@topic.stub!(:save).and_return(false)
+
+				post :create, :topic => {}
+			end
 			it "should expose a newly created but unsaved topic as @topic" do
-				mock_user.topics.stub!(:build).with({'these' => 'params'}).and_return(mock_topic(:save => false))
-				post :create, :topic => {:these => 'params'}
-				assigns(:topic).should equal(mock_topic)
+				assigns(:topic).should equal(@topic)
 			end
 	
 			it "should re-render the 'new' template" do
-				mock_user.topics.stub!(:build).and_return(mock_topic(:save => false))
-				post :create, :topic => {}
 				response.should render_template('new')
 			end
 		end
 	end
 
 	describe "responding to PUT update" do
-		def is_a_post ; true ; end
+
 		describe "with valid params" do
-			def do_action(userid=nil)
-				topic = {:these => 'params'}
-				topic[:user_id] = userid if userid
-				put :update, :id => "37", :topic => topic
+			def do_action(topic=nil, user=nil)
+				topic = {:summary => 'updated summary'}
+				topic[:user_id] = user.id if user
+				put :update, :id => ( @topic ? @topic.id : 23423243 ) , :topic => topic
 			end
 			it_should_behave_like "login required"
 
-			describe "--" do
-				def shared_setup
-					mock_user.topics.should_receive(:find).with("37").and_return(mock_topic)
+			before do
+				@topic = Factory(:topic)
+				login(@topic.user)
+			end
+			describe " - posting to a different userid" do
+				before do
+					login( @other = Factory(:user) )
 				end
-				it_should_behave_like "belongs to me"
+				it "should not be allowed" do
+					do_action( @topic, @other )
+					response.should_not be_success
+					response.should redirect_to(topics_url)
+				end
+				it "should not be allowed for XML" do
+					request.env["HTTP_ACCEPT"] = "application/xml"
+					do_action( @topic, @other )
+					response.should_not be_success
+					response.should_not redirect_to(topics_url)
+					response.should_not be_redirect
+				end
 			end
 		
 			it "should update the requested topic" do
-				mock_user.topics.should_receive(:find).with("37").and_return(mock_topic)
-				mock_topic.should_receive(:update_attributes).with({'these' => 'params'})
-				do_action
+				do_action( @topic )
+				@updated = @topic.user.topics.find_by_id( @topic.id )
+				@updated.summary.should == "updated summary"
 			end
 
 			it "should redirect to the topic" do
-				topic = mock_topic({ :update_attributes => true })
-				mock_user.topics.stub!(:find).and_return(topic)
-				do_action
-				response.should redirect_to( topic_url( topic ) )
+				do_action( @topic )
+				response.should redirect_to( topic_url( @topic ) )
 			end
 #			describe "(in-place editing)" do
 #				it "should respond to an xhr request with the new field value"
@@ -265,45 +251,48 @@ describe TopicsController do
 		end
     
 		describe "with invalid params" do
-			it "should update the requested topic" do
-				mock_user.topics.should_receive(:find).with("37").and_return(mock_topic)
-				mock_topic.should_receive(:update_attributes).with({'these' => 'params'})
-				put :update, :id => "37", :topic => {:these => 'params'}
+			before do
+				@topic = Factory(:topic)
+				login(@topic.user)
+	
+				mock_association( @topic.user, :topics, { :find_by_id => @topic } )
+				@topic.stub!(:update_attributes).and_return(false)
+#				@topic.stub!(:save).and_return(false)
+
+				put :update, :id => @topic.id, :topic => {}
 			end
 
+
 			it "should expose the topic as @topic" do
-				Topic.stub!(:find).and_return(mock_topic(:update_attributes => false))
-				mock_user.topics.stub!(:find).and_return(mock_topic(:update_attributes => false))
-				put :update, :id => "1"
-				assigns(:topic).should equal(mock_topic)
+				assigns(:topic).should equal(@topic)
 			end
 
 			it "should re-render the 'edit' template" do
-				mock_user.topics.stub!(:find).and_return(mock_topic(:update_attributes => false))
-				put :update, :id => "1"
 				response.should render_template('edit')
 			end
 		end
 	end
 
 	describe "responding to DELETE destroy" do
-		def do_action(userid=1)
-			delete :destroy, :id => "1"
-		end
 		it_should_behave_like "login required"
 		it_should_behave_like "belongs to me"
 
-		it "should destroy the requested topic" do
-			t = Factory(:topic)
-			login( t.user )
-			delete :destroy, :id => t.id
-			Topic.find_by_id( t.id ).should be_nil
+		def do_action(topic=nil)
+			delete :destroy, :id => topic ? topic.id : 2342342
 		end
-  
-		it "should redirect to the topics list" do
-			mock_user.topics.stub!(:find).and_return(mock_topic(:destroy => true))
-			do_action
-			response.should redirect_to(topics_url)
+		describe "when logged in" do
+			before do
+				@topic = Factory(:topic)
+				login( @topic.user )
+				do_action(@topic)
+			end
+			it "should destroy the requested topic" do
+				Topic.find_by_id( @topic.id ).should be_nil
+			end
+  	
+			it "should redirect to the topics list" do
+				response.should redirect_to(topics_url)
+			end
 		end
 	end
 
