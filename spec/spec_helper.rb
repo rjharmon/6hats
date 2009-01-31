@@ -145,3 +145,14 @@ Spec::Runner.configure do |config|
 end
 
 	
+def mock_association( obj, assoc, stubs )
+	mock_ass = mock( [ "fake association for #{assoc.to_s}" ], stubs )
+	obj.stub!(assoc).and_return( mock_ass )
+end
+
+def login( user ) 
+	@request.session[:user_id] = user ? user.id : nil
+	if user
+		User.stub!(:find_by_id).with(user.id).and_return user
+	end
+end
