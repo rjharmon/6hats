@@ -46,7 +46,7 @@ describe TopicsController do
 	
 	describe "login required", :shared => true do
 		it "should not be actionable if I'm not logged in" do
-			login(nil)
+			do_login(nil)
 			do_action
 			response.should redirect_to( login_url )
 			flash[:notice].should_not be_blank
@@ -61,7 +61,7 @@ describe TopicsController do
 
 		describe "when there are topics" do
 			before do
-				login( @user = Factory( :user ))
+				do_login( @user = Factory( :user ))
 				@tlist = [1..5].map { |n| Factory( :topic, :user => @user ) }
 			end
 
@@ -81,7 +81,7 @@ describe TopicsController do
 		
 		describe "when there are no topics" do
 			it "should render the topic creation page instead" do
-				login( @user = Factory(:user) )
+				do_login( @user = Factory(:user) )
 				do_action
 				response.should redirect_to(new_topic_url)
 				flash[:notice].should_not be_blank
@@ -99,7 +99,7 @@ describe TopicsController do
 
 		it "should expose the requested topic as @topic" do
 			@topic = Factory(:topic)
-			login( @topic.user )
+			do_login( @topic.user )
 			do_action(@topic)
 			assigns[:topic].should == @topic
 			assigns[:thoughts].should == []
@@ -109,7 +109,7 @@ describe TopicsController do
 			it "should render the requested topic as xml" do
 				request.env["HTTP_ACCEPT"] = "application/xml"
 				@topic = Factory(:topic)
-				login( @topic.user )
+				do_login( @topic.user )
 				do_action( @topic )
 				response.should have_tag( "topic" ) do 
 					with_tag("thoughts")
@@ -125,7 +125,7 @@ describe TopicsController do
 		it_should_behave_like( "login required" )
 		
 		it "should expose a new topic as @topic" do
-			login( @u = Factory(:user) )
+			do_login( @u = Factory(:user) )
 			do_action
 			assigns[:topic].should_not be_nil
 			assigns[:topic].user_id.should == @u.id
@@ -142,7 +142,7 @@ describe TopicsController do
 
 		it "should expose the requested topic as @topic" do
 			@t = Factory(:topic)
-			login( @t.user )
+			do_login( @t.user )
 			do_action( @t )
 			assigns[:topic].should == @t
 		end
@@ -158,7 +158,7 @@ describe TopicsController do
 			it_should_behave_like "login required"
 			describe " - posting to a different userid" do
 				before do
-					login( Factory(:user) )
+					do_login( Factory(:user) )
 					@other = Factory(:user)
 				end
 				it "should not be allowed" do
@@ -178,7 +178,7 @@ describe TopicsController do
 					# mock_user.topics.should_receive(:build).with({ 'these' => 'params'}).and_return(mock_topic(:save => true))
 					@user = Factory(:user)
 					@user.state = 'active'; @user.save
-					login(@user)
+					do_login(@user)
 					debugger
 					do_action(@user)
 					response.should_not redirect_to(topics_url)
@@ -200,7 +200,7 @@ describe TopicsController do
 		describe "with invalid params" do
 			before do
 				@user = Factory(:user)
-				login(@user)
+				do_login(@user)
 				@topic = Factory.build(:topic, :user => @user)
 	
 				mock_association( @user, :topics, { :build => @topic } )
@@ -230,11 +230,11 @@ describe TopicsController do
 
 			before do
 				@topic = Factory(:topic)
-				login(@topic.user)
+				do_login(@topic.user)
 			end
 			describe " - posting to a different userid" do
 				before do
-					login( @other = Factory(:user) )
+					do_login( @other = Factory(:user) )
 				end
 				it "should not be allowed" do
 					do_action( @topic, @other )
@@ -269,7 +269,7 @@ describe TopicsController do
 		describe "with invalid params" do
 			before do
 				@topic = Factory(:topic)
-				login(@topic.user)
+				do_login(@topic.user)
 	
 				mock_association( @topic.user, :topics, { :find_by_id => @topic } )
 				@topic.stub!(:update_attributes).and_return(false)
@@ -299,7 +299,7 @@ describe TopicsController do
 		describe "when logged in" do
 			before do
 				@topic = Factory(:topic)
-				login( @topic.user )
+				do_login( @topic.user )
 				do_action(@topic)
 			end
 			it "should destroy the requested topic" do
