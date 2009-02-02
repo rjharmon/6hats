@@ -1,33 +1,49 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+
 describe TopicsController do
-	def mock_association( obj, assoc, stubs )
-		mock_ass = mock( [ "fake association for #{assoc.to_s}" ], stubs )
-		obj.stub!(assoc).and_return( mock_ass )
+	def assemble_belonging(user)
+		@topic = Factory(:topic, :user => user)
+		{
+			:belonging => @topic,
+			:assigns => :topic,
+			:or_redirect => topics_url
+		}		
 	end
-
-	def login( user ) 
-		@request.session[:user_id] = user ? user.id : nil
-		if user
-			User.stub!(:find_by_id).with(user.id).and_return user
-		end
-
-	end
-
-	before :all do
-	end  
 
 	describe "belongs to me", :shared => true do
 		it "should belong to me - else, should not be actionable" do
 			@user = Factory(:user)
-			login( @user )
-			@topic = Factory(:topic)
-			do_action(@topic)
-			assigns[:topic].should be_nil
+			do_login( @user )
+			if( ! respond_to?(:assemble_belonging) )
+				"no supporting factory callback".should == "assemble_belonging(user) method to construct an object owned by this user"
+			end
+			do_action()
+			results = assemble_belonging( Factory(:user))
+			
+			begin  # check the options and give feedback to the developer, if they haven't provided enough info
+				if ! results.kind_of?(Hash)
+					"wrong return type".should == "assemble_belonging() should return a hash with :belonging => object, :assigns => :key, :or_redirect => url"
+				end
+				unless belonging = results[:belonging]
+					"no returned belonging object".should == "a generated object belonging to the passed user"
+				end
+				
+				unless expectation = results[:assigns]
+					"no returned assigns symbol".should == "[:assigns] entry with the symbol that will be expected to be set if the object belongs to the passed user"
+				end
+				unless redir = results[:or_redirect]
+					"no returned redirection expectation".should == "[:or_redirect] entry with the url for redirection, if the current user can't access the object"
+				end
+			end
+			do_action(belonging)
+
+			assigns[expectation].should be_nil
 			response.should be_redirect
-			response.should redirect_to( topics_url )
+			response.should redirect_to( redir )
 			flash[:warning].should == "permission denied"
 		end
 	end
+	
 	describe "login required", :shared => true do
 		it "should not be actionable if I'm not logged in" do
 			login(nil)
