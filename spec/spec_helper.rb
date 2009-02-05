@@ -139,6 +139,54 @@ module ViewExamples
 	end
 end
 
+module ControllerExamples
+	module ExampleMethods
+	end
+	module ExampleGroupMethods
+		describe "belongs to me", :shared => true do
+			it "should belong to me - else, should not be actionable" do
+				@user = Factory(:user)
+				do_login( @user )
+				if( ! respond_to?(:assemble_belonging) )
+					"no supporting factory callback".should == "assemble_belonging(user) method to construct an object owned by this user"
+				end
+				do_action()
+				results = assemble_belonging( Factory(:user))
+				
+				begin  # check the options and give feedback to the developer, if they haven't provided enough info
+					if ! results.kind_of?(Hash)
+						"wrong return type".should == "assemble_belonging() should return a hash with :belonging => object, :assigns => :key, :or_redirect => url"
+					end
+					unless belonging = results[:belonging]
+						"no returned belonging object".should == "a generated object belonging to the passed user"
+					end
+					
+					unless expectation = results[:assigns]
+						"no returned assigns symbol".should == "[:assigns] entry with the symbol that will be expected to be set if the object belongs to the passed user"
+					end
+					unless redir = results[:or_redirect]
+						"no returned redirection expectation".should == "[:or_redirect] entry with the url for redirection, if the current user can't access the object"
+					end
+				end
+				do_action(belonging)
+
+				assigns[expectation].should be_nil
+				response.should be_redirect
+				response.should redirect_to( redir )
+				flash[:warning].should == "permission denied"
+			end
+		end
+		
+		describe "login required", :shared => true do
+			it "should not be actionable if I'm not logged in" do
+				do_login(nil)
+				do_action
+				response.should redirect_to( login_url )
+				flash[:notice].should_not be_blank
+			end
+		end
+	end
+end
 
 Spec::Runner.configure do |config|
   config.include(ViewExamples, :type => :view)
