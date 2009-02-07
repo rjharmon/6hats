@@ -27,3 +27,10 @@
 			t.summary { |s| Factory.next :generated_string }
 			t.user { |u| u.association( :user ) }
 		end
+
+    Factory.define :thought do |t|
+      t.summary { |s| Factory.next :generated_string }
+      t.detail { |d| Factory.next :generated_string }
+      t.topic { |t| t.association( :topic ) }
+    end
+    

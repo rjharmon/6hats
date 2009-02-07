@@ -4,42 +4,25 @@ class TopicsController < ApplicationController
   before_filter :check_userid,  :only => [ :create, :update ]
   
 protected
-	def fetch_user
-		if ! @user = current_user
-			flash[:notice] = "Please log in to continue"
-			redirect_to login_url 
-		end
-	end
-	def denied(detail, msg = "permission denied")
-		logger.info( "Permission denied for user '#{@user.login}': #{detail}" )
-		respond_to do |format|
-			format.html do
-				flash[:warning] = msg; 
-				redirect_to topics_url 
-			end
-			format.xml { render :xml => msg, :status => :unprocessable_entity }
-		end
-		return false
-	end
-	def fetch_topic
-		if params[:id]
-			@topic = @user.topics.find_by_id(params[:id])
-			if ! @topic 
-				denied( "user doesn't have that topic id" )
-				return false;
-			end
-		else
-			@topics = @user.topics.find(:all)
-		end
-	end
-	def check_userid
-		if params[:topic] && u = params[:topic][:user_id]
-			unless u == current_user.id
-				denied( "User can't post to that topic ID" )
-				return false
-			end
-		end
-	end
+    
+  def fetch_topic
+    if params[:id]
+      @topic = @user.topics.find_by_id(params[:id])
+      if ! @topic 
+        return denied( "user doesn't have that topic id", topics_url )
+      end
+    else
+      @topics = @user.topics.find(:all)
+    end
+  end
+  def check_userid
+    if params[:topic] && u = params[:topic][:user_id]
+      unless u == current_user.id
+        denied( "User can't post to that topic ID", topics_url )
+        return false
+      end
+    end
+  end
 public
   # GET /topics
   # GET /topics.xml
@@ -47,10 +30,10 @@ public
 
     respond_to do |format|
       format.html do
-      	 if @topics.size == 0
-      	 	flash[:notice] = "You don't have any topics yet.  Create a new one here."
-      	 	redirect_to new_topic_url
-      	 end
+         if @topics.size == 0
+          flash[:notice] = "You don't have any topics yet.  Create a new one here."
+          redirect_to new_topic_url
+         end
       end
       format.xml  { render :xml => @topics }
     end

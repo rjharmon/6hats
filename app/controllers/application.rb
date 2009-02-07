@@ -14,4 +14,26 @@ class ApplicationController < ActionController::Base
   # Uncomment this to filter the contents of submitted sensitive data parameters
   # from your application log (in this case, all fields with names like "password"). 
   # filter_parameter_logging :password
+
+
+  def fetch_user
+    if ! @user = current_user
+      flash[:notice] = "Please log in to continue"
+      redirect_to login_url 
+      return false
+    end
+  end
+
+  def denied(detail, redir_to, msg = "permission denied")
+    logger.info( "Permission denied for user '#{@user.login}': #{detail}" )
+    respond_to do |format|
+      format.html do
+        flash[:warning] = msg; 
+        redirect_to redir_to
+      end
+      format.xml { render :xml => msg, :status => :unprocessable_entity }
+    end
+    return false
+  end
+
 end

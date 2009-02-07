@@ -10,7 +10,7 @@ include AuthenticatedSystem
 include AuthenticatedTestHelper
 
 def content_for(name)
-	t = response.template.instance_variable_get("@content_for_#{name}")
+  t = response.template.instance_variable_get("@content_for_#{name}")
 end
 
 Spec::Runner.configure do |config|
@@ -106,101 +106,106 @@ module Spec::Mocks::Methods
 end
 
 module ViewExamples
-	module ExampleMethods
-	end
-	module ExampleGroupMethods
-		describe "a view", :shared => true do
-			it "should have a title" do
-				do_action
-				assigns[:title].should_not be_blank
-			end
-		end
-		describe "a form", :shared => true do
-			it "should have a nice submit button" do
-				( action, object ) = do_action
-				label = action == 'new' ? "Create" : "Save"
-				response.should have_tag("form[method=post][class='#{action}_#{object}']" ) do 
-					with_tag("input[type='submit'][class='button'][value='#{label}']" )
-				end
-			end
+  module ExampleMethods
+  end
+  module ExampleGroupMethods
+    describe "a view", :shared => true do
+      it "should have a title" do
+        do_action
+        assigns[:title].should_not be_blank
+      end
+    end
+    describe "a form", :shared => true do
+      it "should have a nice submit button" do
+        ( action, object ) = do_action
+        label = action == 'new' ? "Create" : "Save"
+        response.should have_tag("form[method=post][class='#{action}_#{object}']" ) do 
+          with_tag("input[type='submit'][class='button'][value='#{label}']" )
+        end
+      end
 
-			it "should have a nice cancel button" do
-				( action, object ) = do_action
-				label = action == 'new' ? "Create" : "Save"
-				response.should have_tag("form[method=post][class=#{action}_#{object}]" ) do
-					with_tag("a[class=cancel-button]", "Cancel" )
-				end
-			end
-		end
-	end
-	def self.included(receiver)
-	    	receiver.extend         ExampleGroupMethods
-		receiver.send :include, ExampleMethods
-	end
+      it "should have a nice cancel button" do
+        ( action, object ) = do_action
+        label = action == 'new' ? "Create" : "Save"
+        response.should have_tag("form[method=post][class=#{action}_#{object}]" ) do
+          with_tag("a[class=cancel-button]", "Cancel" )
+        end
+      end
+    end
+  end
+  def self.included(receiver)
+        receiver.extend         ExampleGroupMethods
+    receiver.send :include, ExampleMethods
+  end
 end
 
-module ControllerExamples
-	module ExampleMethods
-	end
-	module ExampleGroupMethods
-		describe "belongs to me", :shared => true do
-			it "should belong to me - else, should not be actionable" do
-				@user = Factory(:user)
-				do_login( @user )
-				if( ! respond_to?(:assemble_belonging) )
-					"no supporting factory callback".should == "assemble_belonging(user) method to construct an object owned by this user"
-				end
-				do_action()
-				results = assemble_belonging( Factory(:user))
-				
-				begin  # check the options and give feedback to the developer, if they haven't provided enough info
-					if ! results.kind_of?(Hash)
-						"wrong return type".should == "assemble_belonging() should return a hash with :belonging => object, :assigns => :key, :or_redirect => url"
-					end
-					unless belonging = results[:belonging]
-						"no returned belonging object".should == "a generated object belonging to the passed user"
-					end
-					
-					unless expectation = results[:assigns]
-						"no returned assigns symbol".should == "[:assigns] entry with the symbol that will be expected to be set if the object belongs to the passed user"
-					end
-					unless redir = results[:or_redirect]
-						"no returned redirection expectation".should == "[:or_redirect] entry with the url for redirection, if the current user can't access the object"
-					end
-				end
-				do_action(belonging)
+module MyControllerExamples
+  module ExampleMethods
+  end
+  module ExampleGroupMethods
+    describe "belongs to me", :shared => true do
+      it "should belong to me - else, should not be actionable" do
+        @user = Factory(:user)
+        do_login( @user )
+        if( ! respond_to?(:assemble_belonging) )
+          "no supporting factory callback".should == "assemble_belonging(user) method to construct an object owned by this user"
+        end
+        do_action()
+        results = assemble_belonging( Factory(:user))
+        
+        begin  # check the options and give feedback to the developer, if they haven't provided enough info
+          if ! results.kind_of?(Hash)
+            "wrong return type".should == "assemble_belonging() should return a hash with :belonging => object, :assigns => :key, :or_redirect => url"
+          end
+          unless belonging = results[:belonging]
+            "no returned belonging object".should == "a generated object belonging to the passed user"
+          end
+          
+          unless expectation = results[:assigns]
+            "no returned assigns symbol".should == "[:assigns] entry with the symbol that will be expected to be set if the object belongs to the passed user"
+          end
+          unless redir = results[:or_redirect]
+            "no returned redirection expectation".should == "[:or_redirect] entry with the url for redirection, if the current user can't access the object"
+          end
+        end
+        do_action(belonging)
 
-				assigns[expectation].should be_nil
-				response.should be_redirect
-				response.should redirect_to( redir )
-				flash[:warning].should == "permission denied"
-			end
-		end
-		
-		describe "login required", :shared => true do
-			it "should not be actionable if I'm not logged in" do
-				do_login(nil)
-				do_action
-				response.should redirect_to( login_url )
-				flash[:notice].should_not be_blank
-			end
-		end
-	end
+        assigns[expectation].should be_nil
+        response.should be_redirect
+        response.should redirect_to( redir )
+        flash[:warning].should == "permission denied"
+      end
+    end
+    
+    describe "login required", :shared => true do
+      it "should not be actionable if I'm not logged in" do
+#        if( ! respond_to?(:no_login_context) )
+#          "no supporting callback".should == ":no_login_context() method to perform any needed setup"
+#        end
+#       no_login_context()
+        do_login(nil)
+        do_action
+        response.should redirect_to( login_url )
+        flash[:notice].should_not be_blank
+      end
+    end
+  end
 end
 
 Spec::Runner.configure do |config|
   config.include(ViewExamples, :type => :view)
+#  config.include(MyControllerExamples, :type => :controller)
 end
 
-	
+  
 def mock_association( obj, assoc, stubs )
-	mock_ass = mock( [ "fake association for #{assoc.to_s}" ], stubs )
-	obj.stub!(assoc).and_return( mock_ass )
+  mock_ass = mock( [ "fake association for #{assoc.to_s}" ], stubs )
+  mock_ass.stub!(assoc).and_return( mock_ass )
 end
 
 def do_login( user ) 
-	@request.session[:user_id] = user ? user.id : nil
-	if user
-		User.stub!(:find_by_id).with(user.id).and_return user
-	end
+  @request.session[:user_id] = user ? user.id : nil
+  if user
+    User.stub!(:find_by_id).with(user.id).and_return user
+  end
 end

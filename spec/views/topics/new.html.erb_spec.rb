@@ -21,6 +21,7 @@ describe "/topics/new.html.erb" do
     
     response.should have_tag("form[action=?][method=post]", topics_path) do
       with_tag("input#topic_name[name=?]", "topic[name]")
+      with_tag("input#topic_summary[name=?]", "topic[summary]")
     end
   end
 end

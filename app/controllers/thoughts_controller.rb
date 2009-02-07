@@ -1,14 +1,19 @@
 class ThoughtsController < ApplicationController
+  before_filter :fetch_user
+  before_filter :fetch_topic
   
-  before_filter :load_topic
+protected
   
-  protected
-  
-  def load_topic
-    @topic = Topic.find(params[:topic_id])
+  def fetch_topic
+    if params[:topic_id]
+      @topic = @user.topics.find_by_id(params[:topic_id])
+    end
+    if ! @topic
+      return denied( "user doesn't have that topic id", topics_url )
+    end
   end
   
-  public
+public
   
   # GET /topics/:topic_id/thoughts
   # GET /topics/:topic_id/thoughts.xml
@@ -41,8 +46,10 @@ class ThoughtsController < ApplicationController
   # POST /topics/:topic_id/thoughts.xml
   def create
     @thought = @topic.thoughts.build(params[:thought])
-
+    debugger
+    
     respond_to do |format|
+      debugger
       if @thought.save
         flash[:notice] = 'Thought was successfully created.'
         format.html { redirect_to(@topic) }
@@ -59,6 +66,7 @@ class ThoughtsController < ApplicationController
   def update
     @thought = @topic.thoughts.find(params[:id])
 
+    puts "parms: "+params.to_yaml
     respond_to do |format|
       if @thought.update_attributes(params[:thought])
         flash[:notice] = 'Thought was successfully updated.'

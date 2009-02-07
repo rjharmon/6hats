@@ -4,8 +4,12 @@
   <%= f.error_messages %>
 
   <p>
-    <%= f.label :name %><br />
+    <%= f.label :name %>
+
     <%= f.text_field :name %>
+  </p>
+  <p><%= f.label :summary %>
+    <%= f.text_area :summary, :rows => 5 %>
   </p>
   <%= form_buttons( f, "Create", topics_url ) %>
 <% end %>

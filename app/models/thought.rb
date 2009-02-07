@@ -1,5 +1,6 @@
 class Thought < ActiveRecord::Base
 	belongs_to :topic
+	validates_length_of :summary, :minimum => 3
 # TODO:	belongs_to :hat
 
 
