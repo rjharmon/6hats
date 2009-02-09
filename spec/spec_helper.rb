@@ -131,6 +131,11 @@ module ViewExamples
           with_tag("a[class=cancel button]", "Cancel" )
         end
       end
+      it "should have a no 'back' link" do
+        ( action, object ) = do_action
+        label = action == 'new' ? "Create" : "Save"
+        response.should_not have_text(/<a href=".*?">Back<\/a>/i )
+      end
     end
   end
   def self.included(receiver)
