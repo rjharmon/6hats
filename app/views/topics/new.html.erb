@@ -1,17 +1,15 @@
 <% @title = "New topic" %>
 
-<% form_for(@topic) do |f| %>
-  <%= f.error_messages %>
+<% render :layout => 'topic' do %>
+  <% form_for(@topic) do |f| %>
+    <%= f.error_messages %>
 
-  <p>
-    <%= f.label :name %>
-
-    <%= f.text_field :name %>
-  </p>
-  <p><%= f.label :summary %>
-    <%= f.text_area :summary, :rows => 5 %>
-  </p>
-  <%= form_buttons( f, "Create", topics_url ) %>
+    <p><%= f.label :name %><br>
+      <%= f.text_field :name, :class => "full" %>
+    </p>
+    <p><%= f.label :summary %><br>
+      <%= f.text_area :summary, :rows => 5, :class => "full" %>
+    </p>
+    <%= form_buttons( f, "Create", topics_url ) %>
+  <% end %>
 <% end %>
-
-<%= link_to 'Back', topics_path %>

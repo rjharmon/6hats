@@ -4,4 +4,6 @@
 <% end %>
 <%= link_to( 'Edit Topic Info', edit_topic_path(@topic), :class => 'button', :id => 'edit_topic') %>
 
+<%= render :partial => 'topic' %>
+
 <%= render :file => "thoughts/index" %>
