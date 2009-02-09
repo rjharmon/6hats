@@ -56,8 +56,8 @@ describe ThoughtsController do
     it_should_behave_like "login required"
     it_should_behave_like "belongs to me"
 
-    def do_action( thought=@thought)
-      get :edit, :id => thought.id, :topic_id => thought.topic.id
+    def do_action( thought=@thought, topic=thought.topic)
+      get :edit, :id => thought.id, :topic_id => topic.id
     end
       
     it "should expose the requested thought as @thought" do
@@ -66,6 +66,44 @@ describe ThoughtsController do
       assigns[:thought].should == @thought
     end
 
+    describe "a thought not belonging to the given topic" do
+      before do
+        @topic = Factory( :topic )
+        do_login( @topic.user )
+        @other_topic = Factory( :topic, :user => @topic.user )
+        @thought = Factory(:thought, :topic => @other_topic )
+        do_action(@thought,@topic)
+      end
+      it "should not succeed" do
+        response.should_not be_success
+      end
+      it "should redirect to the given topic" do
+        response.should redirect_to( topic_url(@topic) )
+      end
+      it "should show an error message" do
+        flash[:notice].should =~ /No such thought/i
+      end
+    end
+    describe "a thought not belonging to this user" do
+      before :each do
+        @thought = Factory(:thought)
+        @other = Factory(:thought)
+        do_login( @other.topic.user )
+        do_action
+      end
+      it "should not succeed" do
+        response.should_not be_success
+      end
+      it "should redirect to the user's topic list" do
+        response.should redirect_to( topics_url )
+      end
+      it "should show an error message" do
+        flash[:warning].should =~ /Permission denied/i
+      end
+      
+    end
+    
+    
   end
 
   describe "responding to POST create" do
@@ -93,7 +131,7 @@ describe ThoughtsController do
           do_action(@other)
           response.should_not be_success
           response.should redirect_to(topics_url)
-          flash[:warning].should == "permission denied"
+          flash[:warning].should =~ /Permission denied/i
         end
         it "should not be allowed for XML" do
           request.env["HTTP_ACCEPT"] = "application/xml"
@@ -136,8 +174,7 @@ describe ThoughtsController do
       end
       
       it "should show errors" do
-        pending("fix me")
-        flash[:error].should_not be_empty
+        assigns(:thought).errors.should_not be_empty
       end
       
       it "should re-render the 'new' template" do
@@ -156,7 +193,6 @@ describe ThoughtsController do
     end
 
     def do_action(topic=@topic)
-      puts "doing action"
       put :update, :id => @thought.id, :thought => { :summary => "new summary text" }, :topic_id => topic.id
     end
 
@@ -170,7 +206,6 @@ describe ThoughtsController do
         @thought = Thought.find(@thought.id)
       end
       it "should update the requested thought" do
-        puts "thoughts are "+Thought.find(:all).to_yaml
         @thought.summary.should == "new summary text"
       end
 
@@ -178,8 +213,7 @@ describe ThoughtsController do
         assigns(:thought).should == @thought
       end
 
-      it "should redirect to the thought" do
-        pending "compare implementation and test - topic or thought???"
+      it "should redirect to the topic" do
         response.should redirect_to(topic_url(@topic))
       end
 
@@ -205,23 +239,25 @@ describe ThoughtsController do
     end
   
     describe "with invalid params" do
-
-      it "should update the requested thought" do
-        # !!!
-        mock_topic.thoughts.should_receive(:find).with("37").and_return(mock_thought)
-        mock_thought.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, :id => "37", :thought => {:these => 'params'}, :topic_id => "1"
+      before do
+        @thought = Factory(:thought)
+        do_login @thought.topic.user
+        put :update, :id => @thought.id, :thought => {:summary => 'f'}, :topic_id => @thought.topic.id
+      end
+      it "should NOT update the requested thought" do
+        @thought.reload
+        @thought.summary.should_not == 'f'
       end
 
+      
       it "should expose the thought as @thought" do
-        mock_topic.thoughts.stub!(:find).and_return(mock_thought(:update_attributes => false))
-        put :update, :id => "1", :topic_id => "1"
-        assigns(:thought).should equal(mock_thought)
+        assigns(:thought).should == @thought
+      end
+      it "should expose errors to the view" do
+        assigns(:thought).errors.should_not be_empty
       end
 
       it "should re-render the 'edit' template" do
-        mock_topic.thoughts.stub!(:find).and_return(mock_thought(:update_attributes => false))
-        put :update, :id => "1", :topic_id => "1"
         response.should render_template('edit')
       end
     end
@@ -229,25 +265,31 @@ describe ThoughtsController do
   end
 
   describe "responding to DELETE destroy" do
+    before do
+      @thought = Factory(:thought)
+    end
     it_should_behave_like "login required"
     it_should_behave_like "belongs to me"
 
-    before do
-      @thought = Factory(:thought)
-      @topic = @thought.topic
-      do_login( @topic.user )        
-      do_action
+    def do_action(thought=@thought)
+      delete :destroy, :id => thought.id, :topic_id => thought.topic.id
     end
 
-    def do_action
-      delete :destroy, :id => @thought.id, :topic_id => @topic.id
-    end
-    it "should destroy the requested thought" do
-      @topic.thoughts.find_by_id( @thought.id ).should be_nil
-    end
+    describe "when allowed" do
+      before do
+        @thought = Factory(:thought)
+        @topic = @thought.topic
+        do_login( @topic.user )        
+        do_action
+      end
+
+      it "should destroy the requested thought" do
+        @topic.thoughts.find_by_id( @thought.id ).should be_nil
+      end
   
-    it "should redirect to the thoughts list" do
-      response.should redirect_to(topic_url(@topic))
+      it "should redirect to the thoughts list" do
+        response.should redirect_to(topic_url(@topic))
+      end
     end
 
   end

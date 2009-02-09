@@ -1,5 +1,7 @@
-<% @title = h @topic.name %>
-<p><%= markdown @topic.summary %></p>
-<%= link_to 'Edit', edit_topic_path(@topic), :class => 'button', :id => 'edit_topic' %>
+<% @title = h( @topic.name ) %>
+<% content_for :instructions do %>
+  <%= markdown( @topic.summary ) %>
+<% end %>
+<%= link_to( 'Edit Topic Info', edit_topic_path(@topic), :class => 'button', :id => 'edit_topic') %>
 
 <%= render :file => "thoughts/index" %>

@@ -62,7 +62,9 @@ h2 {
 .subheader h2 { 
 	color: #000; 
 	background: inherit;
-	font-size:20px
+	font-size:20px;
+	display:inline
+	
 }
 .right h2 {
 	font-size:15px
@@ -103,53 +105,51 @@ input.search {
 	color: #808080;
 }
 
-input.button {
-	border: 0;
-	height: 28px;
-	padding-bottom:1px;
-	width: 76px;
-	background: url(/images/button.gif) no-repeat 0 1px;
-	color: #FFF;
-	font: bold 1.1em Arial, Helvetica, Sans-Serif;
+.button {
+
+/*	 removed: padding-top:5px; 
+	text-align:center;
+	*/
+	display:inline-block;
+	color: #fff;
+	font: bold 13px Arial, Helvetica, Sans-Serif;
+	text-decoration:none;
+
+	background-image: url(/images/button-bg.gif);
+	padding: 4px 10px !important;
+	 added: position: absolute;
+	margin: 4px 6px 1px 0px !important;
+	background-repeat: repeat-x;
+	background-color: #b75438;
+	border: 2px outset;
+	border-top: 1px #8f412c;
+	border-left: 1px #8f412c;
+	border-bottom: 2px outset #682513;
+	border-right: 2px outset #682513;
+/*	border-color: #8f412c #682513 #682513 #8f412c; */
+	-moz-border-radius: 7px;
+	-webkit-border-radius: 7px;	
 	cursor:pointer;
-}
 
-.cancel-button {
 }
-
-a.cancel-button {
-	display:inline-block;
-	border: 0;
-	height: 27px;
-	width: 76px;
-	background: url(/images/cancel-button.gif) no-repeat;
-	text-align:center;
-	padding-top:5px;
-
-	color: #fff;
-	font: bold 1.1em Arial, Helvetica, Sans-Serif;
-	text-decoration:none;
+.cancel {
+	background-image: none !important;
+	background-color: #666;
+	border: 2px outset;
+	border-top: 1px #8f412c;
+	border-left: 1px #8f412c;
+	border-color: #000 #666 #666 #000;
+	border-bottom: 2px outset #666;
+	border-right: 2px outset #666;
 }
-a.cancel-button:hover {
+.button:hover {
+	background-image: url(/images/button-bg.gif);
 	color:#ccc;
 	text-decoration:none;
 }
-
-a.button {
-	display:inline-block;
-	border: 0;
-	height: 27px;
-	width: 76px;
-	background: url(/images/button.gif) no-repeat;
-	text-align:center;
-	padding-top:5px;
-
-	color: #fff;
-	font: bold 1.1em Arial, Helvetica, Sans-Serif;
-	text-decoration:none;
-}
-a.button:hover {
+.cancel:hover {
 	color:#ccc;
+	background-color: #666;
 	text-decoration:none;
 }
 

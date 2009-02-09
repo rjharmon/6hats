@@ -11,7 +11,7 @@ describe "/topics/edit.html.erb" do
     )
   end
 
-  it_should_behave_like "a view"
+  it_should_behave_like( "a view" )
   it_should_behave_like( "a form" )
   def do_action
     render "/topics/edit.html.erb"

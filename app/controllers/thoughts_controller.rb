@@ -1,7 +1,9 @@
 class ThoughtsController < ApplicationController
   before_filter :fetch_user
   before_filter :fetch_topic
-  
+  before_filter :fetch_thought, :except => [ :new, :create ]
+#  before_filter :check_topic_id, :only => [ :create, :update ]
+
 protected
   
   def fetch_topic
@@ -13,13 +15,23 @@ protected
     end
   end
   
+  def fetch_thought
+    if params[:id]
+      @thought = @topic.thoughts.find_by_id(params[:id])
+      if ! @thought 
+        return gripe( "No such thought for that topic", topic_url( @topic ) )
+      end
+    else
+      @thoughts = @topic.thoughts.find(:all)
+    end
+  end
+  
+  
 public
   
   # GET /topics/:topic_id/thoughts
   # GET /topics/:topic_id/thoughts.xml
   def index
-    @thoughts = @topic.thoughts
-    
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @thoughts }
@@ -39,17 +51,16 @@ public
 
   # GET /topics/:topic_id/thoughts/edit
   def edit
-    @thought = @topic.thoughts.find(params[:id])
+    # done by before_filter
+    # @thought = @topic.thoughts.find(params[:id])
   end
 
   # POST /topics/:topic_id/thoughts
   # POST /topics/:topic_id/thoughts.xml
   def create
     @thought = @topic.thoughts.build(params[:thought])
-    debugger
     
     respond_to do |format|
-      debugger
       if @thought.save
         flash[:notice] = 'Thought was successfully created.'
         format.html { redirect_to(@topic) }
@@ -64,9 +75,6 @@ public
   # PUT /topics/:topic_id/thoughts/1
   # PUT /topics/:topic_id/thoughts/1.xml
   def update
-    @thought = @topic.thoughts.find(params[:id])
-
-    puts "parms: "+params.to_yaml
     respond_to do |format|
       if @thought.update_attributes(params[:thought])
         flash[:notice] = 'Thought was successfully updated.'
@@ -82,7 +90,6 @@ public
   # DELETE /topics/:topic_id/thoughts/1
   # DELETE /topics/:topic_id/thoughts/1.xml
   def destroy
-    @thought = @topic.thoughts.find(params[:id])
     @thought.destroy
 
     respond_to do |format|

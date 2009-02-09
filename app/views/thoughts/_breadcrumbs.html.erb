@@ -1,0 +1,5 @@
+<%= render :partial => "topics/breadcrumbs" %>
+
+<% unless current_page?(topic_url(@topic)) %>
+  <%= link_to( @topic.name, topic_url( @topic )) %> &gt;
+<% end %>

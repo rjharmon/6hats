@@ -15,21 +15,24 @@ describe "/topics/index.html.erb" do
   end
 
   it_should_behave_like "a view"
+
   def do_action
     render "/topics/index.html.erb"
   end
+
+  describe "when rendering" do
+    before :each do
+      do_action
+    end
     it "should show a title" do
-	do_action
-    	assigns[:title].should == "Topics"
+      assigns[:title].should == "Topics"
     end
     it "should show intro text" do
-	do_action
-    	content_for( :instructions ).should have_text( /topic.*thought/i )
+      content_for( :instructions ).should have_text( /topic.*thought/i )
     end
-
-  it "should render list of topics" do
-	do_action
-    response.should have_tag("tr>td", "value for name", 2)
+    it "should render list of topics" do
+      response.should have_tag("tr>td", "value for name", 2)
+    end
   end
 end
 

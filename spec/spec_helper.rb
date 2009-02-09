@@ -128,7 +128,7 @@ module ViewExamples
         ( action, object ) = do_action
         label = action == 'new' ? "Create" : "Save"
         response.should have_tag("form[method=post][class=#{action}_#{object}]" ) do
-          with_tag("a[class=cancel-button]", "Cancel" )
+          with_tag("a[class=cancel button]", "Cancel" )
         end
       end
     end
@@ -173,7 +173,7 @@ module MyControllerExamples
         assigns[expectation].should be_nil
         response.should be_redirect
         response.should redirect_to( redir )
-        flash[:warning].should == "permission denied"
+        flash[:warning].should =~ /Permission denied/
       end
     end
     
@@ -209,3 +209,5 @@ def do_login( user )
     User.stub!(:find_by_id).with(user.id).and_return user
   end
 end
+
+# RAILS_DEFAULT_LOGGER = Logger.new(STDOUT)

@@ -4,6 +4,20 @@
 	<meta http-equiv="content-type" content="text/html;charset=iso-8859-2" />
 	<link rel="stylesheet" href="/stylesheets/style.css" type="text/css" />
 	<title>6 hats - open source thinking organization</title>
+	<!--[if IE 6]>
+    <style type="text/css">
+      a.button {
+  	    padding:6px 10px !important;
+  	  }
+    </style>
+	<![endif]-->
+	<![if ! IE 6]>
+    <style type="text/css">
+      a.button {
+  	    padding:5px 10px !important;
+      }
+    </style>
+  <![endif]>
 </head>
 <body>
 	<div class="page">
@@ -51,6 +65,7 @@
 		</div>
 		
 		<div class="subheader">
+			<span id="breadcrumbs"><%= render :partial => "breadcrumbs" rescue "" %></span>
 			<h2><%= @title %></h2>
 			<% if( flash[:notice] || flash[:warning] || flash[:error] ) then %>
 			<div class="flashes">
@@ -61,7 +76,7 @@
 				<% end %>
 			</div>
 			<% end %>
-			<%= yield :instructions %>
+			<p><%= yield :instructions %></p>
 		</div>
 		
 		<div class="content">

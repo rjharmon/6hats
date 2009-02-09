@@ -24,11 +24,11 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def denied(detail, redir_to, msg = "permission denied")
+  def show_error(detail, redir_to, msg, level)
     logger.info( "Permission denied for user '#{@user.login}': #{detail}" )
     respond_to do |format|
       format.html do
-        flash[:warning] = msg; 
+        flash[level] = msg + ": #{detail}";
         redirect_to redir_to
       end
       format.xml { render :xml => msg, :status => :unprocessable_entity }
@@ -36,4 +36,11 @@ class ApplicationController < ActionController::Base
     return false
   end
 
+  def gripe(detail, redir_to, msg = "Warning")
+    show_error(detail,redir_to,msg,:notice)
+  end
+
+  def denied(detail, redir_to, msg = "Permission denied")
+    show_error(detail,redir_to, msg,:warning)
+  end
 end

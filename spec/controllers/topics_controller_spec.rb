@@ -121,17 +121,27 @@ describe TopicsController do
         before do
           do_login( Factory(:user) )
           @other = Factory(:user)
+          do_action(@other)
         end
         it "should not be allowed" do
-          do_action(@other)
           response.should_not be_success
-          response.should redirect_to(topics_url)
-          flash[:warning].should == "permission denied"
         end
-        it "should not be allowed for XML" do
-          request.env["HTTP_ACCEPT"] = "application/xml"
-          do_action(@other)
-          response.should_not be_success
+        it "should redirect to the topic list" do
+          response.should redirect_to(topics_url)
+        end
+        it "should show an error message" do
+          flash[:warning].should =~ /Permission denied/i
+        end
+        describe "in an XML request" do
+          before do
+            request.env["HTTP_ACCEPT"] = "application/xml"
+            do_login( Factory(:user) )
+            @other = Factory(:user)
+            do_action(@other)
+          end
+          it "should not be allowed" do
+            response.should_not be_success
+          end
         end
       end
       describe "on success" do
@@ -159,17 +169,16 @@ describe TopicsController do
 
     describe "with invalid params" do
       before do
-        @user = Factory(:user)
-        do_login(@user)
-        @topic = Factory.build(:topic, :user => @user)
-  
-        mock_association( @user, :topics, { :build => @topic } )
-        @topic.stub!(:save).and_return(false)
-
-        post :create, :topic => {}
+        @topic = Factory.build(:topic, :name => 'f')
+        do_login( @topic.user )
+        post :create, :topic => { :name => @topic.name }
       end
+      it "should be testing what we think we're testing" do
+        @topic.valid?.should_not be_true
+      end
+      
       it "should expose a newly created but unsaved topic as @topic" do
-        assigns(:topic).should equal(@topic)
+        assigns(:topic).new_record?.should be_true
       end
   
       it "should re-render the 'new' template" do
@@ -231,16 +240,11 @@ describe TopicsController do
         @topic = Factory(:topic)
         do_login(@topic.user)
   
-        mock_association( @topic.user, :topics, { :find_by_id => @topic } )
-        @topic.stub!(:update_attributes).and_return(false)
-#       @topic.stub!(:save).and_return(false)
-
-        put :update, :id => @topic.id, :topic => {}
+        put :update, :id => @topic.id, :topic => { :name => 'f' }
       end
 
-
       it "should expose the topic as @topic" do
-        assigns(:topic).should equal(@topic)
+        assigns(:topic).should == @topic
       end
 
       it "should re-render the 'edit' template" do

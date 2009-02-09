@@ -85,7 +85,6 @@ public
   # PUT /topics/1
   # PUT /topics/1.xml
   def update
-
     respond_to do |format|
       if @topic.update_attributes(params[:topic])
         flash[:notice] = 'Topic was successfully updated.'
