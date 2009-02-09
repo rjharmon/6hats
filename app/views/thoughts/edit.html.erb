@@ -5,11 +5,11 @@
 # TODO: add hat dropdown
   <p>
     <%= f.label :summary %><br />
-    <%= f.text_field :summary %>
+    <%= f.text_field :summary, :size => 60, :class => 'full' %>
   </p>
   <p>
     <%= f.label :detail %><br />
-    <%= f.text_area :detail %>
+    <%= f.text_area :detail, :rows => 5, :cols => 60, :class => 'full' %>
   </p>
     <%= form_buttons( f, "Save", topic_url(@topic) ) %>
 <% end %>
