@@ -45,7 +45,7 @@ ActiveRecord::Schema.define(:version => 20090209051856) do
     t.datetime "updated_at"
     t.text     "summary"
     t.integer  "user_id"
-    t.string  "current_hat"
+    t.string   "current_hat",     :default => "Red"
     t.integer  "current_thought"
   end
 
