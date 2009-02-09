@@ -4,16 +4,17 @@ require File.dirname(__FILE__) + '/../spec_shared_model'
 describe Topic do
   before(:each) do
     @valid_attributes = {
-      :name => "value for name"
+      :name => "value for name",
+      :summary => "value for summary"
     }
     @thoughts = [{
-	:summary     => "thought 1",
-	:detail => "more about thought 1",
-        :hat_id      => 1,
+      :summary     => "thought 1",
+      :detail => "more about thought 1",
+      :hat_id      => 1,
     }, {
-	:summary     => "thought 2",
-	:detail => "more about thought 2",
-        :hat_id      => 2,
+      :summary     => "thought 2",
+      :detail => "more about thought 2",
+      :hat_id      => 2,
     }]
   end
 
@@ -22,17 +23,17 @@ describe Topic do
   end
 
   it "should have many thoughts" do
-  	t = Topic.new
-  	t.thoughts << Thought.new()
-  	t.thoughts << Thought.new()
-	t.thoughts.size.should == 2
+    t = Topic.new
+    t.thoughts << Thought.new()
+    t.thoughts << Thought.new()
+  t.thoughts.size.should == 2
   end
 
   it "should belong to a user" do
-  	t = Topic.new
-	u = User.new
-	t.user = u
-	t.user.should == u
+    t = Topic.new
+    u = User.new
+    t.user = u
+    t.user.should == u
   end
 
   it "should allow the adding of multiple thoughts" do
