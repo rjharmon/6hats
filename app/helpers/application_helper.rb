@@ -30,10 +30,10 @@ module ApplicationHelper
   end
 
   def form_buttons( form, label, default_back ) 
-    "<div style='border:1px solid blue'>"+
+#    "<div style='border:1px solid blue'>"+
     form.submit( label, :class => 'button') + " " + 
-      link_to( "Cancel", (params[:back] || request.referer || default_back  ), :class => "cancel button" )+
-    "</div>"
+      link_to( "Cancel", (params[:back] || request.referer || default_back  ), :class => "cancel button" ) \
+#     +"</div>"
   end
 
   def markdown( input )
