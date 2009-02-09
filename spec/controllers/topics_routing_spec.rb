@@ -25,6 +25,19 @@ describe TopicsController do
     it "should map #destroy" do
       route_for(:controller => "topics", :action => "destroy", :id => 1).should == "/topics/1"
     end
+    it "should map next_state from POST" do
+      route_for(:controller => "topics", :action => "next_state", :id => 1).should == "/topics/1/next_state"
+    end
+    it "should map POST next_state" do
+      route_for( :controller => "topics", :action => "next_state", :id => 1).should == "/topics/1/next_state"
+      # TODO: use { 
+      #  :path => "/topics/1/next_state", :method => :post
+      # }
+    end
+    it "should map GET next_state from the :query_next_state action" do
+      route_for(:controller => "topics", :action => "query_next_state", :id => 1).should == "/topics/1/next_state"
+    end
+    
   end
 
   describe "route recognition" do
@@ -54,6 +67,12 @@ describe TopicsController do
   
     it "should generate params for #destroy" do
       params_from(:delete, "/topics/1").should == {:controller => "topics", :action => "destroy", :id => "1"}
+    end
+    it "should generate params for POST next_state" do
+      params_from(:post, "/topics/1/next_state").should == {:controller => "topics", :action => "next_state", :id => "1"}
+    end
+    it "should generate params for GET next_state" do
+      params_from(:get, "/topics/1/next_state").should == {:controller => "topics", :action => "query_next_state", :id => "1"}
     end
   end
 end

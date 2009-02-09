@@ -4,9 +4,13 @@ ActionController::Routing::Routes.draw do |map|
   map.root :controller => 'home'
 
   map.resources :topics do |topics|
-	topics.resources :thoughts, :except => [:index,:show]
+    topics.resources :thoughts, :except => [:index,:show]
   end
-
+  map.with_options :controller => "topics" do |topics|
+    topics.next_state "topics/:id/next_state", :action => 'next_state', :conditions => { :method => :post }
+    topics.connect    "topics/:id/next_state", :action => 'query_next_state', :conditions => { :method => :get }
+  end
+  
   map.rules '/hats/rules', :controller => 'hats', :action => 'rules'
   map.resources :hats
 
