@@ -1,3 +1,7 @@
+<% content_for :instructions do %>
+<p><%=h @topic.current_hat %>
+<% end %>
+
 <% content_for :right do %>
 <div style="border:1px solid black">
   Next:
@@ -5,9 +9,15 @@
     <%= image_submit_tag( "/images/next.gif", :border => 0 ) %>
   <% end %>
 </div>
+Current hat: <%=h @topic.current_hat %>
 <% end %>
 
-<% if block_given? -%>
-  <%= yield :layout %>
-<% end -%>
+<% if content = yield(:layout) -%>
+<%=  content %>
+<% else %>
+  <% if @topic.new_record?
+    raise SiteDevError.new( "When @topic is an unsaved record, you must provide a block to render :layout => 'topic'" )
+  end %>
+<% end %>
+
 
