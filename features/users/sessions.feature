@@ -58,8 +58,7 @@ Feature: Logging in
     Then  she should see a notice message 'You don't have any topics yet.  Create a new one here.'
      And  reggie should be logged in
      And  she should have an auth_token cookie
-	      # assumes fixtures were run sometime
-     And  her session store should have user_id: 4
+     And  her session store should have user_id: 1
    
   #
   # Log in unsuccessfully
@@ -116,8 +115,7 @@ Feature: Logging in
     Then  she should see a notice message 'You don't have any topics yet.  Create a new one here.'
      And  reggie should be logged in
      And  she should have an auth_token cookie
-	      # assumes fixtures were run sometime
-     And  her session store should have user_id: 4
+     And  her session store should have user_id: 1
 
 
   #
