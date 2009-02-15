@@ -1,9 +1,6 @@
-require File.dirname(__FILE__) + '/../helper'
 
 RE_User      = %r{(?:(?:the )? *(\w+) *)}
 RE_User_TYPE = %r{(?: *(\w+)? *)}
-steps_for(:user) do
-
   #
   # Setting
   #
@@ -12,7 +9,7 @@ steps_for(:user) do
     log_out!
   end
 
-  Given "$an $user_type user with $attributes" do |_, user_type, attributes|
+  Given /^$an $user_type user with $attributes/ do |_, user_type, attributes|
     create_user! user_type, attributes.to_hash_from_story
   end
   
@@ -34,12 +31,13 @@ steps_for(:user) do
     @user.destroy! if @user
     @user.should be_nil
   end
+
   
   #
   # Actions
   #
-  When "$actor logs out" do 
-    log_out
+  When /\w+ logs out/ do 
+    log_out!
   end
 
   When "$actor registers an account as the preloaded '$login'" do |_, login|
@@ -77,8 +75,6 @@ steps_for(:user) do
     controller.current_user.should === @user
     controller.current_user.login.should == login
   end
-    
-end
 
 def named_user login
   user_params = {
@@ -99,12 +95,15 @@ end
 #
 
 def log_out 
-  get '/sessions/destroy'
+  get 'logout'
 end
 
 def log_out!
   log_out
   response.should redirect_to('/')
+  flash[:notice].should =~ /You have been logged out/
+  follow_redirect!
+  response.should redirect_to( hats_url )
   follow_redirect!
 end
 
@@ -147,7 +146,10 @@ end
 
 def log_in_user! *args
   log_in_user *args
-  response.should redirect_to('/')
+  response.should redirect_to('/topics')
+  flash[:notice].should =~ /Logged in successfully/
   follow_redirect!
-  response.should have_flash("notice", /Logged in successfully/)
+  response.should redirect_to('/topics/new')
+  follow_redirect!
+  response.should have_flash("notice", /You don't have any topics yet.  Create a new one here./)
 end

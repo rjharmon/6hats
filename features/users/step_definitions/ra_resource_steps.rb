@@ -1,6 +1,7 @@
 # The flexible code for resource testing came out of code from Ben Mabey
 # http://www.benmabey.com/2008/02/04/rspec-plain-text-stories-webrat-chunky-bacon/
-steps_for(:ra_resource) do
+
+
   #
   # Construct resources
   #
@@ -50,13 +51,13 @@ steps_for(:ra_resource) do
   #
   
   # Resource like this DOES exist
-  Then %r{an? $resource with $attributes should exist} do |resource, attributes|
+  Then /an? (\w+) with (.*) should exist/ do |resource, attributes|
     instance = find_resource resource, attributes
     instance.should_not be_nil
     keep_instance! resource, instance
   end
   # Resource like this DOES NOT exist
-  Then %r{no $resource with $attributes should exist} do |resource, attributes|
+  Then /no (\w+) with (.*) should exist/ do |resource, attributes|
     instance = find_resource resource, attributes
     instance.should be_nil
   end
@@ -69,13 +70,15 @@ steps_for(:ra_resource) do
     end
   end
   # Resource attributes should / should not be nil
-  Then  "the $resource's $attr should be nil" do |resource, attr|
+
+  Then /the (\w+)\'s (\w+)\s* should \s*(not )?be nil/ do |resource, attr, nott|  
+    /'/
     klass, instance = parse_resource_args resource
-    instance.send(attr).should be_nil
-  end
-  Then  "the $resource's $attr should not be nil" do |resource, attr|
-    klass, instance = parse_resource_args resource
-    instance.send(attr).should_not be_nil
+    if( nott ) 
+      instance.send(attr).should_not be_nil
+    else
+      instance.send(attr).should be_nil
+    end
   end
 
   #
@@ -99,7 +102,7 @@ steps_for(:ra_resource) do
   # Specify ' using method_name' (abs, to_s, &c) to coerce before comparing.
   # For important and mysterious reasons, timestamps want to_i or to_s.
   #
-  Then %r{the $resource\'s $attribute should stay the same(?: under $func)?} do |resource, attr, func|
+  Then /^the (\w+)\'s (\w+) should stay the same under (\w+)$/ do |resource, attr, func|
     klass, instance = parse_resource_args resource
     # Get the values
     old_value = recall_resource_value(resource, attr)
@@ -109,7 +112,6 @@ steps_for(:ra_resource) do
     # Compare
     old_value.should eql(new_value)
   end
-
   #
   # Look for each for the given attributes in the page's text
   #
@@ -120,7 +122,6 @@ steps_for(:ra_resource) do
     end
   end
   
-end
 
 #
 # Turn a resource name and a to_hash_from_story string like

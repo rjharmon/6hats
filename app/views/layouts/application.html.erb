@@ -1,98 +1,98 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-	<meta http-equiv="content-type" content="text/html;charset=iso-8859-2" />
-	<link rel="stylesheet" href="/stylesheets/style.css" type="text/css" />
-	<title>6 hats - open source thinking organization</title>
-	<!--[if IE 6]>
+  <meta http-equiv="content-type" content="text/html;charset=iso-8859-2" />
+  <link rel="stylesheet" href="/stylesheets/style.css" type="text/css" />
+  <title>6 hats - open source thinking organization</title>
+  <!--[if IE 6]>
     <style type="text/css">
       a.button {
-  	    padding:6px 10px !important;
-  	  }
+        padding:6px 10px !important;
+      }
     </style>
-	<![endif]-->
-	<![if ! IE 6]>
+  <![endif]-->
+  <![if ! IE 6]>
     <style type="text/css">
       a.button {
-  	    padding:5px 10px !important;
+        padding:5px 10px !important;
       }
     </style>
   <![endif]>
 </head>
 <body>
-	<div class="page">
-		<div class="mast_right">
-			<div class="top_info">
-				<div class="top_info_right">
-					<% if logged_in? %>
-						<p>
-							<%= link_to_unless_current( "Topics", topics_url ) %> &nbsp;&nbsp&nbsp;
-							My Profile&nbsp;&nbsp;&nbsp; 
-							<%= link_to_current_user %> - 
-							<%= link_to "Log Out", logout_path %>
-						</p>
-					<% else %>
-						<p><b>You are not logged in!</b> <%= link_to "Log in", login_path %> or <%= link_to "register", register_path %> to start thinking together!</p>
-					<% end %>
-				</div>		
-			</div>
-					
-			<div class="bar">
-				<ul>
-					<li class="slogan">Learn How to Think!</li>
-					<%= menu_item( "A", "About the Hats", hats_url ) %>
-					<%= menu_item( "R", "Rules for Thinking", rules_url ) %>
-				<% if @current_user %>
-					<%= menu_item( "P", "My Topics", topics_url ) %>
-				<% end %>				
-				</ul>
-			</div>
-		</div>
-			
-		<div class="logo">
-			<h1><a href="#" title="Open Source Group-Think">Open <span class="red">Hats</span></a></h1>
-			<p>Let's all think together, shall we?</p>
-		</div>
-		
-		<div class="header_right">
-			<form method="post" action="?">
-				<p><span class="grey">Search For Public Topics:</span> <span class="search_field">??</span>&nbsp;&nbsp; <input type="text" name="search" class="search" /> <input type="submit" value="Search" class="button" /></p>
-			</form>
-		</div>
-		
-		<div class="header_left">
-			<p>Donations are welcome.</p>
-		</div>
-		
-		<div class="subheader">
-			<span id="breadcrumbs"><%= render :partial => "breadcrumbs" rescue "" %></span>
-			<h2><%= @title %></h2>
-			<% if( flash[:notice] || flash[:warning] || flash[:error] ) then %>
-			<div class="flashes">
-				<% [ :notice, :warning, :error ].each do |level| %>
-					<% if flash[level] then %>
-					<div class="flash <%= level.to_s %>"><%= flash[level] %></div>
-					<% end %>
-				<% end %>
-			</div>
-			<% end %>
-			<p><%= yield :instructions %></p>
-		</div>
-		
-		<div class="content">
-			<div class="left_articles">
-				<%= yield :layout %>	
-			</div>
-			<%= yield :left %>
+  <div class="page">
+    <div class="mast_right">
+      <div class="top_info">
+        <div class="top_info_right">
+          <% if logged_in? %>
+            <p>
+              <%= link_to_unless_current( "Topics", topics_url ) %> &nbsp;&nbsp&nbsp;
+              My Profile&nbsp;&nbsp;&nbsp; 
+              <%= link_to_current_user %> - 
+              <%= link_to "Log Out", logout_path %>
+            </p>
+          <% else %>
+            <p><b>You are not logged in!</b> <%= link_to "Log in", login_path %> or <%= link_to "register", register_path %> to start thinking together!</p>
+          <% end %>
+        </div>    
+      </div>
+          
+      <div class="bar">
+        <ul>
+          <li class="slogan">Learn How to Think!</li>
+          <%= menu_item( "A", "About the Hats", hats_url ) %>
+          <%= menu_item( "R", "Rules for Thinking", rules_url ) %>
+        <% if @current_user %>
+          <%= menu_item( "P", "My Topics", topics_url ) %>
+        <% end %>       
+        </ul>
+      </div>
+    </div>
+      
+    <div class="logo">
+      <h1><a href="#" title="Open Source Group-Think">Open <span class="red">Hats</span></a></h1>
+      <p>Let's all think together, shall we?</p>
+    </div>
+    
+    <div class="header_right">
+      <form method="post" action="?">
+        <p><span class="grey">Search For Public Topics:</span> <span class="search_field">??</span>&nbsp;&nbsp; <input type="text" name="search" class="search" /> <input type="submit" value="Search" class="button" /></p>
+      </form>
+    </div>
+    
+    <div class="header_left">
+      <p>Donations are welcome.</p>
+    </div>
+    
+    <div class="subheader">
+      <span id="breadcrumbs"><%= render :partial => "breadcrumbs" rescue "" %></span>
+      <h2><%= @title %></h2>
+      <% if( flash[:notice] || flash[:warning] || flash[:error] ) then %>
+      <div class="flashes">
+        <%  [:notice, :warning, :error].each do |level| %>
+          <%  if flash[level] then %>
+            <div class="<%= level.to_s %>"><%= flash[level] %></div>
+          <%  end %>
+        <%  end %>
+      </div>
+      <% end %>
+      <p><%= yield :instructions %></p>
+    </div>
+    
+    <div class="content">
+      <div class="left_articles">
+        <%= yield :layout %>  
+      </div>
+      <%= yield :left %>
 
-		</div>	
-		<div class="right">
-			<%= yield :right %>
-		</div>	
-		<div class="footer">
-			<p><a href="#">RSS Feed</a> | <a href="#">Contact</a> | <a href="#">Accessibility</a> | <a href="#">Products</a> | <a href="#">Disclaimer</a> | <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> and <a href="http://validator.w3.org/check?uri=referer">XHTML</a><br />
-			&copy; Copyright 2006 Internet Music, Design: Luka Cvrk - <a href="http://www.solucija.com/" title="What's your solution?">Solucija</a></p>
-		</div>
-	</div>
+    </div>  
+    <div class="right">
+      <%= yield :right %>
+    </div>  
+    <div class="footer">
+      <p><a href="#">RSS Feed</a> | <a href="#">Contact</a> | <a href="#">Accessibility</a> | <a href="#">Products</a> | <a href="#">Disclaimer</a> | <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> and <a href="http://validator.w3.org/check?uri=referer">XHTML</a><br />
+      &copy; Copyright 2006 Internet Music, Design: Luka Cvrk - <a href="http://www.solucija.com/" title="What's your solution?">Solucija</a></p>
+    </div>
+  </div>
 </body>
 </html>

@@ -1,7 +1,10 @@
 class Thought < ActiveRecord::Base
-	belongs_to :topic
-	validates_length_of :summary, :minimum => 3
-# TODO:	belongs_to :hat
+  belongs_to :topic
+  belongs_to :hat, :foreign_key => :hat
+  validates_length_of :summary, :minimum => 3
+  
+  
+# TODO: belongs_to :hat
 
 
 # Target thoughts to automatically create:

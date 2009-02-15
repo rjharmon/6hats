@@ -1,7 +1,7 @@
 #
 # Where to go
 #
-steps_for(:ra_navigation) do
+
   #
   # GET
   # Go to a given page.
@@ -16,7 +16,7 @@ steps_for(:ra_navigation) do
   #   When she creates a book with ISBN: '0967539854' and comment: 'I love this book' and rating: '4'
   #   When she creates a singular session with login: 'reggie' and password: 'i_haxxor_joo'
   # Since I'm not smrt enough to do it right, explicitly specify singular resources
-  When %r{$actor creates an? $resource with $attributes} do |actor, resource, attributes|
+  When /^(\w+) creates an? ([\w ]+) with ([\w \:\',]+)$/ do |actor, resource, attributes|
     attributes = attributes.to_hash_from_story
     if resource =~ %r{singular ([\w/]+)}
       resource = $1.downcase.singularize
@@ -25,7 +25,7 @@ steps_for(:ra_navigation) do
       post "/#{resource.downcase.pluralize}", { resource.downcase.singularize => attributes }
     end
   end
-
+  
   # PUT
   When %r{$actor asks to update '$resource' with $attributes} do |_, resource, attributes|
     attributes = attributes.to_hash_from_story
@@ -46,4 +46,4 @@ steps_for(:ra_navigation) do
   When "$actor follows that redirect!" do |actor|
     follow_redirect!
   end
-end
+

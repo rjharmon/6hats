@@ -2,7 +2,6 @@
 # What you should see when you get there
 #
 
-steps_for(:ra_response) do  
   #
   # Destinations.  Ex:
   #   She should be at the new kids page
@@ -110,8 +109,15 @@ steps_for(:ra_response) do
   # Flash messages
   #
   
-  Then "$actor should see $an $notice message '$message'" do |_, _, notice, message|
-    response.should have_flash(notice, %r{#{message}})
+  Then /\w+ should \s*see an? (\w+) \s*message '(.*)'/ do |notice, message|
+#    begin
+      response.should have_flash(notice, %r{#{message}})
+#    rescue Exception => e
+#      puts response.methods.sort - Object.methods
+#      puts response.body
+#      sleep 5
+#      raise e
+#    end
   end
   
   Then "$actor should not see $an $notice message '$message'" do |_, _, notice, message|
@@ -141,7 +147,7 @@ steps_for(:ra_response) do
   Then "we dump the response" do
     dump_response
   end  
-end
+
 
 
 def have_flash notice, *args
@@ -155,6 +161,7 @@ def grok_path path
   path.gsub(/\s+again$/,'') # strip trailing ' again'
   case
   when path == 'the home page'    then dest = '/'
+#  when path == 'the topics page'  then dest = '/topics'
   when path =~ RE_PRETTY_RESOURCE then dest = template_for $1, $2
   when path =~ RE_THE_FOO_PAGE    then dest = $1
   when path =~ RE_QUOTED_PATH     then dest = $1

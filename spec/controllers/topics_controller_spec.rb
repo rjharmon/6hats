@@ -149,7 +149,6 @@ describe TopicsController do
           @user = Factory(:user)
           @user.state = 'active'; @user.save
           do_login(@user)
-          debugger
           do_action(@user)
           response.should_not redirect_to(topics_url)
 

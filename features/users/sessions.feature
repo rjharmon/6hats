@@ -2,7 +2,7 @@ Users want to know that nobody can masquerade as them.  We want to extend trust
 only to visitors who present the appropriate credentials.  Everyone wants this
 identity verification to be as secure and convenient as possible.
 
-Story: Logging in
+Feature: Logging in
   As an anonymous user with an account
   I want to log in to my account
   So that I can be myself
@@ -24,9 +24,11 @@ Story: Logging in
     Given an anonymous user
      And  an activated user named 'reggie'
     When  she creates a singular sessions with login: 'reggie', password: 'monkey', remember me: ''
-    Then  she should be redirected to the home page
+    Then  she should be redirected to the topics page
     When  she follows that redirect!
-    Then  she should see a notice message 'Logged in successfully'
+    Then  she should be redirected to the new topics page
+    When  she follows that redirect!
+    Then  she should see a notice message 'You don't have any topics yet.  Create a new one here.'
      And  reggie should be logged in
      And  she should not have an auth_token cookie
    
@@ -34,9 +36,11 @@ Story: Logging in
     Given an activated user named 'reggie'
      And  an activated user logged in as 'oona'
     When  she creates a singular sessions with login: 'reggie', password: 'monkey', remember me: ''
-    Then  she should be redirected to the home page
+    Then  she should be redirected to the topics page
     When  she follows that redirect!
-    Then  she should see a notice message 'Logged in successfully'
+    Then  she should be redirected to the new topics page
+    When  she follows that redirect!
+    Then  she should see a notice message 'You don't have any topics yet.  Create a new one here.'
      And  reggie should be logged in
      And  she should not have an auth_token cookie
   
@@ -47,9 +51,11 @@ Story: Logging in
     Given an anonymous user
      And  an activated user named 'reggie'
     When  she creates a singular sessions with login: 'reggie', password: 'monkey', remember me: '1'
-    Then  she should be redirected to the home page
+    Then  she should be redirected to the topics page
     When  she follows that redirect!
-    Then  she should see a notice message 'Logged in successfully'
+    Then  she should be redirected to the new topics page
+    When  she follows that redirect!
+    Then  she should see a notice message 'You don't have any topics yet.  Create a new one here.'
      And  reggie should be logged in
      And  she should have an auth_token cookie
 	      # assumes fixtures were run sometime
@@ -62,9 +68,11 @@ Story: Logging in
   Scenario: Logged-in user who fails logs in should be logged out
     Given an activated user named 'oona'
     When  she creates a singular sessions with login: 'oona', password: '1234oona', remember me: '1'
-    Then  she should be redirected to the home page
+    Then  she should be redirected to the topics page
     When  she follows that redirect!
-    Then  she should see a notice message 'Logged in successfully'
+    Then  she should be redirected to the new topics page
+    When  she follows that redirect!
+    Then  she should see a notice message 'You don't have any topics yet.  Create a new one here.'
      And  oona should be logged in
      And  she should have an auth_token cookie
     When  she creates a singular sessions with login: 'reggie', password: 'i_haxxor_joo'
@@ -101,9 +109,11 @@ Story: Logging in
      And  she should not have an auth_token cookie
      And  her session store should not have user_id
     When  she creates a singular sessions with login: 'reggie', password: 'monkey', remember me: '1'
-    Then  she should be redirected to the home page
+    Then  she should be redirected to the topics page
     When  she follows that redirect!
-    Then  she should see a notice message 'Logged in successfully'
+	Then  she should be redirected to the new topics page
+	When  she follows that redirect!
+    Then  she should see a notice message 'You don't have any topics yet.  Create a new one here.'
      And  reggie should be logged in
      And  she should have an auth_token cookie
 	      # assumes fixtures were run sometime
@@ -115,20 +125,14 @@ Story: Logging in
   #
   Scenario: Anonymous (logged out) user can log out.
     Given an anonymous user
-    When  she goes to /logout
-    Then  she should be redirected to the home page
-    When  she follows that redirect!
-    Then  she should see a notice message 'You have been logged out'
-     And  she should not be logged in
+    When  she logs out
+    Then  she should not be logged in
      And  she should not have an auth_token cookie
      And  her session store should not have user_id
 
   Scenario: Logged in user can log out.
     Given an activated user logged in as 'reggie'
-    When  she goes to /logout
-    Then  she should be redirected to the home page
-    When  she follows that redirect!
-    Then  she should see a notice message 'You have been logged out'
-     And  she should not be logged in
+    When  she logs out
+    Then  she should not be logged in
      And  she should not have an auth_token cookie
      And  her session store should not have user_id

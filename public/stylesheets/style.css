@@ -304,15 +304,14 @@ html>body .header_right {
 	border-bottom: 1px solid #ccc;
 }
 
-.flash {
+.flashes {
+	margin-bottom: 16px;
+}
+.flashes > div {
 	padding:8px;
 	-moz-border-radius:3px;
 	margin-bottom: 3px
 }
-.flashes {
-	margin-bottom: 16px;
-}
-
 .notice {
 	color: #464548;
 	background: #e5d3cc;
