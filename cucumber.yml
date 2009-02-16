@@ -1,0 +1,4 @@
+autotest: --require features --require lib features
+autotest-all: --require features --require lib --format progress features
+default: --format pretty
+html: --format html --out features.html
