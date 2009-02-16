@@ -95,7 +95,7 @@ end
 #
 
 def log_out 
-  visit 'logout'
+  get 'logout'
 end
 
 def log_out!
@@ -126,7 +126,7 @@ end
  
 def activate_user activation_code=nil
   activation_code = @user.activation_code if activation_code.nil?
-  visit "/activate/#{activation_code}"
+  get "/activate/#{activation_code}"
 end
 
 def activate_user! *args

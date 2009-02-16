@@ -58,7 +58,7 @@ Feature: Logging in
     Then  she should see a notice message 'You don't have any topics yet.  Create a new one here.'
      And  reggie should be logged in
      And  she should have an auth_token cookie
-     And  her session store should have user_id: 1
+     And  her session store should have user_id: 4
    
   #
   # Log in unsuccessfully
@@ -79,9 +79,9 @@ Feature: Logging in
     Then  she should see an error message 'Couldn't log you in as 'reggie''
      And  she should not be logged in
      And  she should not have an auth_token cookie
-     And  her session store should not have user_id
+     And  her session store should not have user_id 
   
-  Scenario: Log-in with bogus info should fail until it doesn't
+  Scenario: Log-in with bogus info should fail until it passes
     Given an activated user named 'reggie'
     When  she creates a singular sessions with login: 'reggie', password: 'i_haxxor_joo'
     Then  she should be at the new sessions page
@@ -115,7 +115,7 @@ Feature: Logging in
     Then  she should see a notice message 'You don't have any topics yet.  Create a new one here.'
      And  reggie should be logged in
      And  she should have an auth_token cookie
-     And  her session store should have user_id: 1
+     And  her session store should have user_id: 4
 
 
   #

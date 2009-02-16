@@ -7,8 +7,8 @@
   # Go to a given page.
   When "$actor goes to $path" do |actor, path|
     case path
-    when 'the home page' then visit '/'
-    else                      visit path
+    when 'the home page' then get '/'
+    else                      get path
     end
   end
 
