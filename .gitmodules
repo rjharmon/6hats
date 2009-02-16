@@ -13,3 +13,6 @@
 [submodule "vendor/plugins/aasm"]
 	path = vendor/plugins/aasm
 	url = git://github.com/rubyist/aasm.git
+[submodule "vendor/plugins/pickle"]
+	path = vendor/plugins/pickle
+	url = git://github.com/ianwhite/pickle.git
