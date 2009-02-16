@@ -19,3 +19,12 @@ require 'webrat/rspec-rails'
 World do 
   Cucumber::Rails::World.new 
 end 
+require 'pickle/world'
+# Example of configuring pickle:
+#
+# Pickle.configure do |config|
+#   config.adaptors = [:machinist]
+#   config.map 'I', 'myself', 'me', 'my', :to => 'user: "me"'
+# end
+require 'pickle/path/world'
+require 'pickle/email/world'
