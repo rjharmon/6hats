@@ -27,8 +27,19 @@ describe "/hats/show.html.erb" do
 
   end
   it "should render the description as Markdown" do 
-	do_action
+    do_action
     response.should have_tag( "ul>li", "bullet" )
   end
+  describe "should not show edit links" do
+    [ nil, Factory(:user) ].each do |u|
+      it " - when " + ( u ? "" : "not " ) + "logged in" do
+        do_login(u)
+        assigns[:hat] = @hat = Hat.find(:first)
+        render "/hats/show.html.erb"
+        response.should_not have_tag("a[href=#{edit_hat_path(@hat)}]")
+      end
+    end
+  end
+
 end
 

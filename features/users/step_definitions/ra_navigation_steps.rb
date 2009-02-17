@@ -6,10 +6,8 @@
   # GET
   # Go to a given page.
   When "$actor goes to $path" do |actor, path|
-    case path
-    when 'the home page' then get '/'
-    else                      get path
-    end
+    dest = grok_path(path)
+    get dest
   end
 
   # POST -- Ex:

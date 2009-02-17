@@ -7,11 +7,11 @@ describe HatsController do
   end
 
   describe "telling users about the rules" do
-  	it "should expose the rules to the view" do
-		Hat.should_receive(:find).with(:all).and_return([mock_hat])
-		get :rules
-		assigns[:hats].should == [mock_hat]
-	end
+    it "should expose the rules to the view" do
+      Hat.should_receive(:find).with(:all).and_return([mock_hat])
+      get :rules
+      assigns[:hats].should == [mock_hat]
+    end
   end
   
   describe "responding to GET index" do
@@ -27,7 +27,7 @@ describe HatsController do
       it "should NOT render all hats as xml" do
         request.env["HTTP_ACCEPT"] = "application/xml"
         get :index
-	response.should_not be_success
+        response.should_not be_success
       end
     end
   end
@@ -55,32 +55,62 @@ describe HatsController do
   end
 
   describe "responding to GET new" do
+    before :each do
+      @user = Factory(:user)
+      do_login(@user)
+    end
+    def do_action
+      get :new
+    end
+    it_should_behave_like "login required"
   
     it "should expose a new hat as @hat" do
       Hat.should_receive(:new).and_return(mock_hat)
-      get :new
+      do_action
       assigns[:hat].should equal(mock_hat)
     end
 
   end
 
   describe "responding to GET edit" do
+    before :each do
+      @user = Factory(:user)
+      do_login(@user)
+      @hat = Hat.find(:first)
+    end
+    def do_action
+      get :edit, :id => @hat.id
+    end
+    it_should_behave_like "login required"
   
     it "should expose the requested hat as @hat" do
-      Hat.should_receive(:find).with("37").and_return(mock_hat)
-      get :edit, :id => "37"
-      assigns[:hat].should equal(mock_hat)
+      do_action
+      assigns[:hat].should == @hat
     end
 
   end
 
   describe "responding to POST create" do
+    before :each do
+      @user = Factory(:user)
+      do_login(@user)
+    end
+    def do_action
+      post :create, :hat => {
+        :color => 'purple', 
+        :summary => "purple summary", 
+        :description => "purple description", 
+        :more_info => "purple info"
+      }
+      
+    end
+    it_should_behave_like "login required"
 
     describe "with valid params" do
       
       it "should expose a newly created hat as @hat" do
-        Hat.should_receive(:new).with({'these' => 'params'}).and_return(mock_hat(:save => true))
-        post :create, :hat => {:these => 'params'}
+        Hat.should_receive(:new).and_return(mock_hat(:save => true))
+        do_action
         assigns(:hat).should equal(mock_hat)
       end
 
@@ -111,25 +141,31 @@ describe HatsController do
   end
 
   describe "responding to PUT udpate" do
+    before :each do
+      @user = Factory(:user)
+      do_login(@user)
+      @hat = Hat.find(:first)
+    end
+    def do_action
+      put :update, :id => @hat.id, :hat => {:summary => 'new summary'}
+    end
+    it_should_behave_like "login required"
 
     describe "with valid params" do
-
       it "should update the requested hat" do
-        Hat.should_receive(:find).with("37").and_return(mock_hat)
-        mock_hat.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, :id => "37", :hat => {:these => 'params'}
+        do_action
+        t = Hat.find_by_id(@hat.id)
+        t.summary.should == 'new summary'
       end
 
       it "should expose the requested hat as @hat" do
-        Hat.stub!(:find).and_return(mock_hat(:update_attributes => true))
-        put :update, :id => "1"
-        assigns(:hat).should equal(mock_hat)
+        do_action
+        assigns(:hat).should == @hat
       end
 
       it "should redirect to the hat" do
-        Hat.stub!(:find).and_return(mock_hat(:update_attributes => true))
-        put :update, :id => "1"
-        response.should redirect_to(hat_url(mock_hat))
+        do_action
+        response.should redirect_to(hat_url(@hat))
       end
 
     end
@@ -159,16 +195,24 @@ describe HatsController do
   end
 
   describe "responding to DELETE destroy" do
+    before :each do
+      @user = Factory(:user)
+      do_login(@user)
+      @hat = Hat.find(:first)
+    end
+    def do_action
+      delete :destroy, :id => @hat.id
+    end
+    it_should_behave_like "login required"
 
     it "should destroy the requested hat" do
-      Hat.should_receive(:find).with("37").and_return(mock_hat)
-      mock_hat.should_receive(:destroy)
-      delete :destroy, :id => "37"
+      id = @hat.id
+      do_action
+      Hat.find_by_id( id ).should be_nil
     end
   
     it "should redirect to the hats list" do
-      Hat.stub!(:find).and_return(mock_hat(:destroy => true))
-      delete :destroy, :id => "1"
+      do_action
       response.should redirect_to(hats_url)
     end
 

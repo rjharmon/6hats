@@ -21,32 +21,41 @@ describe "/hats/index.html.erb" do
   def do_action
     render "/hats/index.html.erb"
   end
-
   describe "when user is not logged in" do
-	before :each do
-			assigns[:current_user] = nil
-			assigns[:hats] = @hats = [ stub_model(Hat, :color => "grey", :summary => "im a grey hat" ) ]
-			template.should_receive( :logged_in? ).and_return( false );
-	end
-	it "should link to the login and register page" do
-			render '/hats/index.html.erb', :layout => 'application.html.erb'
-			response.should     have_tag( "a[href=#{login_path}]" )
-			response.should     have_tag( "a[href=#{register_path}]" )
-	end
+    before :each do
+      do_login(nil)
+      assigns[:hats] = @hats = Hat.find(:all)
+    end
+    it "should link to the login and register page" do
+      render '/hats/index.html.erb', :layout => 'application.html.erb'
+      response.should     have_tag( "a[href=#{login_path}]" )
+      response.should     have_tag( "a[href=#{register_path}]" )
+    end
   end
   describe "when user is logged in" do
-	before :each do
-		@user = stub_model( User );
-		assigns[:current_user] = @user
-		assigns[:hats] = @hats = [ stub_model(Hat, :color => "grey", :summary => "im a grey hat" ) ]
-		template.should_receive( :logged_in? ).and_return( true );
-		template.should_receive( :current_user ).at_least(:once).and_return( @user )
-	end
-	it "should not link to login/register" do
-		render '/hats/index.html.erb', :layout => 'application.html.erb'
-		response.should_not have_tag( "a[href=#{login_path}]" )
-		response.should_not have_tag( "a[href=#{register_path}]" )
-	end
+    before :each do
+      @user = Factory(:user);
+      do_login(@user)
+      assigns[:hats] = @hats = Hat.find(:all)
+    end
+    it "should not link to login/register" do
+      render '/hats/index.html.erb', :layout => 'application.html.erb'
+      response.should_not have_tag( "a[href=#{login_path}]" )
+      response.should_not have_tag( "a[href=#{register_path}]" )
+    end
+  end
+
+  describe "should not show edit links" do
+    [ nil, Factory(:user) ].each do |u|
+      it " - when " + ( u ? "" : "not " ) + "logged in" do
+        do_login(u)
+        assigns[:hats] = @hats = Hat.find(:all)
+        render "/hats/index.html.erb"
+        Hat.find(:all).each do |hat|
+          response.should_not have_tag("a[href=#{edit_hat_path(hat)}]")
+        end
+      end
+    end
   end
 
   it "should render list of hats" do

@@ -60,8 +60,10 @@ Surprise!  Meetings really are shorter when everybody works together.
   <tr>
     <td><%= h hat.color %></td>
     <td><%= link_to( hat.summary, hat ) %></td>
+  <% if false %>
     <td><%= link_to 'Edit', edit_hat_path(hat) %></td>
     <td><%= link_to 'Destroy', hat, :confirm => 'Are you sure?', :method => :delete %></td>
+  <% end %>
   </tr>
 <% end %>
 </table>

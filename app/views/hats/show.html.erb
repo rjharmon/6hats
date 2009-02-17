@@ -6,5 +6,7 @@
 
 <%= markdown @hat.description %>
 
-<%= link_to 'Edit', edit_hat_path(@hat) %> |
+<% if false %>
+  <%= link_to 'Edit', edit_hat_path(@hat) %> |
+<% end %>
 <%= link_to 'Back', hats_path %>

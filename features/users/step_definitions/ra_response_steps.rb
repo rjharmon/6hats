@@ -157,6 +157,7 @@ end
 RE_PRETTY_RESOURCE = /the (index|show|new|create|edit|update|destroy) (\w+) (page|form)/i
 RE_THE_FOO_PAGE    = /the '?([^']*)'? (page|form)/i
 RE_QUOTED_PATH     = /^'([^']*)'$/i
+RE_REGEX           = /a page matching (.*)/
 def grok_path path
   path.gsub(/\s+again$/,'') # strip trailing ' again'
   case
@@ -165,8 +166,10 @@ def grok_path path
   when path =~ RE_PRETTY_RESOURCE then dest = template_for $1, $2
   when path =~ RE_THE_FOO_PAGE    then dest = $1
   when path =~ RE_QUOTED_PATH     then dest = $1
+  when path =~ RE_REGEX           then dest = Regexp.new($1)
   else                                 dest = path
   end
+#  puts "#{path} = #{dest}"
   dest
 end
 
