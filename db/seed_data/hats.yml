@@ -1,0 +1,152 @@
+white:
+  more_info: |
+    * Present facts or questions that have factual answers.
+    * Facts must be proven or easily proved, or possibly believed ("I think the figure was 6 million per year").
+    * Personal experiences do not qualify as facts
+    * "it's a fact that I believe..." is argumentative thinking, in disguise.
+
+  id: "1"
+  description: |
+    White Hat thinking is concerned with gathering Information & Facts -- not 
+    feelings, not interpretation, not beliefs.
+
+    Neutral and objective - no opinions.
+
+    Thoughts that belong under the white hat include:
+
+    * What information are we missing?
+    * What facts do we know?
+    * Who can provide information we need?
+    * What other questions do we need to ask?
+
+
+  summary: Facts, figures, and information (known or needed)
+  color: White
+  created_at: 2009-01-07 23:30:14
+
+red:
+  more_info: |
+    * React only to a specific idea.  Don't propose an alternative here.
+    
+    * Red Hat thinking does not allow a person to defend her/his feelings, intuition, or gut reactions!  These stand on their own.
+
+  id: "2"
+  description: |
+    Red Hat thinking is concerned with feelings - beliefs - intuition - emotions.
+    
+    Neither negatives, nor positives, have any place in Red Hat thinking.  Red Hat thinking merely looks for emotions of all sorts.
+    
+    Most often we feel we must give a reason why we have a feeling or emotion.  Do not justify anything when doing Red Hat thinking, just state the emotion, belief, feeling, or intuition.  There are other hats that can take care of reasoning.
+    
+    Statements that are often heard when a group is doing Red Hat thinking include:
+    
+    * "How do you feel about ...?"
+    * "I believe that ..."
+    * "What emotions might this raise in other people?"
+    * "I just have this feeling that ..."
+    * "I like (or don't like) it!" [Note: Without explaining why!]
+
+  summary: Emotions, beliefs, and intuition, no defense allowed
+  color: Red
+  created_at: 2009-01-07 23:33:02
+
+black:
+  more_info: |-
+    * Don't overuse the black hat.  Western life often centers on problem-finding.
+    
+    * Black hat thinking is not the same as  argumentative thinking - not just being negative.
+    
+    * Focus on information and logic of why a problem could exist or occur.
+  id: "3"
+  description: "Black Hat thinking is concerned with logical caution - logical negatives - being careful.  It takes a cautious, sometimes pessimistic perspective.\r\n\
+    \r\n\
+    The black hat identifies logical problems with an idea -- NOT beliefs, feelings, or emotions.  You should look for errors in thinking based upon logic and information. No emotions or personalities are involved.\r\n\
+    \r\n\
+    Under Black Hat thinking, we are only _pointing out_ logical problems with an \r\n\
+    idea.  Fixing those problems happens under a different hat.\r\n\
+    \r\n\
+    * \"What are the risks here?\"\r\n\
+    * \"This doesn\xE2\x80\x99t seem to fit our beliefs/mission/values/etc.\"\r\n\
+    \r\n\
+    Black Hat thinking is often done after some suggestions have been made.\r\n"
+  summary: Logical cautions and concerns; risks and errors
+  color: Black
+  created_at: 2009-01-07 23:36:43
+
+yellow:
+  more_info: |
+    * Downsides of yellow-hat possibilities should be reserved for other hats.
+    
+    * Yellow hat thinking is not based on emotion - it uses logic and information primarily.
+    
+    * Reserve emotions for the red hat - that way, you don't have to justify them.
+
+  id: "4"
+  description: |-
+    The yellow hat takes an optimistic approach, using positive thinking to seek out the value in an idea - looking for the benefits of some thought, approach, or strategy.
+    
+    Yellow hat thinking can help further refine an idea to make it even more likely to work.  It responds to Red and Black hat issues, or even to Green Hat ideas.
+    
+    Thoughts under the Yellow hat include:
+    
+    * How can we take advantage of ...
+    * I think this is good because of ...
+    * I think we can make this happen by doing this ...
+    
+    Yellow hat thinking can also simply look for the greatest potential in other ideas, serving as a motivator and way to imagine new methods of achieving what might be possible.
+  summary: Optimism, logical positives
+  color: Yellow
+  created_at: 2009-01-08 01:03:44
+
+green:
+  more_info: |-
+    * Don't react to green-hat ideas with judgement.  Judgement is for Yellow and Black hats.
+    
+    * Develop green-hat thoughts further to explore their maximum potential.  Or, add new ideas to consider.
+    
+    * The whole purpose of the Green hat is to challenge current thinking, accepted ideas and perceptions.
+  id: "5"
+  description: |
+    Green Hat thinking focuses on being creative, on change and possibilities.  It involves thinking outside the box, generating alternatives, coming up with new ideas.
+    
+    This hat is often done early in the process, to generate ideas for the other hats to react to.  It looks for options, possibilities, and new approaches to a situation or problem.
+    
+    Thinkings you might hear in Green Hat thinking:
+    
+    * How can we adapt ... ?
+    * Suppose we ...
+    * Are there any ideas we want to list out just because someday they may be useful?
+    * What if... ?
+    * I wonder if ... ?
+    * We could ... ?
+
+  summary: Creativity, ideation, and change
+  color: Green
+  created_at: 2009-01-08 01:34:19
+
+blue:
+  more_info: |-
+    * The group leader or facilitator always retain the Blue Hat perspective, to help the group retain its proper focus.
+    
+    * Additionally, any group member may ask "let's put on our blue hats - are we doing what we said we'd do?"
+  id: "6"
+  description: |
+    Blue Hat thinking exists to organize the whole process.  It includes planning the use of the other hats, recognizing the uniquenesses of the problem at hand.
+    
+    The blue hat recognizes when the current hat is not being respected, and thus helps to focus thinking and keep it focused.
+    
+    The blue hat also summarizes the results observed during the rest of the process.  The group typically returns to the blue hat at the end of the discussion for this purpose.
+    
+    Questions you might hear during Blue Hat thinking:
+    
+    * Can we define the problem?
+    * How much time shall we allocate to ...?
+    * What is our objective here?
+    * How shall we proceed?
+    * Should we prioritize?
+    * What is our outcome? What are our conclusions?  What decisions shall we report?
+
+  summary: Organizing the thought process
+  color: Blue
+  created_at: 2009-01-08 01:37:19
+
