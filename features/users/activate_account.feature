@@ -1,4 +1,3 @@
-
 Feature: Activating an account
   As a registered, but not yet activated, user
   I want to be able to activate my account
