@@ -1,9 +1,10 @@
 class HatsController < ApplicationController
+  before_filter :fetch_user, :except => [ :index, :rules, :show ]
   def rules
-	@hats = Hat.find(:all)
-  	respond_to do |format|
-		format.html
-	end
+    @hats = Hat.find(:all)
+    respond_to do |format|
+      format.html
+    end
   end
 
   # GET /hats
