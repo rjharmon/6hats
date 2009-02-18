@@ -32,15 +32,6 @@ Feature: Publicly-visible content
     Then she should not see a link to a page matching hats/[0-9+]/edit
      And she should not see a link to a page matching hats/[0-9+]/destroy
 
-    When she goes to hats/1/edit
-    Then she should be redirected to the login page
-    When she follows that redirect!
-    Then she should see a notice message 'Please log in to continue'
-
-    When she goes to hats/1/destroy
-    Then she should be redirected to the home page
-    When she follows that redirect!
-    Then she should see a notice message 'Permission Denied'
     
   Scenario: No availability of editing project data
     When user goes to topics
