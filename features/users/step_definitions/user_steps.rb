@@ -75,7 +75,10 @@ RE_User_TYPE = %r{(?: *(\w+)? *)}
     controller.send(:current_user).should === @user
     controller.send(:current_user).login.should == login
   end
-
+  Then "$actor session store should reflect her userid" do |_|
+    session[:user_id].should == @user.id
+  end
+  
 def named_user login
   user_params = {
     'admin'   => {'id' => 1, 'login' => 'addie', 'password' => '1234addie', 'email' => 'admin@example.com',       },

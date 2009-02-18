@@ -58,7 +58,7 @@ Feature: Logging in
     Then  she should see a notice message 'You don't have any topics yet.  Create a new one here.'
      And  reggie should be logged in
      And  she should have an auth_token cookie
-     And  her session store should have user_id: 4
+     And  her session store should reflect her userid
    
   #
   # Log in unsuccessfully
@@ -110,12 +110,12 @@ Feature: Logging in
     When  she creates a singular sessions with login: 'reggie', password: 'monkey', remember me: '1'
     Then  she should be redirected to the topics page
     When  she follows that redirect!
-	Then  she should be redirected to the new topics page
-	When  she follows that redirect!
+    Then  she should be redirected to the new topics page
+    When  she follows that redirect!
     Then  she should see a notice message 'You don't have any topics yet.  Create a new one here.'
      And  reggie should be logged in
      And  she should have an auth_token cookie
-     And  her session store should have user_id: 4
+     And  her session store should reflect her userid
 
 
   #
