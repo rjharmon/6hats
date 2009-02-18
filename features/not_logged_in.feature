@@ -11,7 +11,8 @@ Feature: Publicly-visible content
     Then she should be redirected to the hats page
     When she follows that redirect!
     Then she should see 7 'tr' elements showing a brief introduction to the 6 hats
-     And she should see a link 'Rules for Thinking' to /hats/rules
+    Then she should see 6 links to a page matching /hats/[0-9]+
+    And she should see a link 'Rules for Thinking' to /hats/rules
      And I should see "Problems of the Argumentative Meeting Style"
 
   Scenario: Availability of more detailed rules about the hats
@@ -19,6 +20,7 @@ Feature: Publicly-visible content
     Then she should see an outbound link to the www.amazon.com domain
      And I should see "general guidelines"
      And she should see 6 '.content div.box-body' elements describing the rules of each hat
+
      
   Scenario: Availability of register and login
     When user goes to the home page 

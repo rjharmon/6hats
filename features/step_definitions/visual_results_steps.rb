@@ -37,7 +37,7 @@ Then /^\w+ should see (\w+) '([^\']*)' element[s]? (?:with '(.*?)')?/ do |number
   end  
 end
 
-Then /^\w+ should( not)? see (\w+) link (?:'(.*)' )?to (.*)/ do |nott, number, label, dest|
+Then /^\w+ should( not)? see (\w+) links? (?:'(.*)' )?to (.*)/ do |nott, number, label, dest|
   response.should_not be_redirect
   if( number =~ /^a[n]?$/ )
     number = 1
@@ -61,9 +61,9 @@ Then /^\w+ should( not)? see (\w+) link (?:'(.*)' )?to (.*)/ do |nott, number, l
     matched_path = false
     matched_label = false
     href = link.attributes["href"].to_s
-  #  puts "matching #{href} with #{path}"
+#    puts "matching #{href} with #{path}"
     if regex ? ( href =~ path ) : ( href == path )
-  #    puts("MATCHED")
+#      puts("MATCHED")
       matched_path = true
     end
     if label and link.content == label

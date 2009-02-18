@@ -166,7 +166,7 @@ def grok_path path
   when path =~ RE_PRETTY_RESOURCE then dest = template_for $1, $2
   when path =~ RE_THE_FOO_PAGE    then dest = $1
   when path =~ RE_QUOTED_PATH     then dest = $1
-  when path =~ RE_REGEX           then dest = Regexp.new($1)
+  when path =~ RE_REGEX           then dest = Regexp.new("^#{$1}$")
   else                                 dest = path
   end
 #  puts "#{path} = #{dest}"
