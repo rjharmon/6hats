@@ -6,6 +6,7 @@ RE_User_TYPE = %r{(?: *(\w+)? *)}
   #
   
   Given "an anonymous user" do 
+    
     log_out!
   end
 
@@ -42,7 +43,7 @@ RE_User_TYPE = %r{(?: *(\w+)? *)}
 
   When "$actor registers an account as the preloaded '$login'" do |_, login|
     user = named_user(login)
-    user['password_confirmation'] = user['password']
+    user[:password_confirmation] = user[:password]
     create_user user
   end
 
@@ -81,11 +82,11 @@ RE_User_TYPE = %r{(?: *(\w+)? *)}
   
 def named_user login
   user_params = {
-    'admin'   => {'id' => 1, 'login' => 'addie', 'password' => '1234addie', 'email' => 'admin@example.com',       },
-    'oona'    => {          'login' => 'oona',   'password' => '1234oona',  'email' => 'unactivated@example.com'},
-    'reggie'  => {          'login' => 'reggie', 'password' => 'monkey',    'email' => 'registered@example.com' },
+    :admin    => {:id => 1, :login => 'addie',  :password => '1234addie', :email => 'admin@example.com',     },
+    :oona     => {          :login => 'oona',   :password => '1234oona',  :email => 'unactivated@example.com'},
+    :reggie   => {          :login => 'reggie', :password => 'monkey',    :email => 'registered@example.com' },
     }
-  user_params[login.downcase]
+  user_params[login.downcase.to_sym] || Factory.attributes_for( :user, :login => login )
 end
 
 #
@@ -106,22 +107,21 @@ def log_out!
   response.should redirect_to('/')
   flash[:notice].should =~ /You have been logged out/
   follow_redirect!
-  response.should redirect_to( hats_url )
-  follow_redirect!
 end
 
 def create_user(user_params={})
   @user_params       ||= user_params
   post "/users", :user => user_params
-  @user = User.find_by_login(user_params['login'])
+  # save_and_open_page
+  @user = User.find_by_login(user_params[:login])
 end
 
 def create_user!(user_type, user_params)
-  user_params['password_confirmation'] ||= user_params['password'] ||= user_params['password']
+  user_params[:password_confirmation] ||= user_params[:password] ||= user_params[:password]
   create_user user_params
+  response.should be_redirect
   response.should redirect_to('/')
   follow_redirect!
- 
   # fix the user's activation status
   activate_user! if user_type == 'activated'
 end
@@ -143,16 +143,13 @@ def log_in_user user_params=nil
   @user_params ||= user_params
   user_params  ||= @user_params
   post "/session", user_params
-  @user = User.find_by_login(user_params['login'])
+  @user = User.find_by_login(user_params[:login])
   controller.send(:current_user)
 end
 
 def log_in_user! *args
   log_in_user *args
-  response.should redirect_to('/topics')
+  response.should redirect_to('/')
   flash[:notice].should =~ /Logged in successfully/
   follow_redirect!
-  response.should redirect_to('/topics/new')
-  follow_redirect!
-  response.should have_flash("notice", /You don't have any topics yet.  Create a new one here./)
 end
