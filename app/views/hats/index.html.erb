@@ -25,29 +25,7 @@ shown at the right.
 
 <p>The proposed alternative is for a group to think together, planning what kind of outcomes 
 they're seeking, recognizing the potential contribution of every individual.  Some recognized 
-benefits and outcomes are shown to the right.</p>
-
-<% box :title => "More Objectivity" do %>
-By focusing on specific aspects of the problem, we free each participant from their natural 
-single-minded perspective.
-<% end %>
-
-<% box :title => "More Innovative Ideas" do %>
-The process provides an explicit time when innovation is the subject of conversation, in 
-response to both positive and negative possibilities.  This produces more and often better ideas
-than a typical argumentative meeting style.
-<% end %>
-
-<% box :title => "More People Get Heard" do %>
-Since every person finds that one or two of the hats are easier than the others for them, more 
-people in any group will be able to contribute their thoughts - even if only under the red hat.  
-Aside from the other benefits, this increases employee engagement, which is proven to drive 
-higher individual and company performance
-<% end %>
-
-<% box :title => "Shorter Meetings" do %>
-Surprise!  Meetings really are shorter when everybody works together.
-<% end %>
+benefits and outcomes are shown below.</p>
 
 
 <table>
@@ -74,5 +52,38 @@ Surprise!  Meetings really are shorter when everybody works together.
 
 
 <% box :location => :left do %>
-<b>Some stuff</b>.  this stuff goes in another box on the left
+  <%= markdown(<<EOM)
+
+More Objectivity
+================
+
+By focusing on specific aspects of the problem, we free each participant from their natural 
+single-minded perspective.
+
+
+More Innovative Ideas
+=====================
+
+The process provides an explicit time when innovation is the subject of conversation, in 
+response to both positive and negative possibilities.  This produces more and often better ideas
+than a typical argumentative meeting style.
+
+
+More People Get Heard
+=====================
+
+Since every person finds that one or two of the hats are easier than the others for them, more 
+people in any group will be able to contribute their thoughts - even if only under the red hat.  
+Aside from the other benefits, this increases employee engagement, which is proven to drive 
+higher individual and company performance
+
+
+Shorter Meetings
+================
+
+Meetings really are shorter when everybody works together.  
+
+EOM
+%>
 <% end %>
+
