@@ -10,11 +10,11 @@
   </p>
   <p>
     <%= form.label :description %><br />
-    <%= form.text_area :description %>
+    <%= form.text_area :description, :cols => 60 %>
   </p>
   <p>
     <%= form.label :more_info %><br />
-    <%= form.text_area :more_info %>
+    <%= form.text_area :more_info, :cols => 60 %>
   </p>
     <%= form_buttons( form, action, hats_url ) %>
 
