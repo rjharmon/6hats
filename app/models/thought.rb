@@ -1,3 +1,17 @@
+# == Schema Information
+# Schema version: 20090209051856
+#
+# Table name: thoughts
+#
+#  id         :integer         not null, primary key
+#  topic_id   :integer
+#  summary    :string(255)
+#  detail     :text
+#  hat_id     :integer
+#  created_at :datetime
+#  updated_at :datetime
+#
+
 class Thought < ActiveRecord::Base
   belongs_to :topic
   belongs_to :hat, :foreign_key => :hat

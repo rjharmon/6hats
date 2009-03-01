@@ -1,3 +1,18 @@
+# == Schema Information
+# Schema version: 20090209051856
+#
+# Table name: topics
+#
+#  id                 :integer         not null, primary key
+#  name               :string(255)
+#  created_at         :datetime
+#  updated_at         :datetime
+#  summary            :text
+#  user_id            :integer
+#  current_hat        :string(255)     default("Red")
+#  current_thought_id :integer
+#
+
 class Topic < ActiveRecord::Base
   has_many :thoughts, :dependent => :destroy;
   belongs_to :user;
