@@ -16,3 +16,6 @@
 [submodule "vendor/plugins/pickle"]
 	path = vendor/plugins/pickle
 	url = git://github.com/ianwhite/pickle.git
+[submodule "features/step_definitions/salad"]
+	path = features/step_definitions/salad
+	url = git@github.com:rjharmon/salad.git
