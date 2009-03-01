@@ -1,3 +1,18 @@
+# == Schema Information
+# Schema version: 20090209051856
+#
+# Table name: topics
+#
+#  id                 :integer         not null, primary key
+#  name               :string(255)
+#  created_at         :datetime
+#  updated_at         :datetime
+#  summary            :text
+#  user_id            :integer
+#  current_hat        :string(255)     default("Red")
+#  current_thought_id :integer
+#
+
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 require File.dirname(__FILE__) + '/../spec_shared_model'
 

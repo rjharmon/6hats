@@ -1,3 +1,17 @@
+# == Schema Information
+# Schema version: 20090209051856
+#
+# Table name: thoughts
+#
+#  id         :integer         not null, primary key
+#  topic_id   :integer
+#  summary    :string(255)
+#  detail     :text
+#  hat_id     :integer
+#  created_at :datetime
+#  updated_at :datetime
+#
+
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Thought do
