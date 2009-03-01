@@ -149,7 +149,7 @@ end
 
 def log_in_user! *args
   log_in_user *args
-  response.should redirect_to('/')
+  response.should redirect_to('/topics')
   flash[:notice].should =~ /Logged in successfully/
   follow_redirect!
 end
