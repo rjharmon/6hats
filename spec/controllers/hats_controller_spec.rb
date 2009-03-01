@@ -6,6 +6,13 @@ describe HatsController do
     @mock_hat ||= mock_model(Hat, stubs)
   end
 
+  describe "precondition: " do
+    it "hats data should be loaded (run rake db:seed RAILS_ENV=test, if this fails)" do
+      Hat.find(:all).size.should == 6
+    end
+  end
+    
+
   describe "telling users about the rules" do
     it "should expose the rules to the view" do
       Hat.should_receive(:find).with(:all).and_return([mock_hat])
@@ -87,7 +94,6 @@ describe HatsController do
       do_action
       assigns[:hat].should == @hat
     end
-
   end
 
   describe "responding to POST create" do
