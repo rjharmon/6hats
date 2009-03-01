@@ -14,7 +14,7 @@ Feature: Creating an account
   Scenario: Anonymous user can start creating an account
     Given an anonymous user
     When  she goes to /signup
-    Then  she should be at the 'users/new' page
+    Then  she should be at the 'users/new' template
      And  the page should look AWESOME
      And  she should see a <form> containing a textfield: Login, textfield: Email, password: Password, password: 'Confirm Password', submit: 'Sign up'
 
@@ -48,7 +48,7 @@ Feature: Creating an account
      And  the user has activation_code: 'activate_me', activated_at: nil! 
      And  we try hard to remember the user's updated_at, and created_at
     When  she registers an account with login: 'reggie', password: 'monkey', and email: 'different@example.com'
-    Then  she should be at the 'users/new' page
+    Then  she should be at the 'users/new' template
      And  she should     see an errorExplanation message 'Login has already been taken'
      And  she should not see an errorExplanation message 'Email has already been taken'
      And  a user with login: 'reggie' should exist
@@ -64,7 +64,7 @@ Feature: Creating an account
      And  an activated user named 'Reggie'
      And  we try hard to remember the user's updated_at, and created_at
     When  she registers an account with login: 'reggie', password: 'monkey', and email: 'reggie@example.com'
-    Then  she should be at the 'users/new' page
+    Then  she should be at the 'users/new' template
      And  she should     see an errorExplanation message 'Login has already been taken'
      And  she should not see an errorExplanation message 'Email has already been taken'
      And  a user with login: 'reggie' should exist
@@ -83,7 +83,7 @@ Feature: Creating an account
     Given an anonymous user
      And  no user with login: 'Oona' exists
     When  she registers an account with login: '',     password: 'monkey', password_confirmation: 'monkey' and email: 'unactivated@example.com'
-    Then  she should be at the 'users/new' page
+    Then  she should be at the 'users/new' template
      And  she should     see an errorExplanation message 'Login can't be blank'
      And  no user with login: 'oona' should exist
      
@@ -91,7 +91,7 @@ Feature: Creating an account
     Given an anonymous user
      And  no user with login: 'Oona' exists
     When  she registers an account with login: 'oona', password: '',       password_confirmation: 'monkey' and email: 'unactivated@example.com'
-    Then  she should be at the 'users/new' page
+    Then  she should be at the 'users/new' template
      And  she should     see an errorExplanation message 'Password can't be blank'
      And  no user with login: 'oona' should exist
      
@@ -99,7 +99,7 @@ Feature: Creating an account
     Given an anonymous user
      And  no user with login: 'Oona' exists
     When  she registers an account with login: 'oona', password: 'monkey', password_confirmation: ''       and email: 'unactivated@example.com'
-    Then  she should be at the 'users/new' page
+    Then  she should be at the 'users/new' template
      And  she should     see an errorExplanation message 'Password confirmation can't be blank'
      And  no user with login: 'oona' should exist
      
@@ -107,7 +107,7 @@ Feature: Creating an account
     Given an anonymous user
      And  no user with login: 'Oona' exists
     When  she registers an account with login: 'oona', password: 'monkey', password_confirmation: 'monkeY' and email: 'unactivated@example.com'
-    Then  she should be at the 'users/new' page
+    Then  she should be at the 'users/new' template
      And  she should     see an errorExplanation message 'Password doesn't match confirmation'
      And  no user with login: 'oona' should exist
      
@@ -115,7 +115,7 @@ Feature: Creating an account
     Given an anonymous user
      And  no user with login: 'Oona' exists
     When  she registers an account with login: 'oona', password: 'monkey', password_confirmation: 'monkey' and email: ''
-    Then  she should be at the 'users/new' page
+    Then  she should be at the 'users/new' template
      And  she should     see an errorExplanation message 'Email can't be blank'
      And  no user with login: 'oona' should exist
     When  she registers an account with login: 'oona', password: 'monkey', password_confirmation: 'monkey' and email: 'unactivated@example.com'

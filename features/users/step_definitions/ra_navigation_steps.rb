@@ -6,7 +6,7 @@
   # GET
   # Go to a given page.
   When "$actor goes to $path" do |actor, path|
-    dest = grok_path(path)
+    dest = path_to(path)
     get dest
   end
 

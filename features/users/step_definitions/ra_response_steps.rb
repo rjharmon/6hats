@@ -13,11 +13,11 @@
   # feeds its output to render_template or redirect_to
   #
   Then "$actor should be at $path" do |_, path|
-    response.should render_template(grok_path(path))
+    response.should render_template(template_from(path))
   end
 
   Then "$actor should be redirected to $path" do |_, path|
-    response.should redirect_to(grok_path(path))
+    response.should redirect_to(path_to(path))
   end  
 
   Then "the page should look AWESOME" do
@@ -149,33 +149,7 @@
   end  
 
 
-
 def have_flash notice, *args
   have_tag("div.#{notice}", *args)
-end
-
-RE_PRETTY_RESOURCE = /the (index|show|new|create|edit|update|destroy) (\w+) (page|form)/i
-RE_THE_FOO_PAGE    = /the '?([^']*)'? (page|form)/i
-RE_QUOTED_PATH     = /^'([^']*)'$/i
-RE_REGEX           = /a page matching (.*)/
-def grok_path path
-  path.gsub(/\s+again$/,'') # strip trailing ' again'
-  case
-  when path == 'the home page'    then dest = '/'
-#  when path == 'the topics page'  then dest = '/topics'
-  when path =~ RE_PRETTY_RESOURCE then dest = template_for $1, $2
-  when path =~ RE_THE_FOO_PAGE    then dest = $1
-  when path =~ RE_QUOTED_PATH     then dest = $1
-  when path =~ RE_REGEX           then dest = Regexp.new("^#{$1}$")
-  else                                 dest = path
-  end
-#  puts "#{path} = #{dest}"
-  dest
-end
-
-# turns 'new', 'road bikes' into 'road_bikes/new'
-# note that it's "action resource"
-def template_for(action, resource)
-  "#{resource.gsub(" ","_")}/#{action}"
 end
 
