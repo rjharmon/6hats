@@ -46,15 +46,21 @@ describe "/hats/index.html.erb" do
   end
 
   describe "should not show edit links" do
-    [ nil, Factory(:user) ].each do |u|
-      it " - when " + ( u ? "" : "not " ) + "logged in" do
-        do_login(u)
-        assigns[:hats] = @hats = Hat.find(:all)
-        render "/hats/index.html.erb"
-        Hat.find(:all).each do |hat|
-          response.should_not have_tag("a[href=#{edit_hat_path(hat)}]")
-        end
+    def do_action
+      do_login(@u)
+      assigns[:hats] = @hats = Hat.find(:all)
+      render "/hats/index.html.erb"
+      Hat.find(:all).each do |hat|
+        response.should_not have_tag("a[href=#{edit_hat_path(hat)}]")
       end
+    end
+    it "when not logged in" do
+      @u = nil
+      do_action
+    end
+    it "when not logged in" do
+      @u = Factory(:user) 
+      do_action
     end
   end
 
@@ -72,13 +78,13 @@ describe "/hats/index.html.erb" do
     response.should have_text(/argument.*disadvantage.*alternative.*benefits.*outcomes/m)
   end
 
-  it "should show benefits on the right" do
+  it "should show benefits and contrast with argumentative style" do
     render "/hats/index.html.erb"
     content_for( :right ).should have_text(/Problems.*Argument/mi)
-    content_for( :right ).should have_text(/More Objectivity/mi)
-    content_for( :right ).should have_text(/More Innov/mi)
-    content_for( :right ).should have_text(/More.*Heard/mi)
-    content_for( :right ).should have_text(/Shorter Meetings/mi)
+    content_for( :left ).should have_text(/More Objectivity/mi)
+    content_for( :left ).should have_text(/More Innov/mi)
+    content_for( :left ).should have_text(/More.*Heard/mi)
+    content_for( :left ).should have_text(/Shorter Meetings/mi)
   end
 
 

@@ -31,13 +31,19 @@ describe "/hats/show.html.erb" do
     response.should have_tag( "ul>li", "bullet" )
   end
   describe "should not show edit links" do
-    [ nil, Factory(:user) ].each do |u|
-      it " - when " + ( u ? "" : "not " ) + "logged in" do
-        do_login(u)
-        assigns[:hat] = @hat = Hat.find(:first)
-        render "/hats/show.html.erb"
-        response.should_not have_tag("a[href=#{edit_hat_path(@hat)}]")
-      end
+    def do_action
+      do_login(@u)
+      assigns[:hat] = @hat = Hat.find(:first)
+      render "/hats/show.html.erb"
+      response.should_not have_tag("a[href=#{edit_hat_path(@hat)}]")
+    end
+    it "when not logged in" do
+      @u = nil
+      do_action
+    end
+    it "when not logged in" do
+      @u = Factory(:user) 
+      do_action
     end
   end
 
