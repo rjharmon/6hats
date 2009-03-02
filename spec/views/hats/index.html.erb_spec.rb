@@ -29,7 +29,7 @@ describe "/hats/index.html.erb" do
     it "should link to the login and register page" do
       render '/hats/index.html.erb', :layout => 'application.html.erb'
       response.should     have_tag( "a[href=#{login_path}]" )
-      response.should     have_tag( "a[href=#{register_path}]" )
+      response.should     have_tag( "a[href=#{signup_path}]" )
     end
   end
   describe "when user is logged in" do
