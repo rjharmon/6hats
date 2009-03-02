@@ -120,8 +120,11 @@
 #    end
   end
   
-  Then "$actor should not see $an $notice message '$message'" do |_, _, notice, message|
+  Then /^\w+ should not see a[n]? (\w+) message '(\w+)'$/ do |notice, message|
     response.should_not have_flash(notice, %r{#{message}})
+  end
+  Then /^\w+ should not see a[n]? (\w+) message$/ do |notice|
+    response.should_not have_flash(notice)
   end
   
   Then "$actor should see no messages" do |_|

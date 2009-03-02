@@ -16,7 +16,7 @@ Feature: Publicly-visible content
      And I should see "Problems of the Argumentative Meeting Style"
 
   Scenario: Availability of more detailed rules about the hats
-    When user goes to hats/rules
+    When user goes to 'hats/rules'
     Then she should see an outbound link to the www.amazon.com domain
      And I should see "general guidelines"
      And she should see 6 '.content div.box-body' elements describing the rules of each hat
@@ -27,7 +27,10 @@ Feature: Publicly-visible content
     Then she should be redirected to the hats page
     When she follows that redirect!
     Then she should see a link 'Log in' to /login
-     And she should see a link 'register' to /register
+     And she should see a link 'register' to /signup
+    When she follows "register"
+    Then she should be at the 'users/new' template
+     And she should not see an error message
      
   Scenario: No availability of editing hats data
     When user goes to the hats page
@@ -36,7 +39,7 @@ Feature: Publicly-visible content
 
     
   Scenario: No availability of editing project data
-    When user goes to topics
+    When user goes to /topics
     Then she should be redirected to the login page
     When she follows that redirect!
     Then she should see a notice message 'Please log in to continue'
