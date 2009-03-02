@@ -13,7 +13,7 @@ Feature: Logging in
   Scenario: Anonymous user can get a login form.
     Given an anonymous user
     When  she goes to /login
-    Then  she should be at the new sessions template
+    Then  she should be at the 'sessions/new' template
      And  the page should look AWESOME
      And  she should see a <form> containing a textfield: Login, password: Password, and submit: 'Log in'
   
@@ -26,7 +26,7 @@ Feature: Logging in
     When  she creates a singular sessions with login: 'reggie', password: 'monkey', remember me: ''
     Then  she should be redirected to the topics page
     When  she follows that redirect!
-    Then  she should be redirected to the new topics page
+    Then  she should be redirected to the new topic page
     When  she follows that redirect!
     Then  she should see a notice message 'You don't have any topics yet.  Create a new one here.'
      And  reggie should be logged in
@@ -38,7 +38,7 @@ Feature: Logging in
     When  she creates a singular sessions with login: 'reggie', password: 'monkey', remember me: ''
     Then  she should be redirected to the topics page
     When  she follows that redirect!
-    Then  she should be redirected to the new topics page
+    Then  she should be redirected to the new topic page
     When  she follows that redirect!
     Then  she should see a notice message 'You don't have any topics yet.  Create a new one here.'
      And  reggie should be logged in
@@ -53,7 +53,7 @@ Feature: Logging in
     When  she creates a singular sessions with login: 'reggie', password: 'monkey', remember me: '1'
     Then  she should be redirected to the topics page
     When  she follows that redirect!
-    Then  she should be redirected to the new topics page
+    Then  she should be redirected to the new topic page
     When  she follows that redirect!
     Then  she should see a notice message 'You don't have any topics yet.  Create a new one here.'
      And  reggie should be logged in
@@ -69,13 +69,13 @@ Feature: Logging in
     When  she creates a singular sessions with login: 'oona', password: '1234oona', remember me: '1'
     Then  she should be redirected to the topics page
     When  she follows that redirect!
-    Then  she should be redirected to the new topics page
+    Then  she should be redirected to the new topic page
     When  she follows that redirect!
     Then  she should see a notice message 'You don't have any topics yet.  Create a new one here.'
      And  oona should be logged in
      And  she should have an auth_token cookie
     When  she creates a singular sessions with login: 'reggie', password: 'i_haxxor_joo'
-    Then  she should be at the new sessions template
+    Then  she should be at the 'sessions/new' template
     Then  she should see an error message 'Couldn't log you in as 'reggie''
      And  she should not be logged in
      And  she should not have an auth_token cookie
@@ -84,25 +84,25 @@ Feature: Logging in
   Scenario: Log-in with bogus info should fail until it passes
     Given an activated user named 'reggie'
     When  she creates a singular sessions with login: 'reggie', password: 'i_haxxor_joo'
-    Then  she should be at the new sessions template
+    Then  she should be at the 'sessions/new' template
     Then  she should see an error message 'Couldn't log you in as 'reggie''
      And  she should not be logged in
      And  she should not have an auth_token cookie
      And  her session store should not have user_id
     When  she creates a singular sessions with login: 'reggie', password: ''
-    Then  she should be at the new sessions template
+    Then  she should be at the 'sessions/new' template
     Then  she should see an error message 'Couldn't log you in as 'reggie''
      And  she should not be logged in
      And  she should not have an auth_token cookie
      And  her session store should not have user_id
     When  she creates a singular sessions with login: '', password: 'monkey'
-    Then  she should be at the new sessions template
+    Then  she should be at the 'sessions/new' template
     Then  she should see an error message 'Couldn't log you in as '''
      And  she should not be logged in
      And  she should not have an auth_token cookie
      And  her session store should not have user_id
     When  she creates a singular sessions with login: 'leonard_shelby', password: 'monkey'
-    Then  she should be at the new sessions template
+    Then  she should be at the 'sessions/new' template
     Then  she should see an error message 'Couldn't log you in as 'leonard_shelby''
      And  she should not be logged in
      And  she should not have an auth_token cookie
@@ -110,7 +110,7 @@ Feature: Logging in
     When  she creates a singular sessions with login: 'reggie', password: 'monkey', remember me: '1'
     Then  she should be redirected to the topics page
     When  she follows that redirect!
-    Then  she should be redirected to the new topics page
+    Then  she should be redirected to the new topic page
     When  she follows that redirect!
     Then  she should see a notice message 'You don't have any topics yet.  Create a new one here.'
      And  reggie should be logged in
