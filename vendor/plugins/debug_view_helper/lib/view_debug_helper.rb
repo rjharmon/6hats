@@ -46,11 +46,12 @@ module ViewDebugHelper
 
     dump_vars(script, 'Session Variables:', @controller.session.instance_variable_get("@data"))
     dump_vars(script, 'Flash Variables:', @controller.flash)
-    if view_debug_display_assigns and not @controller.assigns.nil?
+    if view_debug_display_assigns and @controller.instance_variables.size > 0
       popup_header(script, 'Assigned Template Variables:')
-      @controller.assigns.each do |k, v|
+      @controller.instance_variables.each do |k|
+        short = k[1..99]
         if (not @view_debug_ignores) or (not @view_debug_ignores.include?(k))
-          popup_data(script, h(k), dump_obj(v)) unless IGNORE.include?(k)
+          popup_data(script, h(k), dump_obj(@controller.instance_variable_get(k.to_sym))) unless IGNORE.include?(short)
         end
       end
     end
