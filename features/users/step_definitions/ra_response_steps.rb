@@ -120,7 +120,7 @@
 #    end
   end
   
-  Then /^\w+ should not see a[n]? (\w+) message '(\w+)'$/ do |notice, message|
+  Then /^\w+ should not see a[n]? (\w+) message '(.*)'$/ do |notice, message|
     response.should_not have_flash(notice, %r{#{message}})
   end
   Then /^\w+ should not see a[n]? (\w+) message$/ do |notice|
