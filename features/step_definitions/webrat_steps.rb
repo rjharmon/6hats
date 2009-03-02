@@ -11,7 +11,7 @@ When /^I press "(.*)"$/ do |button|
   click_button(button)
 end
 
-When /^I follow "(.*)"$/ do |link|
+When /^(?:\w+) follow[s]? "(.*)"$/ do |link|
   click_link(link)
 end
 
