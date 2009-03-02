@@ -1,3 +1,5 @@
+require 'faker'
+
     Factory.sequence :name do |n|
       "Joe Gunchi #{n}"
     end
@@ -12,16 +14,24 @@
 #     sha1 = Digest::SHA1.hexdigest("#{n}")
       "generated string # #{n}"
     end
-      
-    Factory.define :user do |u|
-      u.login { |l| Factory.next :login }
-      u.name { |n| Factory.next :name }
-      u.email { |e| Factory.next :email }
-      u.password { |e| "password" }
-      u.password_confirmation { |e| "password" }
-      
+          
+    Factory.define(:user) do |u|
+      #  name                      :string(100)     default("")
+      u.name {|u| u.login || Faker::Name.name }
+      #  login                     :string(40)
+      u.login { |u| u.name.gsub(/\W/,"").downcase.split(/ /).join(""); }
+
+      #  email                     :string(100)
+      u.email { Faker::Internet.email }
+      #  crypted_password          :string(40)
+      u.password { 'fake passwd' }
+      u.password_confirmation { 'fake passwd' }
+      #  state                     :string(255)     default("passive")
       u.state 'active'
+      u.activated_at Time.now
     end
+    
+    
     Factory.define :topic do |t|
       t.name { |n| Factory.next :generated_string }
       t.summary { |s| Factory.next :generated_string }
@@ -33,4 +43,6 @@
       t.detail { |d| Factory.next :generated_string }
       t.topic { |t| t.association( :topic ) }
     end
+    
+    
     
