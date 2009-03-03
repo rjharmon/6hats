@@ -25,7 +25,7 @@ class User < ActiveRecord::Base
   include Authentication
   include Authentication::ByPassword
   include Authentication::ByCookieToken
-  include Authorization::StatefulRoles
+  include Authorization::AasmRoles
   validates_presence_of     :login
   validates_length_of       :login,    :within => 3..40
   validates_uniqueness_of   :login
@@ -69,12 +69,10 @@ class User < ActiveRecord::Base
     write_attribute :email, (value ? value.downcase : nil)
   end
 
-  protected
+protected
     
-    def make_activation_code
-        self.deleted_at = nil
-        self.activation_code = self.class.make_token
-    end
-
-
+  def make_activation_code
+    self.deleted_at = nil
+    self.activation_code = self.class.make_token
+  end
 end
