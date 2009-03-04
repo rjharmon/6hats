@@ -26,6 +26,13 @@ describe UsersController do
     assigns(:user).reload
     assigns(:user).activation_code.should_not be_nil
   end
+  it "sends email with the user's activation code" do
+    create_user
+    @user = assigns[:user]
+    email = ActionMailer::Base.deliveries[0]
+    email.body.should =~ Regexp.new( @user.activation_code )
+  end
+  
   it 'requires login on signup' do
     lambda do
       create_user(:login => nil)

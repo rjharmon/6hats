@@ -32,10 +32,11 @@ Feature: Creating an account
     Then  she should see a notice message 'Thanks for signing up!'
      And  a user with login: 'oona' should exist
      And  the user should have login: 'oona', and email: 'unactivated@example.com'
-
      And  the user's activation_code should not be nil
      And  the user's activated_at    should     be nil
      And  she should not be logged in
+     And  it should send 1 email
+     And  she should get an email with her activation code
 
 
   #
