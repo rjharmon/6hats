@@ -22,4 +22,30 @@ class Topic < ActiveRecord::Base
   belongs_to :current_thought, :class_name => "Thought"
 
   validates_length_of :name, :minimum => 3
+
+  def state
+    if self.new_record?
+      "Fresh"
+    elsif self.summary.length == 0
+      if current_hat == "Red"
+        "Explore Emotions"
+      else
+        "Define the Problem"
+      end
+    else
+      current_hat
+    end
+  end
+  
+  def next_state
+    if self.new_record?
+      "Explore Emotions"
+    elsif self.summary.length == 0
+      "Define the Problem"
+    else
+      "figure out which hat is next" 
+    end
+  end
+  
+      
 end
