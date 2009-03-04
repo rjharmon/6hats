@@ -19,3 +19,6 @@
 [submodule "features/step_definitions/salad"]
 	path = features/step_definitions/salad
 	url = git@github.com:rjharmon/salad.git
+[submodule "vendor/plugins/resource_controller"]
+	path = vendor/plugins/resource_controller
+	url = git://github.com/giraffesoft/resource_controller.git
