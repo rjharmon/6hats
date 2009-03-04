@@ -63,7 +63,7 @@
   end
 
   # Resource has attributes with given values
-  Then  "the $resource should have $attributes" do |resource, attributes|
+  Then /^the (\w+) should have (.*)$/ do |resource, attributes|
     klass, instance, attributes = parse_resource_args resource, attributes
     attributes.each do |attr, val|
       instance.send(attr).should == val
