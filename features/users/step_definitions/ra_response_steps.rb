@@ -109,15 +109,10 @@
   # Flash messages
   #
   
-  Then /\w+ should \s*see an? (\w+) \s*message '(.*)'/ do |notice, message|
-#    begin
+
+  
+  Then /\w+ should \s*see an? (\w+) \s*message ['"](.*)['"]/ do |notice, message|
       response.should have_flash(notice, %r{#{message}})
-#    rescue Exception => e
-#      puts response.methods.sort - Object.methods
-#      puts response.body
-#      sleep 5
-#      raise e
-#    end
   end
   
   Then /^\w+ should not see a[n]? (\w+) message '(.*)'$/ do |notice, message|
