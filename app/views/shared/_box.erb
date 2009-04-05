@@ -1,28 +1,52 @@
 <% unless @box_options[:location]
-	raise SiteDevError.new("@box_options[:location] is required!");
-   end
-%>
+  raise SiteDevError.new("@box_options[:location] is required!");
+end %>
 <% content_for( @box_options[:location] ) do %>
-<div class="box-top"></div><div class="box-body">
+  <!-- from http://www.schillmania.com/projects/dialog2/ -->
+  <!-- top/right PNG -->
+<div class="box">
+  <div class="box-content">
 
-<% if @box_options[:title] -%>
-<div class="h2">
-	<h2 class="<%= @box_options[:title_class] %>" style="display:inline"><%= h @box_options[:title] %></h2>
-	<% if @box_options[:subtitle] -%>
-		 - <h3 style="display:inline"><%= h @box_options[:subtitle] %></h3>
-	<% end %>
-</div>
-<% end -%> 
-<% if i = @box_options[:image] 
-	unless i.kind_of?(Hash) 
-		raise SiteDevError.new(":image should be a hash of options including :src" )
-	end
-	i[:border] ||= 0
-	i[:float] ||= "left"
-	i[:class] ||= "image"
-%>
-	<%= image_tag( i.delete(:src), i ) %>
-<% end %>
-	<%= yield %>
-</div>
-<% end %>
+    <!-- optional: vertical scroll wrapper -->
+    <div class="wrapper">
+
+      <!-- top/left PNG -->
+      <div class="t"></div>
+
+      <!-- Your content goes here -->
+
+      <!-- Optional: Standard Module Format (hd/bd/ft)
+        for providing semantic, meaningful content.
+        Not required for visual effect. 
+      -->
+
+    <%  if @box_options[:title] -%>
+      <div class="hd">
+        <h2 class="<%= @box_options[:title_class] %>" style="display:inline"><%= h @box_options[:title] %></h2>
+      <%  if @box_options[:subtitle] -%>
+         - <h3 style="display:inline"><%= h @box_options[:subtitle] %></h3>
+      <%  end %>
+      </div>
+    <%  end %>
+      <div class="bd">
+    <%  if i = @box_options[:image] 
+          unless i.kind_of?(Hash) 
+            raise SiteDevError.new(":image should be a hash of options including :src" )
+          end
+      i[:border] ||= 0
+      i[:float] ||= "left"
+      i[:class] ||= "image"
+    %>
+        <%= image_tag( i.delete(:src), i ) %>
+    <% end %>
+        <%= yield %>
+      </div>
+      <div class="ft">
+        <!-- This is where the footer goes. -- >
+      </div>
+    </div><!-- end scroll wrapper -->
+  </div><!-- end content -->
+  <!-- bottom PNG -->
+  <div class="b"><div></div></div>
+</div> <!-- end box -->
+<% end # of content_for box area %> 

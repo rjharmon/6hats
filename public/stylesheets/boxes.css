@@ -1,0 +1,118 @@
+/* 
+  -- Even more rounded corners with CSS: Base stylesheet --
+  -- http://www.schillmania.com/projects/dialog2/ 
+*/
+
+.box {
+ position:relative;
+ margin:0px auto;
+ min-width:8em;
+ max-width:760px; /* based on image dimensions - not quite consistent with drip styles yet */
+ color:#fff;
+ z-index:1;
+ margin-left:12px; /* default, width of left corner */
+ margin-bottom:0.5em; /* spacing under box */
+}
+.right .box .box-content
+{
+ background:transparent url(/images/box-bg-orange.png) no-repeat right top;
+ _background-image:url(/images/box-bg-orange.gif);
+}
+
+.content .box .box-content {
+	background:transparent url(/images/box-bg-black.png) no-repeat right top;
+ _background-image:url(/images/box-bg-black.gif);
+}
+
+.box .box-content {
+ position:relative;
+ zoom:1;
+ _overflow-y:hidden;
+ padding:0px 0px 0px 0px;
+}
+
+.right .box .t {
+	background:transparent url(/images/box-bg-orange.png) no-repeat left top;
+	_background-image:url(/images/box-bg-orange.gif);
+}
+.content .box .t {
+	background:transparent url(/images/box-bg-black.png) no-repeat left top;
+	_background-image:url(/images/box-bg-black.gif);
+}
+
+.box .t {
+ /* top+left vertical slice */
+ position:absolute;
+ left:0px;
+ top:0px;
+ width:12px; /* top slice width */
+ margin-left:-12px;
+ height:100%;
+ _height:1600px; /* arbitrary long height, IE 6 */
+ background-position:top left;
+}
+
+.box .b {
+ /* bottom */
+ position:relative;
+ width:100%;
+}
+.right .box .b {
+ background:transparent url(/images/box-bg-orange.png) no-repeat right bottom;
+ _background-image:url(/images/box-bg-orange.gif);
+}
+.content .box .b {
+ background:transparent url(/images/box-bg-black.png) no-repeat right bottom;
+ _background-image:url(/images/box-bg-black.gif);
+}
+
+.box .b,
+.box .b div {
+ height:30px; /* height of bottom cap/shade */
+ font-size:1px;
+}
+
+.box .b div {
+ position:relative;
+ width:12px; /* bottom corner width */
+ margin-left:-12px;
+}
+.right .b div {
+ background:transparent url(/images/box-bg-orange.png) no-repeat left bottom;
+ _background-image:url(/images/box-bg-orange.gif);
+}
+.content .b div {
+ background:transparent url(/images/box-bg-black.png) no-repeat left bottom;
+ _background-image:url(/images/box-bg-black.gif);
+}
+
+.box .hd,
+.box .bd,
+.box .ft {
+ position:relative;
+}
+
+.box .hd {
+  padding-top: 14px;
+  padding-bottom: 10px;
+}
+
+
+.box .wrapper {
+ /* extra content protector - preventing vertical overflow (past background) */
+ position:static;
+ max-height:1000px;
+ overflow:auto; /* note that overflow:auto causes a rather annoying redraw "lag" in Firefox 2, and may degrade performance. Might be worth trying without if you aren't worried about height/overflow issues. */
+}
+
+.box h1,
+.box p {
+ margin:0px; /* margins will blow out backgrounds, leaving whitespace. */
+ padding:0.5em 0px 0.5em 0px;
+}
+
+.box h1 {
+ padding-bottom:0px;
+}
+.box h2 { color: #fff; }
+.content .box h3 { color: #999; margin-top: 0.5em; margin-bottom: 0.5em;}
