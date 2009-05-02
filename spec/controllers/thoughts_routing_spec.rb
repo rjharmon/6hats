@@ -2,28 +2,34 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe ThoughtsController do
   describe "route generation" do
-    it "should map #index" do
-      lambda { route_for(:controller => "thoughts", :action => "index", :topic_id => 1)}.should raise_error( ActionController::RoutingError )
-    end
+      it "should NOT map #index" do
+        route_for(:controller => "thoughts", :action => "index", :topic_id => "1").should == ""#  raise_error( ActionController::MethodNotAllowed )
+      end
+        it "should NOT map #indewfefwex" do
+          route_for(:controller => "thoughts", :action => "wefoijewfoij", :topic_id => "1").should == ""#  raise_error( ActionController::MethodNotAllowed )
+        end
   
     it "should map #new" do
-      route_for(:controller => "thoughts", :action => "new", :topic_id => 1).should == "/topics/1/thoughts/new"
+      route_for(:controller => "thoughts", :action => "new", :topic_id => "1").should == "/topics/1/thoughts/new"
     end
   
-    it "should not map #show" do
-      lambda { route_for(:controller => "thoughts", :action => "show", :id => 1, :topic_id => 1) }. should raise_error( ActionController::RoutingError )
+    it "should NOT map #show" do
+      bypass_rescue
+      lambda do 
+        route_for(:controller => "thoughts", :action => "show", :id => "1", :topic_id => "1") 
+      end.should raise_error( ActionController::RoutingError )
     end
   
     it "should map #edit" do
-      route_for(:controller => "thoughts", :action => "edit", :id => 1, :topic_id => 1).should == "/topics/1/thoughts/1/edit"
+      route_for(:controller => "thoughts", :action => "edit", :id => "1", :topic_id => "1").should == "/topics/1/thoughts/1/edit"
     end
   
     it "should map #update" do
-      route_for(:controller => "thoughts", :action => "update", :id => 1, :topic_id => 1).should == "/topics/1/thoughts/1"
+      route_for(:controller => "thoughts", :action => "update", :id => "1", :topic_id => "1").should == { :path => "/topics/1/thoughts/1", :method => :put }
     end
   
     it "should map #destroy" do
-      route_for(:controller => "thoughts", :action => "destroy", :id => 1, :topic_id => 1).should == "/topics/1/thoughts/1"
+      route_for(:controller => "thoughts", :action => "destroy", :id => "1", :topic_id => "1").should == { :path => "/topics/1/thoughts/1", :method => :delete }
     end
   end
 

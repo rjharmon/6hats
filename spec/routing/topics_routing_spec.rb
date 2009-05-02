@@ -11,31 +11,25 @@ describe TopicsController do
     end
   
     it "should map #show" do
-      route_for(:controller => "topics", :action => "show", :id => 1).should == "/topics/1"
+      route_for(:controller => "topics", :action => "show", :id => "1").should == "/topics/1"
     end
   
     it "should map #edit" do
-      route_for(:controller => "topics", :action => "edit", :id => 1).should == "/topics/1/edit"
+      route_for(:controller => "topics", :action => "edit", :id => "1").should == "/topics/1/edit"
     end
   
     it "should map #update" do
-      route_for(:controller => "topics", :action => "update", :id => 1).should == "/topics/1"
+      route_for(:controller => "topics", :action => "update", :id => "1").should == { :path => "/topics/1", :method => :put }
     end
   
     it "should map #destroy" do
-      route_for(:controller => "topics", :action => "destroy", :id => 1).should == "/topics/1"
+      route_for(:controller => "topics", :action => "destroy", :id => "1").should == { :path => "/topics/1", :method => :delete }
     end
     it "should map next_state from POST" do
-      route_for(:controller => "topics", :action => "next_state", :id => 1).should == "/topics/1/next_state"
-    end
-    it "should map POST next_state" do
-      route_for( :controller => "topics", :action => "next_state", :id => 1).should == "/topics/1/next_state"
-      # TODO: use { 
-      #  :path => "/topics/1/next_state", :method => :post
-      # }
+      route_for(:controller => "topics", :action => "next_state", :id => "1").should == { :path => "/topics/1/next_state", :method => :post }
     end
     it "should map GET next_state from the :query_next_state action" do
-      route_for(:controller => "topics", :action => "query_next_state", :id => 1).should == "/topics/1/next_state"
+      route_for(:controller => "topics", :action => "query_next_state", :id => "1").should == "/topics/1/next_state"
     end
     
   end

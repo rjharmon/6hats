@@ -2,7 +2,7 @@
 # from the project root directory.
 require File.dirname(__FILE__) + "/../config/environment" unless defined?(RAILS_ROOT)
 require 'spec/autorun'
-ENV["RAILS_ENV"] = "test"
+ENV["RAILS_ENV"] = "rspec"
 require 'spec/rails'
 
 # TODO: verify that this works
