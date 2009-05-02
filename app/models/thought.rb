@@ -18,7 +18,6 @@ class Thought < ActiveRecord::Base
   validates_length_of :summary, :minimum => 3
   
   
-# TODO: belongs_to :hat
 
 
 # Target thoughts to automatically create:
@@ -29,9 +28,10 @@ class Thought < ActiveRecord::Base
 # * Potential and Motivation
 #   * M -> Ideation (How could this potential actually be achieved?)
 #   * H -> Problem Identification (What problems can we identify and possibly work around?)
-#   * H-> Emotions (Intuition on which ones will be strong contenders)
+#   * H -> Emotions (Intuition on which ones will be strong contenders)
 # * Problem Identification
-#   * H-> Potential & Motivation (What reasons would we have for finding a solution to these problems?)
+#   * H -> Potential & Motivation (What reasons would we have for finding a solution to these problems?)
+#   * H -> Facts and information needed
 #   * M -> Ideation (What ideas do we have for solving these problems?)
 #   * L -> Explore Emotions (How do we feel about these problem?)
 # * Explore Emotions
