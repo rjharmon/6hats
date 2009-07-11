@@ -1,5 +1,5 @@
 class ThoughtsController < ApplicationController
-  before_filter :fetch_user
+  before_filter :require_user
   before_filter :fetch_topic
   before_filter :fetch_thought, :except => [ :new, :create ]
 #  before_filter :check_topic_id, :only => [ :create, :update ]
@@ -8,10 +8,14 @@ protected
   
   def fetch_topic
     if params[:topic_id]
-      @topic = @user.topics.find_by_id(params[:topic_id])
+      @topic = current_user.topics.find_by_id(params[:topic_id])
     end
     if ! @topic
-      return denied( "user doesn't have that topic id", topics_url )
+      if current_user
+        return denied( "user doesn't have that topic id", topics_url )
+      else
+        return denied( "You must be logged in", login_url )
+      end
     end
   end
   

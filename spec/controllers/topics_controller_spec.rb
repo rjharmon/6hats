@@ -147,7 +147,6 @@ describe TopicsController do
       describe "on success" do
         before do
           @user = Factory(:user)
-          @user.state = 'active'; @user.save
           do_login(@user)
           do_action(@user)
           response.should_not redirect_to(topics_url)

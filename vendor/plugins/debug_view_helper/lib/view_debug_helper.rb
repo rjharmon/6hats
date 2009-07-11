@@ -104,10 +104,6 @@ module ViewDebugHelper
 end
 
 class ActionController::Base
-  alias :original_flash :flash
-  def flash(refresh = false)
-    original_flash(refresh)
-  end
   @@view_debug_display_assigns = true
   cattr_accessor :view_debug_display_assigns
   helper_method :view_debug_display_assigns

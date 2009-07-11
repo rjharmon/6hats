@@ -3,7 +3,7 @@ class UserMailer < ActionMailer::Base
     setup_email(user)
     @subject    += 'Please activate your new account'
   
-    @body[:url]  = "http://YOURSITE/activate/#{user.activation_code}"
+    @body[:url]  = "http://YOURSITE/activate/#{user.perishable_token}"
   
   end
   

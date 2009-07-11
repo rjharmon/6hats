@@ -4,6 +4,8 @@ namespace :db do
     require 'active_record/fixtures'
     Dir.glob(RAILS_ROOT + '/db/seed_data/*.yml').each do |file|
       Fixtures.create_fixtures('db/seed_data', File.basename(file, '.*'))
+      puts "created fixtures"
     end
-  end
+  end  
 end
+

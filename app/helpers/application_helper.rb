@@ -2,6 +2,7 @@
 module ApplicationHelper
 
   Markdown = RDiscount
+  BlueCloth = RDiscount
   def box( *args, &block )
     options = args.extract_options!
 
@@ -40,7 +41,7 @@ module ApplicationHelper
     if nil === input then
       raise SiteDevError.new("input string required")
     end
-    Markdown.new(input).to_html
+    RDiscount.new(input).to_html
   end
 end
 

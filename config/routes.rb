@@ -3,6 +3,10 @@ ActionController::Routing::Routes.draw do |map|
 #  map.home "/", :controller => "home", :action => 'index', :method => 'GET'
   map.root :controller => 'home'
 
+  map.resource :user_session
+    
+  map.resource :account, :controller => "users"
+
   map.resources :topics do |topics|
     topics.resources :thoughts, :except => [:index,:show]
   end
@@ -14,15 +18,15 @@ ActionController::Routing::Routes.draw do |map|
   map.rules '/hats/rules', :controller => 'hats', :action => 'rules'
   map.resources :hats
 
-  map.logout '/logout', :controller => 'sessions', :action => 'destroy'
-  map.login '/login', :controller => 'sessions', :action => 'new'
+  map.login "login", :controller => "user_session", :action => "new"
+  map.logout "logout", :controller => "user_session", :action => "destroy"
+
   map.register '/register', :controller => 'users', :action => 'create'
   map.signup '/signup', :controller => 'users', :action => 'new'
+  
   map.activate '/activate/:activation_code', :controller => 'users', :action => 'activate', :activation_code => nil
 
-  map.resources :users, :member => { :suspend => :put, :unsuspend => :put, :purge => :delete }
-
-  map.resource :session
+  map.resources :users
 
   # The priority is based upon order of creation: first created -> highest priority.
 

@@ -1,5 +1,5 @@
 class TopicsController < ApplicationController
-  before_filter :fetch_user
+  before_filter :require_user
   before_filter :fetch_topic, :except => [ :new, :create ]
   before_filter :check_userid,  :only => [ :create, :update ]
   
@@ -7,12 +7,12 @@ protected
     
   def fetch_topic
     if params[:id]
-      @topic = @user.topics.find_by_id(params[:id])
+      @topic = current_user.topics.find_by_id(params[:id])
       if ! @topic 
         return denied( "user doesn't have that topic id", topics_url )
       end
     else
-      @topics = @user.topics.find(:all)
+      @topics = current_user.topics.find(:all)
     end
   end
   def check_userid
@@ -53,7 +53,7 @@ public
   # GET /topics/new
   # GET /topics/new.xml
   def new
-    @topic = @user.topics.build()
+    @topic = current_user.topics.build()
 
     respond_to do |format|
       format.html # new.html.erb
@@ -68,7 +68,7 @@ public
   # POST /topics
   # POST /topics.xml
   def create
-    @topic = @user.topics.build(params[:topic])
+    @topic = current_user.topics.build(params[:topic])
 
     respond_to do |format|
       if @topic.save

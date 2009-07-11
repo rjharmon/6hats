@@ -2,8 +2,9 @@
 # from the project root directory.
 require File.dirname(__FILE__) + "/../config/environment" unless defined?(RAILS_ROOT)
 require 'spec/autorun'
-ENV["RAILS_ENV"] = "rspec"
+ENV["RAILS_ENV"] = "test"
 require 'spec/rails'
+require "authlogic/test_case"
 
 # TODO: verify that this works
 include AuthenticatedSystem
@@ -20,7 +21,10 @@ Spec::Runner.configure do |config|
   config.use_transactional_fixtures = true
   config.use_instantiated_fixtures  = false
   config.fixture_path = RAILS_ROOT + '/spec/fixtures/'
-
+  config.before :each do
+    activate_authlogic
+  end
+  
   # == Fixtures
   #
   # You can declare fixtures for each example_group like this:
@@ -190,7 +194,7 @@ module MyControllerExamples
 #       no_login_context()
         do_login(nil)
         do_action
-        response.should redirect_to( login_url )
+        response.should redirect_to( login_url + "?next="+CGI.escape(request.request_uri) )
         flash[:notice].should_not be_blank
       end
     end
@@ -208,10 +212,22 @@ def mock_association( obj, assoc, stubs )
   mock_ass.stub!(assoc).and_return( mock_ass )
 end
 
-def do_login( user ) 
-  @request.session[:user_id] = user ? user.id : nil
-  if user
-    User.stub!(:find_by_id).with(user.id).and_return user
+def do_login( item ) 
+  activate_authlogic
+  if item.nil?
+    session = self.controller.send(:current_user_session)
+    self.controller.send(:logout)
+    session.destroy if session
+    return
+  end
+
+  if Thought === item
+    item = item.user
+  end
+  if User === item
+    UserSession.create( item ) 
+  else 
+    raise DeveloperError, "can't login with object #{item.inspect}.  You might want to teach spec/spec_helper.rb#do_login() to find the user object"
   end
 end
 
