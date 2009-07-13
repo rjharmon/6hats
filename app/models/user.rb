@@ -29,6 +29,7 @@ require 'digest/sha1'
 class User < ActiveRecord::Base
   attr_accessible :login, :email, :name, :password, :password_confirmation, :persistence_token
 
+  validates_presence_of :name
   acts_as_authentic do |c|
     c.crypto_provider = Authlogic::CryptoProviders::BCrypt
     if ENV["RSPEC"]
