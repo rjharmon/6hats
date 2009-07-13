@@ -45,7 +45,7 @@ module ViewDebugHelper
     end
 
     dump_vars(script, 'Session Variables:', @controller.session.instance_variable_get("@data"))
-    dump_vars(script, 'Flash Variables:', @controller.flash)
+    dump_vars(script, 'Flash Variables:', @controller.send(:flash))
     if view_debug_display_assigns and @controller.instance_variables.size > 0
       popup_header(script, 'Assigned Template Variables:')
       @controller.instance_variables.each do |k|
