@@ -11,7 +11,7 @@
     <div class="mast_right">
       <div class="top_info">
         <div class="top_info_right">
-          <% if logged_in? %>
+          <% if current_user %>
             <p>
               <%= link_to_unless_current( "Topics", topics_url ) %> &nbsp;&nbsp&nbsp;
               My Profile&nbsp;&nbsp;&nbsp; 
@@ -37,7 +37,7 @@
     </div>
       
     <div class="logo">
-      <h1><a href="#" title="Open Source Group-Think">Open <span class="red">Hats</span></a></h1>
+      <h1><a href="/" title="Open Source Group-Think">Open <span class="red">Hats</span></a></h1>
       <p>Let's all think together, shall we?</p>
     </div>
     
