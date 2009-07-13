@@ -1,4 +1,6 @@
-<% box :location => :left, :title_class => hat_rule.color, :title => hat_rule.color + " Hat", :subtitle => hat_rule.summary do %>
+<% content_for :left do %>
+<% box :title_class => hat_rule.color, :title => hat_rule.color + " Hat", :subtitle => hat_rule.summary do %>
 <%= Markdown.new(hat_rule.more_info).to_html %>
 <%= link_to "[edit]", edit_hat_url( hat_rule ) %>
+<% end %>
 <% end %>

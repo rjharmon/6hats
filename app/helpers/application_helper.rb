@@ -6,8 +6,6 @@ module ApplicationHelper
   def box( *args, &block )
     options = args.extract_options!
 
-    options[:location] ||= :right
-
     @box_options = options
     render( :layout => "shared/box", &block )
   end

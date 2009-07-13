@@ -5,28 +5,21 @@ describe "shared partials:" do
 	def partial( *args ) 
 		assigns[:box_options] = @opts
 		render :partial => 'shared/box', *args
-		r = content_for( @opts[:location] )
 	end
 	before :each do
 		@result = nil
 		@opts = { :location => :right }
 	end
 
-	it "should croak if not given a location to put the box" do
-		@opts[:location] = nil
-		lambda { partial }.should raise_error( /location.*required/ )
-	end
 	it "should croak with a wrong image-tag specifier" do
 		@opts[:image] = "foo"
 		lambda { partial }.should raise_error( /:image.*hash of options/ )
 	end
 
 	describe " generate a box:" do
-		it "should have a box-top" do
-			partial.should have_tag( "div.box-top" ) 
-		end
-		it "should have a box-body" do
-			partial.should have_tag( "div.box-body" )
+		it "should have a box-content" do
+			box = partial
+			box.should have_tag( "div.box-content" )
 		end
 	end
 	it "should include an image tag if :image is provided" do

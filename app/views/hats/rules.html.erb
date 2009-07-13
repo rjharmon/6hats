@@ -9,12 +9,14 @@ by Edward de Bono can provide you with much better context and detail.  </p>
 
 <p>The general guidelines shown to the right can help you enter the thinking process with the right frame of mind.  Further, the following guidelines for each hat will help keep you on track.</p>
 
-<% box :title => "Don't Jump Around" do %>
-	Consider one hat at a time, and seek multiple thoughts under that hat prior to seeking the next hat.
-<% end %>
+<% content_for :right do %>
+  <% box :title => "Don't Jump Around" do %>
+	  Consider one hat at a time, and seek multiple thoughts under that hat prior to seeking the next hat.
+  <% end %>
 
-<% box :title => "Move on when it's time" do %>
-When you've exhausted your ideas under one hat, go on to the next hat.
+  <% box :title => "Move on when it's time" do %>
+    When you've exhausted your ideas under one hat, go on to the next hat.
+  <% end %>
 <% end %>
 
 <%= render :partial => 'hat_rule', :collection => @hats %>

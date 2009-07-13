@@ -1,9 +1,5 @@
-<% unless @box_options[:location]
-  raise SiteDevError.new("@box_options[:location] is required!");
-end %>
-<% content_for( @box_options[:location] ) do %>
-  <!-- from http://www.schillmania.com/projects/dialog2/ -->
-  <!-- top/right PNG -->
+<!-- from http://www.schillmania.com/projects/dialog2/ -->
+<!-- top/right PNG -->
 <div class="box">
   <div class="box-content">
 
@@ -49,4 +45,3 @@ end %>
   <!-- bottom PNG -->
   <div class="b"><div></div></div>
 </div> <!-- end box -->
-<% end # of content_for box area %> 

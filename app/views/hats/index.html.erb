@@ -22,12 +22,15 @@ shown at the right.
  <li><a href="http://www.inspiration.moonfruit.com/edwarddebono/4519676395">http://www.inspiration.moonfruit.com/edwarddebono/4519676395</a> has a nice mindmap and a PDF <a href="Six%20Thinking%20Hats%20Summary.pdf">introducing some of the 6 hats concepts (archived)</a></li>
  <li></li>
 </ul>
+
+<% content_for :right do %>
 <% box :title => "Problems of the Argumentative Meeting Style" do %>
 	<ul>
 		<li>Only the outspoken members of the team are able to be heard</li>
 		<li>Good ideas are missed</li>
 		<li>"Might makes Right"</li>
 	</ul>
+<% end %>
 <% end %>
 
 <p>The proposed alternative is for a group to think together, planning what kind of outcomes 
@@ -57,8 +60,8 @@ benefits and outcomes are shown below.</p>
 
 <%= link_to 'New hat', new_hat_path %>
 
-
-<% box :location => :left, :title => "Benefits of Six-Hats Thinking" do %>
+<% content_for :left do %>
+<% box :title => "Benefits of Six-Hats Thinking" do %>
   <%= markdown(<<EOM)
 
 ### More Objectivity
@@ -92,5 +95,6 @@ Meetings really are shorter when everybody works together.
 
 EOM
 %>
+  <% end %>
 <% end %>
 
